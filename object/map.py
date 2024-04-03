@@ -7,9 +7,6 @@ class TopDownMap(pg.sprite.Sprite):
 		self.rects = []
 		self.rect_x, self.rect_y = 0, 0
 
-	def add_rect(self, rect, color):
-		self.rects.append((rect, color))
-
 	def move(self, pixel_size, player):
 
 		self.rect_x = -player.location[0] * pixel_size + self.screen.get_width()/2

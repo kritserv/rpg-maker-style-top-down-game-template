@@ -14,7 +14,6 @@ from object.player import Player
 from object.map import TopDownMap
 from object.timer import Timer
 from object.blackbar import BlackBar
-from math import ceil
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -34,19 +33,25 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
+	obstacles = [
+		(pg.Rect(-80, -112, 112, 64), black), (pg.Rect(80, -112, 112, 64), red),
+		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)]
+
 	player = Player(screen, cap_fps)
 	
 	player.add_rect(pg.Rect(0, -8, 16, 8), black)
 
 	player.resize(pixel_size)
 
+	player.obstacles = [ob for ob, color in obstacles]
+	player.calculate_obstacles_location()
+
 	top_down_map = TopDownMap(screen)
 
-	#top_down_map.add_rect(pg.Rect(0, 128, 256, 112), blue)
-	#top_down_map.add_rect(pg.Rect(0, 0, 256, 112), blue)
-	top_down_map.add_rect(pg.Rect(-128, 0, 256, 112), blue)
 
 	top_down_map.resize(pixel_size, player)
+
+	top_down_map.rects = [ob for ob in obstacles]
 
 	milli_sec_timer = Timer()
 	milli_sec_timer.start()
@@ -80,9 +85,7 @@ async def main():
 			if milli_sec_timer.time_now()>0.1:
 				print_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {player.location}", 
-				f"x1x2: {player.ob_up_x1, player.ob_up_x2}", 
-				f"y1y2: {player.ob_up_y1, player.ob_up_y2}"]
+				f"player_lo: {player.location}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 

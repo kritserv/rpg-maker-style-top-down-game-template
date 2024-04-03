@@ -1,6 +1,5 @@
 import pygame as pg
 from variable.settings import red
-from object.timer import Timer
 from math import floor, ceil
 
 class Player(pg.sprite.Sprite):
@@ -33,27 +32,19 @@ class Player(pg.sprite.Sprite):
 
 		self.rects = []
 
-		#self.obstructs = [pg.Rect(0, 128, 256, 112)]
-		#self.obstructs = [pg.Rect(0, 0, 256, 112)]
-		self.obstructs = [pg.Rect(-128, 0, 256, 112)]
+		self.obstacles = []
 
-		self.plus_value = 10
-		self.ob_left_x1 = self.obstructs[0][2] + self.obstructs[0][0] + 16 - self.plus_value
-		self.ob_left_x2 = self.obstructs[0][2] + self.obstructs[0][0] + 32 - self.plus_value
-		self.ob_right_x1 = self.obstructs[0][0] - self.plus_value
-		self.ob_right_x2 = self.obstructs[0][0] + 16 - self.plus_value
-		self.ob_up_x1 = self.obstructs[0][0] + 16
-		self.ob_up_x2 = self.obstructs[0][2] + self.obstructs[0][0]
-		self.ob_down_x1 = self.obstructs[0][0] + 16
-		self.ob_down_x2 = self.obstructs[0][2] + self.obstructs[0][0]
-		self.ob_left_y1 = self.obstructs[0][1] + 16
-		self.ob_left_y2 = self.obstructs[0][3] + self.obstructs[0][1]
-		self.ob_right_y1 = self.obstructs[0][1] + 16
-		self.ob_right_y2 = self.obstructs[0][3] + self.obstructs[0][1]
-		self.ob_up_y1 = self.obstructs[0][3] + 16 - self.plus_value + self.obstructs[0][1]
-		self.ob_up_y2 = self.obstructs[0][3] + 32 - self.plus_value + self.obstructs[0][1]
-		self.ob_down_y1 = self.obstructs[0][1] - self.plus_value
-		self.ob_down_y2 = self.obstructs[0][1]
+	def calculate_obstacles_location(self):
+		plus_value = 10
+		self.calculated_obstacles = []
+		for ob in self.obstacles:
+			ob_values = {
+				'left': [ob[2] + ob[0] + 16 - plus_value, ob[2] + ob[0] + 32 - plus_value, ob[1] + 16, ob[3] + ob[1]],
+				'right': [ob[0] - plus_value, ob[0] + 16 - plus_value, ob[1] + 16, ob[3] + ob[1]],
+				'up': [ob[0] + 16, ob[2] + ob[0], ob[3] + 16 - plus_value + ob[1], ob[3] + 32 - plus_value + ob[1]],
+				'down': [ob[0] + 16, ob[2] + ob[0], ob[1] - plus_value, ob[1] + 16]
+			}
+			self.calculated_obstacles.append(ob_values)
 
 	def add_rect(self, rect, color):
 		self.rects.append((rect, color))
@@ -64,30 +55,30 @@ class Player(pg.sprite.Sprite):
 										  rect.width * pixel_size,
 										  rect.height * pixel_size), color) for rect, color in self.rects]
 
-
 	def move_left_get_obstruct(self):
-		if (self.ob_left_x1 <= self.location[0] <= self.ob_left_x2) and (self.ob_left_y1 <= self.location[1] <= self.ob_left_y2):
-			return True
-		else:
-			return False
+		for ob in self.calculated_obstacles:
+			if (ob['left'][0] <= self.location[0] <= ob['left'][1]) and (ob['left'][2] <= self.location[1] <= ob['left'][3]):
+				return True
+		return False
+
 
 	def move_right_get_obstruct(self):
-		if (self.ob_right_x1 <= self.location[0] <= self.ob_right_x2) and (self.ob_right_y1 <= self.location[1] <= self.ob_right_y2):
-			return True
-		else:
-			return False
+		for ob in self.calculated_obstacles:
+			if (ob['right'][0] <= self.location[0] <= ob['right'][1]) and (ob['right'][2] <= self.location[1] <= ob['right'][3]):
+				return True
+		return False
 
 	def move_up_get_obstruct(self):
-		if (self.ob_up_x1 <= self.location[0] <= self.ob_up_x2) and (self.ob_up_y1 <= self.location[1] <= self.ob_up_y2):
-			return True
-		else:
-			return False
+		for ob in self.calculated_obstacles:
+			if (ob['up'][0] <= self.location[0] <= ob['up'][1]) and (ob['up'][2] <= self.location[1] <= ob['up'][3]):
+				return True
+		return False
 
 	def move_down_get_obstruct(self):
-		if (self.ob_down_x1 <= self.location[0] <= self.ob_down_x2) and (self.ob_down_y1 <= self.location[1] <= self.ob_down_y2):
-			return True
-		else:
-			return False
+		for ob in self.calculated_obstacles:
+			if (ob['down'][0] <= self.location[0] <= ob['down'][1]) and (ob['down'][2] <= self.location[1] <= ob['down'][3]):
+				return True
+		return False
 
 	def calculate_movement(self, key):
 		dx, dy = 0, 0
