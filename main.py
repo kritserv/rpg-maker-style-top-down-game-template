@@ -34,10 +34,14 @@ async def main():
 	
 	player.add_rect(pg.Rect(0, -8, 16, 8), black)
 
+	player.resize(pixel_size, screen)
+
 	top_down_map = TopDownMap()
 
 	top_down_map.add_rect(pg.Rect(0, 0, 128, 112), black)
 	top_down_map.add_rect(pg.Rect(128, 0, 128, 112), blue)
+
+	top_down_map.resize(pixel_size, player, screen)
 
 	milli_sec_timer = Timer()
 	milli_sec_timer.start()
@@ -82,6 +86,8 @@ async def main():
 		is_resize = [current_width, current_height] != new_size
 		if is_resize:
 			current_width, current_height, pixel_size = update_size(new_size)
+			player.resize(pixel_size, screen)
+			top_down_map.resize(pixel_size, player, screen)
 
 		# =================== [ PYGAME STUFF ] ===================
 

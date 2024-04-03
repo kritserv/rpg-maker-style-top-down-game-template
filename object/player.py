@@ -20,10 +20,25 @@ class Player(pg.sprite.Sprite):
 		self.finished_x_move = True
 		self.finished_y_move = True
 
+		screen_width, screen_height = 480, 432
+		player_x, player_y = screen_width/2, screen_height/2
+		self.x = player_x
+		self.y = player_y
+		self.width = self.original_width
+		self.height = self.original_height
+		self.top_left_x = self.x - self.width/2
+		self.top_left_y = self.y - self.height/2
+
 		self.rects = []
 
 	def add_rect(self, rect, color):
 		self.rects.append((rect, color))
+
+	def correct_all_rect(self, pixel_size):
+		self.transformed_rects = [(pg.Rect(rect.x * pixel_size + self.top_left_x,
+										  rect.y * pixel_size + self.top_left_y,
+										  rect.width * pixel_size,
+										  rect.height * pixel_size), color) for rect, color in self.rects]
 
 	def calculate_movement(self, key):
 		dx, dy = 0, 0
@@ -126,10 +141,7 @@ class Player(pg.sprite.Sprite):
 		self.top_left_x = self.x - self.width/2
 		self.top_left_y = self.y - self.height/2
 
-		self.transformed_rects = [(pg.Rect(rect.x * pixel_size + self.top_left_x,
-										  rect.y * pixel_size + self.top_left_y,
-										  rect.width * pixel_size,
-										  rect.height * pixel_size), color) for rect, color in self.rects]
+		self.correct_all_rect(pixel_size)
 
 	def draw(self, screen):
 		self.rect = pg.Rect(self.top_left_x, self.top_left_y, self.width, self.height)
@@ -138,7 +150,6 @@ class Player(pg.sprite.Sprite):
 			pg.draw.rect(screen, color, rect)
 
 	def update(self, dt, pixel_size, screen):
-		self.resize(pixel_size, screen)
 
 		key = pg.key.get_pressed()
 		dx, dy = self.calculate_movement(key)
