@@ -1,6 +1,7 @@
 import pygame as pg
 import json
 from object.timer import Timer
+from math import ceil
 
 clock = pg.time.Clock()
 
@@ -39,6 +40,11 @@ def load_settings():
 	if blackbar=="True":
 		black_bar = True
 	return screen, black_bar
+
+def update_size(new_size):
+	current_width, current_height = new_size[0], new_size[1]
+	pixel_size = ceil(current_width/default_screen_width)
+	return current_width, current_height, pixel_size
 
 debug_font = pg.font.SysFont(None, 22)
 

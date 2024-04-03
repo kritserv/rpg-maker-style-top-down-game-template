@@ -14,10 +14,16 @@ def check_quit_game(event):
 
 	return run
 
+def check_window_resize(event, new_size):
+	if event.type == pg.VIDEORESIZE:
+		new_size = event.dict['size']
 
-def check_event(all_event):
+	return new_size
+
+def check_event(all_event, new_size):
 	run = True
 	for event in all_event:
 		run = check_quit_game(event)
+		new_size = check_window_resize(event, new_size)
 
-	return run
+	return run, new_size

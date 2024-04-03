@@ -7,7 +7,7 @@ import asyncio
 import time
 from variable.settings import clock_tick, current_fps,\
  load_settings, default_screen_width, \
- black, green, red, blue
+ update_size, black, green, red, blue
 from func.event_checker import check_event
 from func.drawer import draw_black_bar
 from func.debug import print_debug
@@ -26,7 +26,8 @@ async def main():
 	debug = True
 	print_list = ""
 	screen, black_bar = load_settings()
-	aspect_ratio = screen.get_width()/screen.get_height()
+	current_width, current_height, pixel_size = update_size([screen.get_width(), screen.get_height()])
+	new_size = (current_width, current_height)
 
 	player = Player()
 	
@@ -48,9 +49,6 @@ async def main():
 		prev_time = time.time()
 
 		# ====================== [ LOGIC ] ======================
-		
-		current_width, current_height = screen.get_width(), screen.get_height()
-		pixel_size = ceil(current_width/default_screen_width)
 
 		player.update(dt, pixel_size, screen)
 		top_down_map.update(pixel_size, player, screen)
@@ -70,13 +68,19 @@ async def main():
 				print_list = [current_fps(), 
 				f"resolution: {(current_width, current_height)}", 
 				f"player_lo: {[player.location[0], player.location[1]]}",
-				f"pixel: {pixel_size}"]
+				f"pixel_size: {pixel_size}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
 		# ====================== [ EVENT ] ======================
 
-		run = check_event(pg.event.get())
+		run, new_size = check_event(pg.event.get(), new_size)
+
+		# ====================== [ RESIZE ] ======================
+
+		is_resize = [current_width, current_height] != new_size
+		if is_resize:
+			current_width, current_height, pixel_size = update_size(new_size)
 
 		# =================== [ PYGAME STUFF ] ===================
 
