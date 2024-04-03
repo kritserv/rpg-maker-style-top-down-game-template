@@ -1,5 +1,5 @@
 import pygame as pg
-from var.settings import red
+from variable.settings import red
 from object.timer import Timer
 from math import floor, ceil
 

@@ -5,7 +5,7 @@ pg.init()
 import sys
 import asyncio
 import time
-from var.settings import clock_tick, current_fps,\
+from variable.settings import clock_tick, current_fps,\
  load_settings, default_screen_width, \
  black, green, red, blue
 from func.event_checker import check_event
