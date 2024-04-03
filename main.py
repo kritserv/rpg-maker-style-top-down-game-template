@@ -14,6 +14,7 @@ from func.debug import print_debug
 from object.player import Player
 from object.map import TopDownMap
 from object.timer import Timer
+from math import ceil
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -34,7 +35,7 @@ async def main():
 	top_down_map = TopDownMap()
 
 	top_down_map.add_rect(pg.Rect(0, 0, 128, 112), black)
-	top_down_map.add_rect(pg.Rect(-256, 0, 128, 112), blue)
+	top_down_map.add_rect(pg.Rect(128, 0, 128, 112), blue)
 
 	milli_sec_timer = Timer()
 	milli_sec_timer.start()
@@ -49,7 +50,7 @@ async def main():
 		# ====================== [ LOGIC ] ======================
 		
 		current_width, current_height = screen.get_width(), screen.get_height()
-		pixel_size = current_width/default_screen_width
+		pixel_size = ceil(current_width/default_screen_width)
 
 		player.update(dt, pixel_size, screen)
 		top_down_map.update(pixel_size, player, screen)
@@ -68,7 +69,8 @@ async def main():
 			if milli_sec_timer.time_now()>0.1:
 				print_list = [current_fps(), 
 				f"resolution: {(current_width, current_height)}", 
-				f"player_lo: {[player.location[0], player.location[1]]}"]
+				f"player_lo: {[player.location[0], player.location[1]]}",
+				f"pixel: {pixel_size}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
