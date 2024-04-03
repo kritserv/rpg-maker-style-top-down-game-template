@@ -28,6 +28,7 @@ async def main():
 	screen, black_bar = load_settings()
 	current_width, current_height, pixel_size = update_size([screen.get_width(), screen.get_height()])
 	new_size = (current_width, current_height)
+	aspect_ratio = current_width/current_height
 
 	player = Player()
 	
