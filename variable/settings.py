@@ -5,16 +5,13 @@ from math import ceil, floor
 
 clock = pg.time.Clock()
 
-timer_1_sec = Timer()
-timer_1_sec.start()
-
 def clock_tick(cap_fps):
 	if cap_fps:
 		clock.tick(60)
 	else:
 		clock.tick()
 
-def current_fps():
+def curr_fps():
 	get_fps = str(clock.get_fps() // 0.1 / 10)
 	return f"fps: {get_fps}"
 
@@ -52,10 +49,10 @@ def round_pixel(num):
 		return num_floor if num_frac < 0.5 else num_ceil
 
 def update_size(new_size):
-	current_width, current_height = new_size[0], new_size[1]
-	pixel_size = current_width/default_screen_width
+	curr_width, curr_height = new_size[0], new_size[1]
+	pixel_size = curr_width/default_screen_width
 	pixel_size = round_pixel(pixel_size)
-	return current_width, current_height, pixel_size
+	return curr_width, curr_height, pixel_size
 
 debug_font = pg.font.SysFont(None, 22)
 

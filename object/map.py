@@ -1,20 +1,21 @@
 import pygame as pg
 
 class TopDownMap(pg.sprite.Sprite):
-	def __init__(self):
+	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
+		self.screen = screen
 		self.rects = []
 		self.rect_x, self.rect_y = 0, 0
 
 	def add_rect(self, rect, color):
 		self.rects.append((rect, color))
 
-	def move(self, pixel_size, player, screen):
+	def move(self, pixel_size, player):
 
-		self.rect_x = -player.location[0] * pixel_size + screen.get_width()/2
-		self.rect_y = -player.location[1] * pixel_size + screen.get_height()/2
+		self.rect_x = -player.location[0] * pixel_size + self.screen.get_width()/2
+		self.rect_y = -player.location[1] * pixel_size + self.screen.get_height()/2
 
-	def resize(self, pixel_size, player, screen):
+	def resize(self, pixel_size, player):
 
 		tile_size = pixel_size*16
 		map_offset = tile_size/2
@@ -24,9 +25,9 @@ class TopDownMap(pg.sprite.Sprite):
 										  rect.width * pixel_size,
 										  rect.height * pixel_size), color) for rect, color in self.rects]
 
-	def draw(self, screen):
+	def draw(self):
 		for rect, color in self.transformed_rects:
-			pg.draw.rect(screen, color, rect)
+			pg.draw.rect(self.screen, color, rect)
 
-	def update(self, pixel_size, player, screen):
-		self.move(pixel_size, player, screen)
+	def update(self, pixel_size, player):
+		self.move(pixel_size, player)

@@ -4,8 +4,9 @@ from object.timer import Timer
 from math import floor, ceil
 
 class Player(pg.sprite.Sprite):
-	def __init__(self):
+	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
+		self.screen = screen
 		self.speed = 150
 		self.original_width, self.original_height = 16, 16
 		self.location = [0, 0]
@@ -20,7 +21,7 @@ class Player(pg.sprite.Sprite):
 		self.finished_x_move = True
 		self.finished_y_move = True
 
-		screen_width, screen_height = 480, 432
+		screen_width, screen_height = screen.get_width(), screen.get_height()
 		player_x, player_y = screen_width/2, screen_height/2
 		self.x = player_x
 		self.y = player_y
@@ -131,8 +132,8 @@ class Player(pg.sprite.Sprite):
 	def finish_move(self, dx, dy, dt, pixel_size):
 		self.move(dx, dy, dt, pixel_size)
 
-	def resize(self, pixel_size, screen):
-		screen_width, screen_height = screen.get_width(), screen.get_height()
+	def resize(self, pixel_size):
+		screen_width, screen_height = self.screen.get_width(), self.screen.get_height()
 		player_x, player_y = screen_width/2, screen_height/2
 		self.x = player_x
 		self.y = player_y
@@ -143,13 +144,13 @@ class Player(pg.sprite.Sprite):
 
 		self.correct_all_rect(pixel_size)
 
-	def draw(self, screen):
+	def draw(self):
 		self.rect = pg.Rect(self.top_left_x, self.top_left_y, self.width, self.height)
-		pg.draw.rect(screen, red, self.rect)
+		pg.draw.rect(self.screen, red, self.rect)
 		for rect, color in self.transformed_rects:
-			pg.draw.rect(screen, color, rect)
+			pg.draw.rect(self.screen, color, rect)
 
-	def update(self, dt, pixel_size, screen):
+	def update(self, dt, pixel_size):
 
 		key = pg.key.get_pressed()
 		dx, dy = self.calculate_movement(key)

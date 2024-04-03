@@ -5,15 +5,15 @@ pg.init()
 import sys
 import asyncio
 import time
-from variable.settings import clock_tick, current_fps,\
- load_settings, default_screen_width, \
+from variable.settings import clock_tick, curr_fps,\
+ load_settings, default_screen_width, default_screen_height, \
  update_size, black, green, red, blue
 from func.event_checker import check_event
-from func.drawer import draw_black_bar
 from func.debug import print_debug
 from object.player import Player
 from object.map import TopDownMap
 from object.timer import Timer
+from object.blackbar import BlackBar
 from math import ceil
 
 pg.display.set_caption("game_title")
@@ -25,23 +25,27 @@ async def main():
 	run = True
 	debug = True
 	print_list = ""
-	screen, black_bar = load_settings()
-	current_width, current_height, pixel_size = update_size([screen.get_width(), screen.get_height()])
-	new_size = (current_width, current_height)
-	aspect_ratio = current_width/current_height
 
-	player = Player()
+	screen, black_bar_is_set = load_settings()
+	black_bar = BlackBar(screen, black_bar_is_set)
+	curr_width, curr_height, pixel_size = update_size(
+		[screen.get_width(), 
+		screen.get_height()])
+	ratio = default_screen_width/default_screen_height
+	new_size = (curr_width, curr_height)
+
+	player = Player(screen)
 	
 	player.add_rect(pg.Rect(0, -8, 16, 8), black)
 
-	player.resize(pixel_size, screen)
+	player.resize(pixel_size)
 
-	top_down_map = TopDownMap()
+	top_down_map = TopDownMap(screen)
 
 	top_down_map.add_rect(pg.Rect(0, 0, 128, 112), black)
 	top_down_map.add_rect(pg.Rect(128, 0, 128, 112), blue)
 
-	top_down_map.resize(pixel_size, player, screen)
+	top_down_map.resize(pixel_size, player)
 
 	milli_sec_timer = Timer()
 	milli_sec_timer.start()
@@ -55,39 +59,33 @@ async def main():
 
 		# ====================== [ LOGIC ] ======================
 
-		player.update(dt, pixel_size, screen)
-		top_down_map.update(pixel_size, player, screen)
+		player.update(dt, pixel_size)
+		top_down_map.update(pixel_size, player)
 
-		# ===================== [ GRAPHIC ] =====================
+		# ====================== [ GRAPHIC ] =====================
+
+		curr_width, curr_height, pixel_size = update_size(new_size)
+		player.resize(pixel_size)
+		top_down_map.resize(pixel_size, player)
 
 		screen.fill(green)
-		top_down_map.draw(screen)
-		player.draw(screen)
-		if black_bar:
-			draw_black_bar(current_width, current_height, aspect_ratio)
+		top_down_map.draw()
+		player.draw()
+		black_bar.draw_if_set(curr_width, curr_height, ratio)
 
 		# ====================== [ DEBUG ] ======================
 
 		if debug:
 			if milli_sec_timer.time_now()>0.1:
-				print_list = [current_fps(), 
-				f"resolution: {(current_width, current_height)}", 
-				f"player_lo: {[player.location[0], player.location[1]]}",
-				f"pixel_size: {pixel_size}"]
+				print_list = [curr_fps(), 
+				f"resolution: {(curr_width, curr_height)}", 
+				f"player_lo: {player.location}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
 		# ====================== [ EVENT ] ======================
 
 		run, new_size = check_event(pg.event.get(), new_size)
-
-		# ====================== [ RESIZE ] ======================
-
-		is_resize = [current_width, current_height] != new_size
-		if is_resize:
-			current_width, current_height, pixel_size = update_size(new_size)
-			player.resize(pixel_size, screen)
-			top_down_map.resize(pixel_size, player, screen)
 
 		# =================== [ PYGAME STUFF ] ===================
 
