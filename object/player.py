@@ -4,8 +4,9 @@ from object.timer import Timer
 from math import floor, ceil
 
 class Player(pg.sprite.Sprite):
-	def __init__(self, screen):
+	def __init__(self, screen, cap_fps):
 		pg.sprite.Sprite.__init__(self)
+		self.cap_fps = cap_fps
 		self.screen = screen
 		self.speed = 150
 		self.original_width, self.original_height = 16, 16
@@ -32,6 +33,28 @@ class Player(pg.sprite.Sprite):
 
 		self.rects = []
 
+		#self.obstructs = [pg.Rect(0, 128, 256, 112)]
+		#self.obstructs = [pg.Rect(0, 0, 256, 112)]
+		self.obstructs = [pg.Rect(-128, 0, 256, 112)]
+
+		self.plus_value = 10
+		self.ob_left_x1 = self.obstructs[0][2] + self.obstructs[0][0] + 16 - self.plus_value
+		self.ob_left_x2 = self.obstructs[0][2] + self.obstructs[0][0] + 32 - self.plus_value
+		self.ob_right_x1 = self.obstructs[0][0] - self.plus_value
+		self.ob_right_x2 = self.obstructs[0][0] + 16 - self.plus_value
+		self.ob_up_x1 = self.obstructs[0][0] + 16
+		self.ob_up_x2 = self.obstructs[0][2] + self.obstructs[0][0]
+		self.ob_down_x1 = self.obstructs[0][0] + 16
+		self.ob_down_x2 = self.obstructs[0][2] + self.obstructs[0][0]
+		self.ob_left_y1 = self.obstructs[0][1] + 16
+		self.ob_left_y2 = self.obstructs[0][3] + self.obstructs[0][1]
+		self.ob_right_y1 = self.obstructs[0][1] + 16
+		self.ob_right_y2 = self.obstructs[0][3] + self.obstructs[0][1]
+		self.ob_up_y1 = self.obstructs[0][3] + 16 - self.plus_value + self.obstructs[0][1]
+		self.ob_up_y2 = self.obstructs[0][3] + 32 - self.plus_value + self.obstructs[0][1]
+		self.ob_down_y1 = self.obstructs[0][1] - self.plus_value
+		self.ob_down_y2 = self.obstructs[0][1]
+
 	def add_rect(self, rect, color):
 		self.rects.append((rect, color))
 
@@ -41,6 +64,31 @@ class Player(pg.sprite.Sprite):
 										  rect.width * pixel_size,
 										  rect.height * pixel_size), color) for rect, color in self.rects]
 
+
+	def move_left_get_obstruct(self):
+		if (self.ob_left_x1 <= self.location[0] <= self.ob_left_x2) and (self.ob_left_y1 <= self.location[1] <= self.ob_left_y2):
+			return True
+		else:
+			return False
+
+	def move_right_get_obstruct(self):
+		if (self.ob_right_x1 <= self.location[0] <= self.ob_right_x2) and (self.ob_right_y1 <= self.location[1] <= self.ob_right_y2):
+			return True
+		else:
+			return False
+
+	def move_up_get_obstruct(self):
+		if (self.ob_up_x1 <= self.location[0] <= self.ob_up_x2) and (self.ob_up_y1 <= self.location[1] <= self.ob_up_y2):
+			return True
+		else:
+			return False
+
+	def move_down_get_obstruct(self):
+		if (self.ob_down_x1 <= self.location[0] <= self.ob_down_x2) and (self.ob_down_y1 <= self.location[1] <= self.ob_down_y2):
+			return True
+		else:
+			return False
+
 	def calculate_movement(self, key):
 		dx, dy = 0, 0
 		self.is_move = False
@@ -48,24 +96,26 @@ class Player(pg.sprite.Sprite):
 
 		if key[pg.K_LEFT] or key[pg.K_RIGHT]:
 			if self.finished_y_move:
-				if key[pg.K_LEFT]:
+				if key[pg.K_LEFT] and not self.move_left_get_obstruct():
 					dx = -1
-				elif key[pg.K_RIGHT]:
+				elif key[pg.K_RIGHT] and not self.move_right_get_obstruct():
 					dx = 1
-				self.is_move = True
-				self.last_dx = dx
-				self.key_presed = True
-				self.finished_x_move = False
+				if dx != 0:
+					self.is_move = True
+					self.last_dx = dx
+					self.key_presed = True
+					self.finished_x_move = False
 		elif key[pg.K_UP] or key[pg.K_DOWN]:
 			if self.finished_x_move:
-				if key[pg.K_UP]:
+				if key[pg.K_UP] and not self.move_up_get_obstruct():
 					dy = -1
-				elif key[pg.K_DOWN]:
+				elif key[pg.K_DOWN] and not self.move_down_get_obstruct():
 					dy = 1
-				self.is_move = True
-				self.last_dy = dy
-				self.key_presed = True
-				self.finished_y_move = False
+				if dy != 0:
+					self.is_move = True
+					self.last_dy = dy
+					self.key_presed = True
+					self.finished_y_move = False
 
 		return dx, dy
 
@@ -152,6 +202,9 @@ class Player(pg.sprite.Sprite):
 
 	def update(self, dt, pixel_size):
 
+		if self.cap_fps:
+			dt = 0.015
+
 		key = pg.key.get_pressed()
 		dx, dy = self.calculate_movement(key)
 
@@ -162,14 +215,22 @@ class Player(pg.sprite.Sprite):
 			self.expect_finish_location()
 			self.calculate_diff()
 
-			if self.diff_x >= 0.7:
+			if self.cap_fps:
+				self.diff_x = ceil(self.diff_x)
+				self.diff_y = ceil(self.diff_y)
+				stop_at_diff = 3
+			else:
+				stop_at_diff = 0.7
+
+
+			if self.diff_x > stop_at_diff:
 				self.finish_move(self.last_dx, 0, dt, pixel_size)
-			elif self.diff_x < 0.7:
+			elif self.diff_x <= stop_at_diff:
 				self.location[0] = self.expected_x
 				self.finished_x_move = True
 
-			if self.diff_y >= 0.7:
+			if self.diff_y > stop_at_diff:
 				self.finish_move(0, self.last_dy, dt, pixel_size)
-			elif self.diff_y < 0.7:
+			elif self.diff_y <= stop_at_diff:
 				self.location[1] = self.expected_y
 				self.finished_y_move = True

@@ -34,7 +34,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	player = Player(screen)
+	player = Player(screen, cap_fps)
 	
 	player.add_rect(pg.Rect(0, -8, 16, 8), black)
 
@@ -42,8 +42,9 @@ async def main():
 
 	top_down_map = TopDownMap(screen)
 
-	top_down_map.add_rect(pg.Rect(0, 0, 128, 112), black)
-	top_down_map.add_rect(pg.Rect(128, 0, 128, 112), blue)
+	#top_down_map.add_rect(pg.Rect(0, 128, 256, 112), blue)
+	#top_down_map.add_rect(pg.Rect(0, 0, 256, 112), blue)
+	top_down_map.add_rect(pg.Rect(-128, 0, 256, 112), blue)
 
 	top_down_map.resize(pixel_size, player)
 
@@ -79,7 +80,9 @@ async def main():
 			if milli_sec_timer.time_now()>0.1:
 				print_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {player.location}"]
+				f"player_lo: {player.location}", 
+				f"x1x2: {player.ob_up_x1, player.ob_up_x2}", 
+				f"y1y2: {player.ob_up_y1, player.ob_up_y2}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
