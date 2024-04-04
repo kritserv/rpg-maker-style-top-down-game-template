@@ -3,9 +3,8 @@ from variable.settings import red
 from math import floor, ceil
 
 class Player(pg.sprite.Sprite):
-	def __init__(self, screen, cap_fps):
+	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
-		self.cap_fps = cap_fps
 		self.screen = screen
 		self.speed = 150
 		self.original_width, self.original_height = 16, 16
@@ -192,12 +191,11 @@ class Player(pg.sprite.Sprite):
 			pg.draw.rect(self.screen, color, rect)
 
 	def update(self, dt, pixel_size):
-
-		if self.cap_fps:
-			dt = 0.015
-
 		key = pg.key.get_pressed()
 		dx, dy = self.calculate_movement(key)
+
+		if dt > 0.02:
+		    dt = 0.02
 
 		if self.key_presed:
 			self.move(dx, dy, dt, pixel_size)
@@ -206,13 +204,7 @@ class Player(pg.sprite.Sprite):
 			self.expect_finish_location()
 			self.calculate_diff()
 
-			if self.cap_fps:
-				self.diff_x = ceil(self.diff_x)
-				self.diff_y = ceil(self.diff_y)
-				stop_at_diff = 3
-			else:
-				stop_at_diff = 0.7
-
+			stop_at_diff = 3
 
 			if self.diff_x > stop_at_diff:
 				self.finish_move(self.last_dx, 0, dt, pixel_size)

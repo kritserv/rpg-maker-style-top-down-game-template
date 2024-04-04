@@ -37,7 +37,7 @@ async def main():
 		(pg.Rect(-80, -112, 112, 64), black), (pg.Rect(80, -112, 112, 64), red),
 		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)]
 
-	player = Player(screen, cap_fps)
+	player = Player(screen)
 	
 	player.add_rect(pg.Rect(0, -8, 16, 8), black)
 
@@ -85,7 +85,8 @@ async def main():
 			if milli_sec_timer.time_now()>0.1:
 				print_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {player.location}"]
+				f"player_lo: {player.location}", 
+				f"dt: {dt}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
