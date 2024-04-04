@@ -54,10 +54,10 @@ def update_size(new_size):
 	pixel_size = round_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size
 
-debug_font = pg.font.SysFont(None, 22)
-
 red = pg.Color(255, 127, 127)
 black = pg.Color(0, 0, 0)
 white = pg.Color(255, 255, 255)
 green = pg.Color(127, 255, 127)
 blue = pg.Color(127, 127, 255)
+
+debug_font = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 14)

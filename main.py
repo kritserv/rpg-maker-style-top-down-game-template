@@ -19,7 +19,7 @@ async def main():
 	cap_fps = False
 	run = True
 	debug = True
-	print_list = ""
+	debug_list = [""]
 
 	screen, black_bar_is_set = load_settings()
 	black_bar = BlackBar(screen, black_bar_is_set)
@@ -79,11 +79,11 @@ async def main():
 
 		if debug:
 			if milli_sec_timer.time_now()>0.1:
-				print_list = [curr_fps(), 
+				debug_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {player.location}"]
+				f"player_lo: {(round(player.location[0], 3), round(player.location[1], 3))}"]
 				milli_sec_timer.restart()
-			print_debug(print_list)
+			print_debug(debug_list)
 
 		# ====================== [ EVENT ] ======================
 
