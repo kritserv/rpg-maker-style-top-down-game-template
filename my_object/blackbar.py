@@ -5,7 +5,6 @@ black = pg.Color(0, 0, 0)
 class BlackBar:
 	def __init__(self, screen, is_exist):
 		self.screen = screen
-		self.black_bar_width = 0
 		self.is_exist = is_exist
 
 	def draw_if_set(self, curr_width, curr_height, ratio):

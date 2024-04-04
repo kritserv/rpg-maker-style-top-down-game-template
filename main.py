@@ -30,27 +30,28 @@ async def main():
 	new_size = (curr_width, curr_height)
 
 	obstacles = [
-		(pg.Rect(-80, -112, 112, 64), black), (pg.Rect(80, -112, 112, 64), red),
-		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)]
+		(pg.Rect(-80, -112, 112, 64), blue), (pg.Rect(80, -112, 112, 64), red),
+		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)
+		]
 
 	player = Player(screen)
 	
-	player.add_rect(pg.Rect(0, -8, 16, 8), black)
+	player.rects = [(pg.Rect(0, 0, 16, 16), red), (pg.Rect(0, -8, 16, 8), black)]
 
 	player.resize(pixel_size)
 
 	player.obstacles = [ob for ob, color in obstacles]
+
 	player.calculate_obstacles_location()
 
 	top_down_map = TopDownMap(screen)
 
+	top_down_map.rects = [ob for ob in obstacles]
 
 	top_down_map.resize(pixel_size, player)
 
-	top_down_map.rects = [ob for ob in obstacles]
-
-	milli_sec_timer = Timer()
-	milli_sec_timer.start()
+	debug_timer = Timer()
+	debug_timer.start()
 
 	prev_time = time.time()
 	while run:
@@ -69,6 +70,7 @@ async def main():
 		curr_width, curr_height, pixel_size = update_size(new_size)
 		player.resize(pixel_size)
 		top_down_map.resize(pixel_size, player)
+		old_pixel_size = pixel_size
 
 		screen.fill(green)
 		top_down_map.draw()
@@ -78,11 +80,11 @@ async def main():
 		# ====================== [ TEST ] ======================
 
 		if debug:
-			if milli_sec_timer.time_now()>0.1:
+			if debug_timer.time_now()>0.1:
 				debug_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
 				f"player_lo: {(round(player.location[0], 3), round(player.location[1], 3))}"]
-				milli_sec_timer.restart()
+				debug_timer.restart()
 			print_debug(debug_list)
 
 		# ====================== [ EVENT ] ======================
