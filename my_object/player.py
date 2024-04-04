@@ -1,6 +1,7 @@
 import pygame as pg
-from variable.settings import red
 from math import floor, ceil
+
+red = pg.Color(255, 127, 127)
 
 class Player(pg.sprite.Sprite):
 	def __init__(self, screen):

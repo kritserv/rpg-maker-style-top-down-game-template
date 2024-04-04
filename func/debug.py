@@ -1,5 +1,5 @@
 import pygame as pg
-from func.drawer import blit_text
+from .drawer import blit_text
 from variable.settings import screen, debug_font, white, black
 
 def print_debug(print_list):

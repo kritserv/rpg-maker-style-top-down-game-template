@@ -1,6 +1,6 @@
 import pygame as pg
 import json
-from object.timer import Timer
+from my_object import Timer
 from math import ceil, floor
 
 clock = pg.time.Clock()

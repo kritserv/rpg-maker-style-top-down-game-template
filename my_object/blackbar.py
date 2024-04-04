@@ -1,5 +1,6 @@
 import pygame as pg
-from variable.settings import black
+
+black = pg.Color(0, 0, 0)
 
 class BlackBar:
 	def __init__(self, screen, is_exist):

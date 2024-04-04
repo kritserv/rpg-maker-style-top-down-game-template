@@ -5,15 +5,11 @@ pg.init()
 import sys
 import asyncio
 import time
-from variable.settings import clock_tick, curr_fps,\
+from variable import clock_tick, curr_fps,\
  load_settings, default_screen_width, default_screen_height, \
  update_size, black, green, red, blue
-from func.event_checker import check_event
-from func.debug import print_debug
-from object.player import Player
-from object.map import TopDownMap
-from object.timer import Timer
-from object.blackbar import BlackBar
+from func import check_event, print_debug
+from my_object import Player, TopDownMap, Timer, BlackBar
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -79,14 +75,13 @@ async def main():
 		player.draw()
 		black_bar.draw_if_set(curr_width, curr_height, ratio)
 
-		# ====================== [ DEBUG ] ======================
+		# ====================== [ TEST ] ======================
 
 		if debug:
 			if milli_sec_timer.time_now()>0.1:
 				print_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {player.location}", 
-				f"dt: {dt}"]
+				f"player_lo: {player.location}"]
 				milli_sec_timer.restart()
 			print_debug(print_list)
 
