@@ -3,9 +3,9 @@ from math import floor, ceil
 
 def correct_all_rect(player, pixel_size):
 	transformed_rects = [(pg.Rect(rect.x * pixel_size + player.top_left_x,
-	    rect.y * pixel_size + player.top_left_y,
-	    rect.width * pixel_size,
-	    rect.height * pixel_size), color) for rect, color in player.rects]
+		rect.y * pixel_size + player.top_left_y,
+		rect.width * pixel_size,
+		rect.height * pixel_size), color) for rect, color in player.rects]
 	return transformed_rects
 
 def resize_pixel(player, pixel_size):
@@ -34,50 +34,50 @@ def ob_is_in_direction(player, direction):
 	return False
 	
 def move_left_get_obstruct(player):
-    return ob_is_in_direction(player, "left")
+	return ob_is_in_direction(player, "left")
 
 def move_right_get_obstruct(player):
-    return ob_is_in_direction(player, "right")
+	return ob_is_in_direction(player, "right")
 
 def move_up_get_obstruct(player):
-    return ob_is_in_direction(player, "up")
+	return ob_is_in_direction(player, "up")
 
 def move_down_get_obstruct(player):
-    return ob_is_in_direction(player, "down")
+	return ob_is_in_direction(player, "down")
 		
 def calculate_movement(player, key):
-    dx, dy = 0, 0
-    player.key_presed = False
-    
-    if key[pg.K_LEFT] or key[pg.K_RIGHT]:
-        if player.finished_y_move:
-            if key[pg.K_LEFT]:
-                if not move_left_get_obstruct(player):
-            	    dx = -1
-            elif key[pg.K_RIGHT]:
-                if not move_right_get_obstruct(player):
-            	    dx = 1
-            if dx != 0:
-            	player.last_dx = dx
-            	player.key_presed = True
-            	player.finished_x_move = False
-    elif key[pg.K_UP] or key[pg.K_DOWN]:
-        if player.finished_x_move:
-            if key[pg.K_UP]:
-                if not move_up_get_obstruct(player):
-            	    dy = -1
-            elif key[pg.K_DOWN]:
-                if not move_down_get_obstruct(player):
-            	    dy = 1
-            if dy != 0:
-            	player.last_dy = dy
-            	player.key_presed = True
-            	player.finished_y_move = False
+	dx, dy = 0, 0
+	player.key_presed = False
+	
+	if key[pg.K_LEFT] or key[pg.K_RIGHT]:
+		if player.finished_y_move:
+			if key[pg.K_LEFT]:
+				if not move_left_get_obstruct(player):
+					dx = -1
+			elif key[pg.K_RIGHT]:
+				if not move_right_get_obstruct(player):
+					dx = 1
+			if dx != 0:
+				player.last_dx = dx
+				player.key_presed = True
+				player.finished_x_move = False
+	elif key[pg.K_UP] or key[pg.K_DOWN]:
+		if player.finished_x_move:
+			if key[pg.K_UP]:
+				if not move_up_get_obstruct(player):
+					dy = -1
+			elif key[pg.K_DOWN]:
+				if not move_down_get_obstruct(player):
+					dy = 1
+			if dy != 0:
+				player.last_dy = dy
+				player.key_presed = True
+				player.finished_y_move = False
 
-    return dx, dy
+	return dx, dy
 
 def cannot_divide_by_16(num):
-    return num % 16 != 0
+	return num % 16 != 0
 
 def make_divisible_by_16(num):
 	if num > 0:
@@ -133,6 +133,6 @@ def get_distance_between(current_pos, expected_pos):
 		
 	return diff_x, diff_y
 
-def move(player, dx, dy, dt):
-	player.pos[0] += dx * player.speed * dt
-	player.pos[1] += dy * player.speed * dt
+def move(pos, dx, dy, dt, speed):
+	pos[0] += dx * speed * dt
+	pos[1] += dy * speed * dt

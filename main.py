@@ -6,8 +6,8 @@ import sys
 import asyncio
 import time
 from variable import clock_tick, curr_fps,\
- load_settings, default_screen_width, default_screen_height, \
- update_size, black, green, red, blue
+	load_settings, default_screen_width, default_screen_height, \
+	update_size, black, green, red, blue
 from func import check_event, print_debug
 from my_object import Player, TopDownMap, Timer, BlackBar
 
@@ -29,7 +29,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	obs = [
+	obstacles = [
 		(pg.Rect(-80, -112, 112, 64), blue), (pg.Rect(80, -112, 112, 64), red),
 		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)
 		]
@@ -40,13 +40,13 @@ async def main():
 
 	player.resize(pixel_size)
 
-	player.obs = [ob for ob, color in obs]
+	player.obs = [ob for ob, color in obstacles]
 
 	player.calculate_obs_pos()
 
 	top_down_map = TopDownMap(screen)
 
-	top_down_map.rects = [ob for ob in obs]
+	top_down_map.rects = [ob for ob in obstacles]
 
 	top_down_map.resize(pixel_size, player)
 
@@ -70,7 +70,6 @@ async def main():
 		curr_width, curr_height, pixel_size = update_size(new_size)
 		player.resize(pixel_size)
 		top_down_map.resize(pixel_size, player)
-		old_pixel_size = pixel_size
 
 		screen.fill(green)
 		top_down_map.draw()

@@ -30,26 +30,25 @@ class Player(pg.sprite.Sprite):
 		dx, dy = calculate_movement(self, key)
 
 		if dt > 0.02:
-		    dt = 0.02
+			dt = 0.02
 
 		if self.key_presed:
-			move(self, dx, dy, dt)
+			move(self.pos, dx, dy, dt, self.speed)
 
 		if not self.key_presed:
 			self.finish_pos = expect_finish_pos(self)
-			self.diff_x, self.diff_y = get_distance_between(
-			    self.pos, self.finish_pos)
+			self.diff_x, self.diff_y = get_distance_between(self.pos, self.finish_pos)
 			
 			continue_move_value = 3
 
 			if self.diff_x > continue_move_value:
-				move(self, self.last_dx, 0, dt)
+				move(self.pos, self.last_dx, 0, dt, self.speed)
 			elif self.diff_x <= continue_move_value:
 				self.pos[0] = self.finish_pos[0]
 				self.finished_x_move = True
 
 			if self.diff_y > continue_move_value:
-				move(self, 0, self.last_dy, dt)
+				move(self.pos, 0, self.last_dy, dt, self.speed)
 			elif self.diff_y <= continue_move_value:
 				self.pos[1] = self.finish_pos[1]
 				self.finished_y_move = True

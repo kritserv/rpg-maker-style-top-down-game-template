@@ -8,7 +8,7 @@ def correct_all_map_rect(tdmap, pixel_size):
 	tile_size = pixel_size*16
 	map_offset = tile_size/2
 	transformed_rects = [(pg.Rect(rect.x * pixel_size + tdmap.x + map_offset,
-	    rect.y * pixel_size + tdmap.y + map_offset,
-	    rect.width * pixel_size,
-	    rect.height * pixel_size), color) for rect, color in tdmap.rects]
+		rect.y * pixel_size + tdmap.y + map_offset,
+		rect.width * pixel_size,
+		rect.height * pixel_size), color) for rect, color in tdmap.rects]
 	return transformed_rects
