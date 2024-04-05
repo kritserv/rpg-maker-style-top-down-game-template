@@ -8,8 +8,8 @@ class TopDownMap(pg.sprite.Sprite):
 		self.x, self.y = 0, 0
 
 	def move(self, pixel_size, player):
-		self.x = -player.location[0] * pixel_size + self.screen.get_width()/2
-		self.y = -player.location[1] * pixel_size + self.screen.get_height()/2
+		self.x = -player.pos[0] * pixel_size + self.screen.get_width()/2
+		self.y = -player.pos[1] * pixel_size + self.screen.get_height()/2
 
 	def resize(self, pixel_size, player):
 		tile_size = pixel_size*16

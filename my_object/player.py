@@ -6,57 +6,50 @@ class Player(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.speed = 150
-		self.original_width, self.original_height = 16, 16
-		self.location = [0, 0]
+		self.original_width, self.original_height, self.width, self.height = 16, 16, 16, 16
+		self.pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0
 		self.rects = []
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
-		self.width, self.height = self.original_width, self.original_height
-		self.obstacles = []
-
-	def calculate_obstacles_location(self):
-		plus_value = 10
-		calculated_obstacles = []
-		for ob in self.obstacles:
-			ob_values = {
-				'left': [ob[2] + ob[0] + 16 - plus_value, ob[2] + ob[0] + 32 - plus_value, ob[1] + 16, ob[3] + ob[1]],
-				'right': [ob[0] - plus_value, ob[0] + 16 - plus_value, ob[1] + 16, ob[3] + ob[1]],
-				'up': [ob[0] + 16, ob[2] + ob[0], ob[3] + 16 - plus_value + ob[1], ob[3] + 32 - plus_value + ob[1]],
-				'down': [ob[0] + 16, ob[2] + ob[0], ob[1] - plus_value, ob[1] + 16]
-			}
-			calculated_obstacles.append(ob_values)
-		self.obstacles = calculated_obstacles
+		self.obs = []
 
 	def correct_all_rect(self, pixel_size):
 		self.transformed_rects = [(pg.Rect(rect.x * pixel_size + self.top_left_x,
 										  rect.y * pixel_size + self.top_left_y,
 										  rect.width * pixel_size,
 										  rect.height * pixel_size), color) for rect, color in self.rects]
-
-	def move_left_get_obstruct(self):
-		for ob in self.obstacles:
-			if (ob['left'][0] <= self.location[0] <= ob['left'][1]) and (ob['left'][2] <= self.location[1] <= ob['left'][3]):
+										  
+	def calculate_obs_pos(self):
+		plus_value = 10
+		calculated_obs = []
+		for ob in self.obs:
+			ob_values = {
+				"left": [ob[2] + ob[0] + 16 - plus_value, ob[2] + ob[0] + 32 - plus_value, ob[1] + 16, ob[3] + ob[1]],
+				"right": [ob[0] - plus_value, ob[0] + 16 - plus_value, ob[1] + 16, ob[3] + ob[1]],
+				"up": [ob[0] + 16, ob[2] + ob[0], ob[3] + 16 - plus_value + ob[1], ob[3] + 32 - plus_value + ob[1]],
+				"down": [ob[0] + 16, ob[2] + ob[0], ob[1] - plus_value, ob[1] + 16]
+			}
+			calculated_obs.append(ob_values)
+		self.obs = calculated_obs
+										  
+	def ob_is_in_direction(self, direction):
+		for ob in self.obs:
+			if (ob[direction][0] <= self.pos[0] <= ob[direction][1]) and (ob[direction][2] <= self.pos[1] <= ob[direction][3]):
 				return True
 		return False
+
+	def move_left_get_obstruct(self):
+		return self.ob_is_in_direction("left")
 
 
 	def move_right_get_obstruct(self):
-		for ob in self.obstacles:
-			if (ob['right'][0] <= self.location[0] <= ob['right'][1]) and (ob['right'][2] <= self.location[1] <= ob['right'][3]):
-				return True
-		return False
+		return self.ob_is_in_direction("right")
 
 	def move_up_get_obstruct(self):
-		for ob in self.obstacles:
-			if (ob['up'][0] <= self.location[0] <= ob['up'][1]) and (ob['up'][2] <= self.location[1] <= ob['up'][3]):
-				return True
-		return False
+		return self.ob_is_in_direction("up")
 
 	def move_down_get_obstruct(self):
-		for ob in self.obstacles:
-			if (ob['down'][0] <= self.location[0] <= ob['down'][1]) and (ob['down'][2] <= self.location[1] <= ob['down'][3]):
-				return True
-		return False
+		return self.ob_is_in_direction("down")
 
 	def calculate_movement(self, key):
 		dx, dy = 0, 0
@@ -101,14 +94,14 @@ class Player(pg.sprite.Sprite):
 		return num
 
 	def move(self, dx, dy, dt, pixel_size):
-		self.location[0] += dx * self.speed * dt
-		self.location[1] += dy * self.speed * dt
+		self.pos[0] += dx * self.speed * dt
+		self.pos[1] += dy * self.speed * dt
 
-	def expect_finish_location(self):
+	def expect_finish_pos(self):
 		if self.last_dx < 0:
-			checker = floor(self.location[0])
+			checker = floor(self.pos[0])
 		elif self.last_dx > 0:
-			checker = ceil(self.location[0])
+			checker = ceil(self.pos[0])
 		else:
 			checker = 0
 
@@ -118,9 +111,9 @@ class Player(pg.sprite.Sprite):
 			self.expected_x = 0
 
 		if self.last_dy < 0:
-			checker = floor(self.location[1])
+			checker = floor(self.pos[1])
 		elif self.last_dy > 0:
-			checker = ceil(self.location[1])
+			checker = ceil(self.pos[1])
 		else:
 			checker = 0
 
@@ -129,18 +122,18 @@ class Player(pg.sprite.Sprite):
 		if checker == 0:
 			self.expected_y = 0
 
-	def get_different_of_current_and_expected_location(self):
-		if self.location[0] > self.expected_x:
-			self.diff_x = self.location[0] - self.expected_x
-		elif self.location[0] < self.expected_x:
-			self.diff_x = self.expected_x - self.location[0]
+	def get_different_of_current_and_expected_pos(self):
+		if self.pos[0] > self.expected_x:
+			self.diff_x = self.pos[0] - self.expected_x
+		elif self.pos[0] < self.expected_x:
+			self.diff_x = self.expected_x - self.pos[0]
 		else:
 			self.diff_x = 0
 
-		if self.location[1] > self.expected_y:
-			self.diff_y = self.location[1] - self.expected_y
-		elif self.location[1] < self.expected_y:
-			self.diff_y = self.expected_y - self.location[1]
+		if self.pos[1] > self.expected_y:
+			self.diff_y = self.pos[1] - self.expected_y
+		elif self.pos[1] < self.expected_y:
+			self.diff_y = self.expected_y - self.pos[1]
 		else:
 			self.diff_y = 0
 
@@ -167,19 +160,19 @@ class Player(pg.sprite.Sprite):
 			self.move(dx, dy, dt, pixel_size)
 
 		if not self.key_presed:
-			self.expect_finish_location()
-			self.get_different_of_current_and_expected_location()
+			self.expect_finish_pos()
+			self.get_different_of_current_and_expected_pos()
 
 			continue_move_value = 3
 
 			if self.diff_x > continue_move_value:
 				self.move(self.last_dx, 0, dt, pixel_size)
 			elif self.diff_x <= continue_move_value:
-				self.location[0] = self.expected_x
+				self.pos[0] = self.expected_x
 				self.finished_x_move = True
 
 			if self.diff_y > continue_move_value:
 				self.move(0, self.last_dy, dt, pixel_size)
 			elif self.diff_y <= continue_move_value:
-				self.location[1] = self.expected_y
+				self.pos[1] = self.expected_y
 				self.finished_y_move = True

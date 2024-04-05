@@ -1,6 +1,5 @@
 import pygame as pg
 import json
-from my_object import Timer
 from math import ceil, floor
 
 clock = pg.time.Clock()
@@ -54,10 +53,10 @@ def update_size(new_size):
 	pixel_size = round_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size
 
-red = pg.Color(255, 127, 127)
-black = pg.Color(0, 0, 0)
-white = pg.Color(255, 255, 255)
-green = pg.Color(127, 255, 127)
-blue = pg.Color(127, 127, 255)
+red = pg.Color("crimson")
+black = pg.Color("grey0")
+white = pg.Color("grey100")
+green = pg.Color("palegreen3")
+blue = pg.Color("royalblue2")
 
 debug_font = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 14)

@@ -29,7 +29,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	obstacles = [
+	obs = [
 		(pg.Rect(-80, -112, 112, 64), blue), (pg.Rect(80, -112, 112, 64), red),
 		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)
 		]
@@ -40,13 +40,13 @@ async def main():
 
 	player.resize(pixel_size)
 
-	player.obstacles = [ob for ob, color in obstacles]
+	player.obs = [ob for ob, color in obs]
 
-	player.calculate_obstacles_location()
+	player.calculate_obs_pos()
 
 	top_down_map = TopDownMap(screen)
 
-	top_down_map.rects = [ob for ob in obstacles]
+	top_down_map.rects = [ob for ob in obs]
 
 	top_down_map.resize(pixel_size, player)
 
@@ -83,7 +83,8 @@ async def main():
 			if debug_timer.time_now()>0.1:
 				debug_list = [curr_fps(), 
 				f"resolution: {(curr_width, curr_height)}", 
-				f"player_lo: {(round(player.location[0], 3), round(player.location[1], 3))}"]
+				f"player_pos: {(round(player.pos[0], 3), round(player.pos[1], 3))}",
+				f"{pixel_size}"]
 				debug_timer.restart()
 			print_debug(debug_list)
 
