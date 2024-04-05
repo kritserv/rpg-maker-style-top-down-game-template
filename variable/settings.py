@@ -47,10 +47,16 @@ def round_pixel(num):
 	else:
 		return num_floor if num_frac < 0.5 else num_ceil
 
+def limit_pixel(pixel_size):
+	if pixel_size > 3.5:
+		pixel_size = 3.5
+	return pixel_size
+	
 def update_size(new_size):
 	curr_width, curr_height = new_size[0], new_size[1]
 	pixel_size = curr_width/default_screen_width
 	pixel_size = round_pixel(pixel_size)
+	pixel_size = limit_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size
 
 red = pg.Color("crimson")
