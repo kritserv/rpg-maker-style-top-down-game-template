@@ -51,20 +51,24 @@ def calculate_movement(player, key):
     
     if key[pg.K_LEFT] or key[pg.K_RIGHT]:
         if player.finished_y_move:
-            if key[pg.K_LEFT] and not move_left_get_obstruct(player):
-            	dx = -1
-            elif key[pg.K_RIGHT] and not move_right_get_obstruct(player):
-            	dx = 1
+            if key[pg.K_LEFT]:
+                if not move_left_get_obstruct(player):
+            	    dx = -1
+            elif key[pg.K_RIGHT]:
+                if not move_right_get_obstruct(player):
+            	    dx = 1
             if dx != 0:
             	player.last_dx = dx
             	player.key_presed = True
             	player.finished_x_move = False
     elif key[pg.K_UP] or key[pg.K_DOWN]:
         if player.finished_x_move:
-            if key[pg.K_UP] and not move_up_get_obstruct(player):
-            	dy = -1
-            elif key[pg.K_DOWN] and not move_down_get_obstruct(player):
-            	dy = 1
+            if key[pg.K_UP]:
+                if not move_up_get_obstruct(player):
+            	    dy = -1
+            elif key[pg.K_DOWN]:
+                if not move_down_get_obstruct(player):
+            	    dy = 1
             if dy != 0:
             	player.last_dy = dy
             	player.key_presed = True
