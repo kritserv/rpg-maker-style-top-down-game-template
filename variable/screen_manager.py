@@ -2,18 +2,6 @@ import pygame as pg
 import json
 from math import ceil, floor
 
-clock = pg.time.Clock()
-
-def clock_tick(cap_fps):
-	if cap_fps:
-		clock.tick(60)
-	else:
-		clock.tick()
-
-def curr_fps():
-	get_fps = str(clock.get_fps() // 0.1 / 10)
-	return f"fps: {get_fps}"
-
 native_screen_multiplier = 4
 
 default_screen_width = 240 * native_screen_multiplier
@@ -68,11 +56,3 @@ def update_size(new_size):
 	pixel_size = round_pixel(pixel_size)
 	pixel_size = limit_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size
-
-red = pg.Color("crimson")
-black = pg.Color("grey0")
-white = pg.Color("grey100")
-green = pg.Color("palegreen3")
-blue = pg.Color("royalblue2")
-
-debug_font = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 14)

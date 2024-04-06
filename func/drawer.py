@@ -1,5 +1,5 @@
 import pygame as pg
-from variable.settings import screen
+from variable import screen
 
 def blit_text(text, font, col, x_y_pos):
 	text_image = font.render(text, True, col)

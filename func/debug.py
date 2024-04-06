@@ -1,6 +1,6 @@
 import pygame as pg
 from .drawer import blit_text
-from variable.settings import screen, white, black, debug_font
+from variable import screen, white, black, debug_font
 
 def print_debug(print_list):
 	y_pos = 5
