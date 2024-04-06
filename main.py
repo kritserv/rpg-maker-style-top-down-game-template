@@ -6,20 +6,24 @@ import sys
 import asyncio
 import time
 from variable import clock_tick, curr_fps,\
-	load_settings, default_screen_width, default_screen_height, \
+	load_settings, default_screen_width, \
+	default_screen_height, default_screen_size, \
 	update_size, black, green, red, blue
-from func import check_event, print_debug
-from my_object import Player, TopDownMap, Timer, BlackBar
+from func import check_event, print_debug, \
+	toggle_full_screen
+from my_object import Player, TopDownMap, Timer, \
+	BlackBar
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
 async def main():
 
-	cap_fps = False
 	run = True
-	debug = True
+	cap_fps = False
+	debug = False
 	debug_list = [""]
+	full_screen_toggle = False
 
 	screen, black_bar_is_set = load_settings()
 	black_bar = BlackBar(screen, black_bar_is_set)
@@ -30,13 +34,17 @@ async def main():
 	new_size = (curr_width, curr_height)
 
 	obstacles = [
-		(pg.Rect(-80, -112, 112, 64), blue), (pg.Rect(80, -112, 112, 64), red),
-		(pg.Rect(-80, 32, 112, 64), blue), (pg.Rect(80, 32, 112, 64), red)
+		(pg.Rect(-80, -112, 112, 64), blue), 
+		(pg.Rect(80, -112, 112, 64), red),
+		(pg.Rect(-80, 32, 112, 64), blue), 
+		(pg.Rect(80, 32, 112, 64), red)
 		]
 
 	player = Player(screen)
 	
-	player.rects = [(pg.Rect(0, 0, 16, 16), red), (pg.Rect(0, -8, 16, 8), black)]
+	player.rects = [(pg.Rect(0, 0, 16, 16), red), 
+		(pg.Rect(0, -8, 16, 8), black)
+	]
 
 	player.resize(pixel_size)
 
@@ -67,7 +75,14 @@ async def main():
 
 		# ====================== [ GRAPHIC ] =====================
 
-		curr_width, curr_height, pixel_size = update_size(new_size)
+		if full_screen_toggle:
+			full_screen_toggle = False
+			screen = toggle_full_screen(
+				new_size, default_screen_size
+			)
+
+		curr_width, curr_height, pixel_size = update_size(
+			new_size)
 		player.resize(pixel_size)
 		top_down_map.resize(pixel_size, player)
 
@@ -80,16 +95,20 @@ async def main():
 
 		if debug:
 			if debug_timer.time_now()>0.1:
-				debug_list = [curr_fps(), 
-				f"resolution: {(curr_width, curr_height)}", 
-				f"player_pos: {(round(player.pos[0], 3), round(player.pos[1], 3))}",
-				f"{pixel_size}"]
+				debug_list = [
+					curr_fps(), 
+					f"resolution: {(curr_width, curr_height)}", 
+					f"x: {player.pos[0]}", 
+					f"y: {player.pos[1]}"
+				]
 				debug_timer.restart()
 			print_debug(debug_list)
 
 		# ====================== [ EVENT ] ======================
 
-		run, new_size = check_event(pg.event.get(), new_size)
+		run, new_size, debug, full_screen_toggle = check_event(
+			pg.event.get(), new_size, debug
+			)
 
 		# =================== [ PYGAME STUFF ] ===================
 
@@ -99,7 +118,6 @@ async def main():
 
 	pg.quit()
 	sys.exit()
-
 
 if __name__ == "__main__":
 	asyncio.run(main())
