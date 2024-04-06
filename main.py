@@ -34,10 +34,10 @@ async def main():
 	new_size = (curr_width, curr_height)
 
 	obstacles = [
-		(pg.Rect(-80, -112, 112, 64), blue), 
-		(pg.Rect(80, -112, 112, 64), red),
-		(pg.Rect(-80, 32, 112, 64), blue), 
-		(pg.Rect(80, 32, 112, 64), red)
+		(pg.Rect(-144, -112, 112, 64), blue), 
+		(pg.Rect(16, -112, 112, 64), red),
+		(pg.Rect(-144, 32, 112, 64), blue), 
+		(pg.Rect(16, 32, 112, 64), red)
 		]
 
 	player = Player(screen)
@@ -51,6 +51,8 @@ async def main():
 	player.obs = [ob for ob, color in obstacles]
 
 	player.calculate_obs_pos()
+
+	player.pos = [-64, 0]
 
 	top_down_map = TopDownMap(screen)
 
@@ -70,7 +72,7 @@ async def main():
 
 		# ====================== [ LOGIC ] ======================
 
-		player.update(dt, pixel_size)
+		player.update(dt)
 		top_down_map.update(pixel_size, player)
 
 		# ====================== [ GRAPHIC ] =====================

@@ -13,6 +13,7 @@ class Player(pg.sprite.Sprite):
 		self.rects = []
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
+		self.finished_x_move, self.finished_y_move = True, True
 										  
 	def calculate_obs_pos(self):
 		self.obs = calculate_obs_position(self.obs)
@@ -25,7 +26,7 @@ class Player(pg.sprite.Sprite):
 		for rect, color in self.transformed_rects:
 			pg.draw.rect(self.screen, color, rect)
 
-	def update(self, dt, pixel_size):
+	def update(self, dt):
 		key = pg.key.get_pressed()
 		dx, dy = calculate_movement(self, key)
 
