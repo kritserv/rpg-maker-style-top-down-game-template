@@ -14,8 +14,10 @@ def curr_fps():
 	get_fps = str(clock.get_fps() // 0.1 / 10)
 	return f"fps: {get_fps}"
 
-default_screen_width = 480
-default_screen_height = 432
+native_screen_multiplier = 4
+
+default_screen_width = 240 * native_screen_multiplier
+default_screen_height = 160 * native_screen_multiplier
 
 default_screen_size = (default_screen_width, default_screen_height)
 
@@ -55,6 +57,7 @@ def limit_pixel(pixel_size):
 def update_size(new_size):
 	curr_width, curr_height = new_size[0], new_size[1]
 	pixel_size = curr_width/default_screen_width
+	pixel_size *= native_screen_multiplier
 	pixel_size = round_pixel(pixel_size)
 	pixel_size = limit_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size

@@ -101,7 +101,8 @@ async def main():
 					curr_fps(), 
 					f"resolution: {(curr_width, curr_height)}", 
 					f"x: {player.pos[0]}", 
-					f"y: {player.pos[1]}"
+					f"y: {player.pos[1]}",
+					f"px: {pixel_size}"
 				]
 				debug_timer.restart()
 			print_debug(debug_list)
