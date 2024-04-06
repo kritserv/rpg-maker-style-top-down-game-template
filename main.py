@@ -8,9 +8,9 @@ import time
 from variable import clock_tick, curr_fps,\
 	load_settings, default_screen_width, \
 	default_screen_height, default_screen_size, \
-	update_size, black, green, red, blue
-from func import check_event, print_debug, \
+	update_size, black, green, red, blue, \
 	toggle_full_screen
+from func import check_event, print_debug
 from my_object import Player, TopDownMap, Timer, \
 	BlackBar
 
