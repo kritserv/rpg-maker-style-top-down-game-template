@@ -21,7 +21,7 @@ async def main():
 
 	run = True
 	cap_fps = False
-	debug = False
+	debug = True
 	debug_list = [""]
 	full_screen_toggle = False
 
@@ -60,6 +60,9 @@ async def main():
 
 	top_down_map.resize(pixel_size, player)
 
+	follow_player_x = True
+	follow_player_y = True
+
 	debug_timer = Timer()
 	debug_timer.start()
 
@@ -72,8 +75,19 @@ async def main():
 
 		# ====================== [ LOGIC ] ======================
 
+		if player.pos[0] < -144:
+			follow_player_x = False
+		else:
+			follow_player_x = True
+
 		player.update(dt)
-		top_down_map.update(pixel_size, player)
+
+		top_down_map.update(
+			pixel_size, 
+			player, 
+			follow_player_x, 
+			follow_player_y
+		)
 
 		# ====================== [ GRAPHIC ] =====================
 
@@ -89,8 +103,8 @@ async def main():
 		top_down_map.resize(pixel_size, player)
 
 		screen.fill(green)
-		top_down_map.draw()
-		player.draw()
+		top_down_map.draw(follow_player_x, follow_player_y, pixel_size)
+		player.draw(pixel_size, follow_player_x, follow_player_y)
 		black_bar.draw_if_set(curr_width, curr_height, ratio)
 
 		# ====================== [ TEST ] ======================

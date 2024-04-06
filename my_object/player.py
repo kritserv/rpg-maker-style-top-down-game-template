@@ -22,8 +22,11 @@ class Player(pg.sprite.Sprite):
 		resize_pixel(self, pixel_size)
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
-	def draw(self):
+	def draw(self, pixel_size, follow_player_x, follow_player_y):
 		for rect, color in self.transformed_rects:
+			if not follow_player_x:
+				offset_x = (self.pos[0] + 144) * pixel_size
+				rect[0] += offset_x
 			pg.draw.rect(self.screen, color, rect)
 
 	def update(self, dt):

@@ -11,9 +11,9 @@ class TopDownMap(pg.sprite.Sprite):
 	def resize(self, pixel_size, player):
 		self.transformed_rects = correct_all_map_rect(self, pixel_size)
 
-	def draw(self):
+	def draw(self, follow_player_x, follow_player_y, pixel_size):
 		for rect, color in self.transformed_rects:
 			pg.draw.rect(self.screen, color, rect)
 
-	def update(self, pixel_size, player):
-		move_map(self, pixel_size, player)
+	def update(self, pixel_size, player, follow_player_x, follow_player_y):
+		move_map(self, pixel_size, player, follow_player_x, follow_player_y)
