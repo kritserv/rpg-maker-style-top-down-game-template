@@ -11,8 +11,8 @@ from variable import clock_tick, curr_fps,\
 	update_size, black, green, red, blue, \
 	toggle_full_screen
 from func import check_event, print_debug
-from my_object import Player, TopDownMap, Timer, \
-	BlackBar
+from my_object import Player, TopDownMap, Camera, \
+	BlackBar, Timer
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -60,8 +60,9 @@ async def main():
 
 	top_down_map.resize(pixel_size, player)
 
-	follow_player_x = True
-	follow_player_y = True
+	camera = Camera(player, top_down_map)
+	camera.stop_follow_player_x_at_pos_left = -144
+	camera.stop_follow_player_x_at_pos_right = 144
 
 	debug_timer = Timer()
 	debug_timer.start()
@@ -75,19 +76,8 @@ async def main():
 
 		# ====================== [ LOGIC ] ======================
 
-		if player.pos[0] < -144:
-			follow_player_x = False
-		else:
-			follow_player_x = True
-
 		player.update(dt)
-
-		top_down_map.update(
-			pixel_size, 
-			player, 
-			follow_player_x, 
-			follow_player_y
-		)
+		camera.update(pixel_size)
 
 		# ====================== [ GRAPHIC ] =====================
 
@@ -103,8 +93,7 @@ async def main():
 		top_down_map.resize(pixel_size, player)
 
 		screen.fill(green)
-		top_down_map.draw(follow_player_x, follow_player_y, pixel_size)
-		player.draw(pixel_size, follow_player_x, follow_player_y)
+		camera.draw(pixel_size, player, top_down_map)
 		black_bar.draw_if_set(curr_width, curr_height, ratio)
 
 		# ====================== [ TEST ] ======================
@@ -116,7 +105,9 @@ async def main():
 					f"resolution: {(curr_width, curr_height)}", 
 					f"x: {player.pos[0]}", 
 					f"y: {player.pos[1]}",
-					f"px: {pixel_size}"
+					f"px: {pixel_size}",
+					f"left: {camera.follow_player_x_left}",
+					f"right: {camera.follow_player_x_right}"
 				]
 				debug_timer.restart()
 			print_debug(debug_list)
