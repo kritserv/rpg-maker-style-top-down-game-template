@@ -25,16 +25,29 @@ class Player(pg.sprite.Sprite):
 	def draw(self, pixel_size, camera):
 		for rect, color in self.transformed_rects:
 			if not camera.follow_player_x_left:
-				if camera.stop_follow_player_x_at_pos_left:
-					if camera.player.pos[0] < camera.stop_follow_player_x_at_pos_left:
-						offset_x = (camera.player.pos[0] - camera.stop_follow_player_x_at_pos_left) * pixel_size
+				if camera.stop_follow_player_left_at_pos_x:
+					if camera.player.pos[0] < camera.stop_follow_player_left_at_pos_x:
+						offset_x = (camera.player.pos[0] - camera.stop_follow_player_left_at_pos_x) * pixel_size
 						rect[0] += offset_x
 
 			elif not camera.follow_player_x_right:
-				if camera.stop_follow_player_x_at_pos_right:
-					if camera.player.pos[0] > camera.stop_follow_player_x_at_pos_right:
-						offset_x = (camera.player.pos[0] - camera.stop_follow_player_x_at_pos_right) * pixel_size
+				if camera.stop_follow_player_right_at_pos_x:
+					if camera.player.pos[0] > camera.stop_follow_player_right_at_pos_x:
+						offset_x = (camera.player.pos[0] - camera.stop_follow_player_right_at_pos_x) * pixel_size
 						rect[0] += offset_x
+
+			if not camera.follow_player_y_up:
+				if camera.stop_follow_player_up_at_pos_y:
+					if camera.player.pos[1] < camera.stop_follow_player_up_at_pos_y:
+						offset_y = (camera.player.pos[1] - camera.stop_follow_player_up_at_pos_y) * pixel_size
+						rect[1] += offset_y
+
+			elif not camera.follow_player_y_down:
+				if camera.stop_follow_player_down_at_pos_y:
+					if camera.player.pos[1] > camera.stop_follow_player_down_at_pos_y:
+						offset_y = (camera.player.pos[1] - camera.stop_follow_player_down_at_pos_y) * pixel_size
+						rect[1] += offset_y
+
 			pg.draw.rect(self.screen, color, rect)
 
 	def update(self, dt):

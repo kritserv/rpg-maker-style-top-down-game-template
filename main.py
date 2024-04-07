@@ -61,8 +61,10 @@ async def main():
 	top_down_map.resize(pixel_size, player)
 
 	camera = Camera(player, top_down_map)
-	camera.stop_follow_player_x_at_pos_left = -144
-	camera.stop_follow_player_x_at_pos_right = 144
+	camera.stop_follow_player_left_at_pos_x = -144
+	camera.stop_follow_player_right_at_pos_x = 144
+	camera.stop_follow_player_up_at_pos_y = -160
+	camera.stop_follow_player_down_at_pos_y = 160
 
 	debug_timer = Timer()
 	debug_timer.start()
@@ -105,9 +107,7 @@ async def main():
 					f"resolution: {(curr_width, curr_height)}", 
 					f"x: {player.pos[0]}", 
 					f"y: {player.pos[1]}",
-					f"px: {pixel_size}",
-					f"left: {camera.follow_player_x_left}",
-					f"right: {camera.follow_player_x_right}"
+					f"px: {pixel_size}"
 				]
 				debug_timer.restart()
 			print_debug(debug_list)
