@@ -45,9 +45,19 @@ def round_pixel(num):
 		return num_floor if num_frac < 0.5 else num_ceil
 
 def limit_pixel(pixel_size):
-	if pixel_size > 3.5:
-		pixel_size = 3.5
+	pixel_size -= 2
+
+	if pixel_size > 11:
+		pixel_size = 4
+	elif 4 < pixel_size <= 11:
+		pixel_size = 3
+	elif 1 < pixel_size <= 1.5:
+		pixel_size = 1.5
+	elif pixel_size <= 1:
+		pixel_size = 1
+
 	return pixel_size
+
 	
 def update_size(new_size):
 	curr_width, curr_height = new_size[0], new_size[1]
