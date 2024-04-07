@@ -1,6 +1,5 @@
 import pygame as pg
 import json
-from math import ceil, floor
 
 native_screen_multiplier = 4
 
@@ -34,27 +33,14 @@ def toggle_full_screen(new_size, default_screen_size):
 		screen = pg.display.set_mode(default_screen_size, pg.RESIZABLE)
 	return screen
 
-def round_pixel(num):
-	num_floor = floor(num)
-	num_ceil = ceil(num)
-	num_frac = num - num_floor
-
-	if 0.3 <= num_frac <= 0.7:
-		return 0.5 + num_floor
-	else:
-		return num_floor if num_frac < 0.5 else num_ceil
-
 def limit_pixel(pixel_size):
 	pixel_size -= 2
 
-	if pixel_size > 11:
-		pixel_size = 4
-	elif 4 < pixel_size <= 11:
-		pixel_size = 3
-	elif 1 < pixel_size <= 1.5:
-		pixel_size = 1.5
-	elif pixel_size <= 1:
-		pixel_size = 1
+	if pixel_size >= 3:
+		return 3
+
+	if pixel_size <= 1:
+	 	return 1
 
 	return pixel_size
 
@@ -62,7 +48,6 @@ def limit_pixel(pixel_size):
 def update_size(new_size):
 	curr_width, curr_height = new_size[0], new_size[1]
 	pixel_size = curr_width/default_screen_width
-	pixel_size *= native_screen_multiplier
-	pixel_size = round_pixel(pixel_size)
+	pixel_size = round(pixel_size*native_screen_multiplier)
 	pixel_size = limit_pixel(pixel_size)
 	return curr_width, curr_height, pixel_size
