@@ -35,9 +35,12 @@ async def main():
 
 	obstacles = [
 		(pg.Rect(-144, -112, 112, 64), blue), 
-		(pg.Rect(16, -112, 112, 64), red),
+		(pg.Rect(16, -112, 112, 64), blue),
 		(pg.Rect(-144, 32, 112, 64), blue), 
-		(pg.Rect(16, 32, 112, 64), red)
+		(pg.Rect(-208, -240, 384, 16), black),
+		(pg.Rect(-208, 240, 400, 16), black),
+		(pg.Rect(-208, -224, 16, 464), black),
+		(pg.Rect(176, -240, 16, 480), black)
 		]
 
 	player = Player(screen)
