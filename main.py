@@ -34,19 +34,33 @@ async def main():
 	new_size = (curr_width, curr_height)
 
 	obstacles = [
-		(pg.Rect(-144, -112, 112, 64), blue), 
-		(pg.Rect(16, -112, 112, 64), blue),
-		(pg.Rect(-144, 32, 112, 64), blue), 
+		# House left
+		(pg.Rect(-144, -112, 48, 64), blue),
+		(pg.Rect(-96, -112, 16, 48), blue),
+		(pg.Rect(-80, -112, 48, 64), blue),
+
+		# House right
+		(pg.Rect(16, -112, 48, 64), blue),
+		(pg.Rect(64, -112, 16, 48), blue),
+		(pg.Rect(80, -112, 48, 64), blue),
+
+		# House bottom left
+		(pg.Rect(-144, 32, 48, 64), blue),
+		(pg.Rect(-96, 32, 16, 48), blue),
+		(pg.Rect(-80, 32, 48, 64), blue),
+
+		# Map borders
 		(pg.Rect(-208, -240, 384, 16), black),
 		(pg.Rect(-208, 240, 400, 16), black),
 		(pg.Rect(-208, -224, 16, 464), black),
 		(pg.Rect(176, -240, 16, 480), black)
-		]
+	]
+
 
 	player = Player(screen)
 	
 	player.rects = [(pg.Rect(0, 0, 16, 16), red), 
-		(pg.Rect(0, -8, 16, 8), black)
+		(pg.Rect(0, -8, 16, 8), red)
 	]
 
 	player.resize(pixel_size)
@@ -110,7 +124,7 @@ async def main():
 					f"resolution: {(curr_width, curr_height)}", 
 					f"x: {player.pos[0]}", 
 					f"y: {player.pos[1]}",
-					f"px: {pixel_size}"
+					f"px_size: {pixel_size}"
 				]
 				debug_timer.restart()
 			print_debug(debug_list)
