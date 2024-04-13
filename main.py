@@ -98,6 +98,30 @@ async def main():
 		player.update(dt)
 		camera.update(pixel_size)
 
+		if player.pos == [-80, -48]:
+			print("enter house 1")
+			player.pos = [-80, -496]
+			camera.stop_follow_player_left_at_pos_x = -80
+			camera.stop_follow_player_right_at_pos_x = -80
+			camera.stop_follow_player_up_at_pos_y = -624
+			camera.stop_follow_player_down_at_pos_y = -624
+
+		if player.pos[0] == -80 and -448 >= player.pos[1] >= -495:
+			print("exit house 1")
+			camera.stop_follow_player_left_at_pos_x = -144
+			camera.stop_follow_player_right_at_pos_x = 144
+			camera.stop_follow_player_up_at_pos_y = -160
+			camera.stop_follow_player_down_at_pos_y = 160
+			player.pos = [-80, -16]
+
+		if player.pos == [80, -48]:
+			print("enter house 2")
+			player.pos = [0, 0]
+
+		if player.pos == [-80, 96]:
+			print("enter house 3")
+			player.pos = [0, 0]
+
 		# ====================== [ GRAPHIC ] =====================
 
 		if full_screen_toggle:
