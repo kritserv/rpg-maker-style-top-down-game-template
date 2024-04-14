@@ -17,6 +17,15 @@ from my_object import Player, TopDownMap, Camera, \
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
+def create_house(x, y, color):
+    house = [
+        (pg.Rect(x, y, 48, 64), color),
+        (pg.Rect(x+48, y, 16, 48), color),
+        (pg.Rect(x+64, y, 48, 64), color)
+    ]
+    return house
+    
+
 async def main():
 
 	run = True
@@ -32,29 +41,18 @@ async def main():
 		screen.get_height()])
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
-
-	obstacles = [
-		# House left
-		(pg.Rect(-144, -112, 48, 64), blue),
-		(pg.Rect(-96, -112, 16, 48), blue),
-		(pg.Rect(-80, -112, 48, 64), blue),
-
-		# House right
-		(pg.Rect(16, -112, 48, 64), blue),
-		(pg.Rect(64, -112, 16, 48), blue),
-		(pg.Rect(80, -112, 48, 64), blue),
-
-		# House bottom left
-		(pg.Rect(-144, 32, 48, 64), blue),
-		(pg.Rect(-96, 32, 16, 48), blue),
-		(pg.Rect(-80, 32, 48, 64), blue),
-
-		# Map borders
-		(pg.Rect(-208, -240, 384, 16), black),
-		(pg.Rect(-208, 240, 400, 16), black),
-		(pg.Rect(-208, -224, 16, 464), black),
-		(pg.Rect(176, -240, 16, 480), black)
+	
+	house1 = create_house(-144, -112, blue)
+	house2 = create_house(16, -112, blue)
+	house3 = create_house(-144, 32, blue)
+	borders = [
+	    (pg.Rect(-208, -240, 384, 16), black),
+	    (pg.Rect(-208, 240, 400, 16), black),
+	    (pg.Rect(-208, -224, 16, 464), black),
+	    (pg.Rect(176, -240, 16, 480), black)
 	]
+
+	obstacles = house1 + house2 + house3 + borders
 
 
 	player = Player(screen)
