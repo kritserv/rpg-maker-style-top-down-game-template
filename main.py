@@ -24,10 +24,22 @@ def create_house(x, y, color):
         (pg.Rect(x+64, y, 48, 64), color)
     ]
     return house
-    
+
+def change_scene(player, x, y, top_down_map, scene_dict, new_scene_name):
+	player.obs = [ob for ob, color in scene_dict[new_scene_name]]
+	player.calculate_obs_pos()
+	player.pos = [x, y]
+	player.finish_pos = [x, y]
+	top_down_map.rects = [ob for ob in scene_dict[new_scene_name]]
+	top_down_map.current_scene = new_scene_name
+
+def change_camera_stop_position(camera, stop_left, stop_right, stop_up, stop_down):
+	camera.stop_follow_player_left_at_pos_x = stop_left
+	camera.stop_follow_player_right_at_pos_x = stop_right
+	camera.stop_follow_player_up_at_pos_y = stop_up
+	camera.stop_follow_player_down_at_pos_y = stop_down
 
 async def main():
-
 	run = True
 	cap_fps = False
 	debug = True
@@ -41,7 +53,7 @@ async def main():
 		screen.get_height()])
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
-	
+
 	house1 = create_house(-144, -112, blue)
 	house2 = create_house(16, -112, blue)
 	house3 = create_house(-144, 32, blue)
@@ -51,9 +63,23 @@ async def main():
 	    (pg.Rect(-208, -224, 16, 464), black),
 	    (pg.Rect(176, -240, 16, 480), black)
 	]
+	house_borders = [
+	    (pg.Rect(-176, -112, 16, 160), black),
+	    (pg.Rect(144, -112, 16, 160), black),
+	    (pg.Rect(-176, 48, 160, 16), black),
+	    (pg.Rect(0, 48, 160, 16), black),
+	    (pg.Rect(-176, -112, 336, 16), black),
+	    (pg.Rect(-32, 64, 48, 16), black)
+	]
 
-	obstacles = house1 + house2 + house3 + borders
+	scene = {
+		"openworld": house1 + house2 + house3 + borders,
+		"inner_house1": house_borders,
+		"inner_house2": house_borders,
+		"inner_house3": house_borders,
+	}
 
+	start_scene_name = "openworld"
 
 	player = Player(screen)
 	
@@ -62,24 +88,16 @@ async def main():
 	]
 
 	player.resize(pixel_size)
-
-	player.obs = [ob for ob, color in obstacles]
-
+	player.obs = [ob for ob, color in scene[start_scene_name]]
 	player.calculate_obs_pos()
-
 	player.pos = [-64, 0]
 
-	top_down_map = TopDownMap(screen)
-
-	top_down_map.rects = [ob for ob in obstacles]
-
+	top_down_map = TopDownMap(screen, start_scene_name)
+	top_down_map.rects = [ob for ob in scene[start_scene_name]]
 	top_down_map.resize(pixel_size, player)
 
 	camera = Camera(player, top_down_map)
-	camera.stop_follow_player_left_at_pos_x = -144
-	camera.stop_follow_player_right_at_pos_x = 144
-	camera.stop_follow_player_up_at_pos_y = -160
-	camera.stop_follow_player_down_at_pos_y = 160
+	change_camera_stop_position(camera, -144, 144, -160, 160)
 
 	debug_timer = Timer()
 	debug_timer.start()
@@ -96,29 +114,29 @@ async def main():
 		player.update(dt)
 		camera.update(pixel_size)
 
-		if player.pos == [-80, -48]:
-			print("enter house 1")
-			player.pos = [-80, -496]
-			camera.stop_follow_player_left_at_pos_x = -80
-			camera.stop_follow_player_right_at_pos_x = -80
-			camera.stop_follow_player_up_at_pos_y = -624
-			camera.stop_follow_player_down_at_pos_y = -624
+		if top_down_map.current_scene == "openworld" and player.pos == [-80, -48]:
+			change_scene(player, 0, 48, top_down_map, scene, "inner_house1")
+			change_camera_stop_position(camera, -48, 48, -64, 16)
 
-		if player.pos[0] == -80 and -448 >= player.pos[1] >= -495:
-			print("exit house 1")
-			camera.stop_follow_player_left_at_pos_x = -144
-			camera.stop_follow_player_right_at_pos_x = 144
-			camera.stop_follow_player_up_at_pos_y = -160
-			camera.stop_follow_player_down_at_pos_y = 160
-			player.pos = [-80, -16]
+		if top_down_map.current_scene == "inner_house1" and player.pos == [0, 64]:
+			change_scene(player, -80, -16, top_down_map, scene, "openworld")
+			change_camera_stop_position(camera, -144, 144, -160, 160)
 
-		if player.pos == [80, -48]:
-			print("enter house 2")
-			player.pos = [0, 0]
+		if top_down_map.current_scene == "openworld" and player.pos == [80, -48]:
+			change_scene(player, 0, 48, top_down_map, scene, "inner_house2")
+			change_camera_stop_position(camera, -48, 48, -64, 16)
 
-		if player.pos == [-80, 96]:
-			print("enter house 3")
-			player.pos = [0, 0]
+		if top_down_map.current_scene == "inner_house2" and player.pos == [0, 64]:
+			change_scene(player, 80, -16, top_down_map, scene, "openworld")
+			change_camera_stop_position(camera, -144, 144, -160, 160)
+
+		if top_down_map.current_scene == "openworld" and player.pos == [-80, 96]:
+			change_scene(player, 0, 48, top_down_map, scene, "inner_house3")
+			change_camera_stop_position(camera, -48, 48, -64, 16)
+
+		if top_down_map.current_scene == "inner_house3" and player.pos == [0, 64]:
+			change_scene(player, -80, 128, top_down_map, scene, "openworld")
+			change_camera_stop_position(camera, -144, 144, -160, 160)
 
 		# ====================== [ GRAPHIC ] =====================
 
@@ -144,7 +162,8 @@ async def main():
 				debug_list = [
 					curr_fps(), 
 					f"resolution: {(curr_width, curr_height)}", 
-					f"x: {player.pos[0]}", 
+					f"scene: {top_down_map.current_scene}", 
+					f"x: {player.pos[0]}",
 					f"y: {player.pos[1]}",
 					f"px_size: {pixel_size}"
 				]
