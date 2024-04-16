@@ -2,12 +2,11 @@ import pygame as pg
 from .func import correct_all_map_rect
 
 class TopDownMap(pg.sprite.Sprite):
-	def __init__(self, screen, current_scene):
+	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.rects = []
 		self.x, self.y = 0, 0
-		self.current_scene = current_scene
 
 	def resize(self, pixel_size, player):
 		self.transformed_rects = correct_all_map_rect(self, pixel_size)
