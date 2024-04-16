@@ -9,21 +9,13 @@ from variable import clock_tick, curr_fps,\
 	load_settings, default_screen_width, \
 	default_screen_height, default_screen_size, \
 	update_size, black, green, red, blue, \
-	toggle_full_screen
+	toggle_full_screen, load_scene_from_json_data
 from func import check_event, print_debug
 from my_object import Player, TopDownMap, Camera, \
 	BlackBar, Timer
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
-
-def create_house(x, y, color):
-    house = [
-        (pg.Rect(x, y, 48, 64), color),
-        (pg.Rect(x+48, y, 16, 48), color),
-        (pg.Rect(x+64, y, 48, 64), color)
-    ]
-    return house
 
 def change_scene(player, x, y, top_down_map, scene_dict, new_scene_name):
 	player.obs = [ob for ob, color in scene_dict[new_scene_name]]
@@ -54,29 +46,13 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	house1 = create_house(-144, -112, blue)
-	house2 = create_house(16, -112, blue)
-	house3 = create_house(-144, 32, blue)
-	borders = [
-	    (pg.Rect(-208, -240, 384, 16), black),
-	    (pg.Rect(-208, 240, 400, 16), black),
-	    (pg.Rect(-208, -224, 16, 464), black),
-	    (pg.Rect(176, -240, 16, 480), black)
-	]
-	house_borders = [
-	    (pg.Rect(-176, -112, 16, 160), black),
-	    (pg.Rect(144, -112, 16, 160), black),
-	    (pg.Rect(-176, 48, 160, 16), black),
-	    (pg.Rect(0, 48, 160, 16), black),
-	    (pg.Rect(-176, -112, 336, 16), black),
-	    (pg.Rect(-32, 64, 48, 16), black)
-	]
+	scene_data = load_scene_from_json_data()
 
 	scene = {
-		"openworld": house1 + house2 + house3 + borders,
-		"inner_house1": house_borders,
-		"inner_house2": house_borders,
-		"inner_house3": house_borders,
+		"openworld": scene_data["house1"] + scene_data["house2"] + scene_data["house3"] + scene_data["openworld_border"],
+		"inner_house1": scene_data["inner_house_border"],
+		"inner_house2": scene_data["inner_house_border"],
+		"inner_house3": scene_data["inner_house_border"],
 	}
 
 	start_scene_name = "openworld"
