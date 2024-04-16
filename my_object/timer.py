@@ -1,4 +1,4 @@
-import time
+from time import time
 
 class Timer:
 	def __init__(self):
@@ -7,7 +7,7 @@ class Timer:
 
 	def start_or_resume(self):
 		if self.is_paused:
-			self.start_time = time.time()
+			self.start_time = time()
 			self.is_paused = False
 
 	def start(self):
@@ -18,7 +18,7 @@ class Timer:
 
 	def pause(self):
 		if not self.is_paused:
-			self.elapsed_time += time.time() - self.start_time
+			self.elapsed_time += time() - self.start_time
 			self.is_paused = True
 
 	def reset(self):
@@ -40,6 +40,6 @@ class Timer:
 		if self.is_paused:
 			return round(self.elapsed_time, 3)
 		else:
-			return round(self.elapsed_time + time.time() - self.start_time, 3)
+			return round(self.elapsed_time + time() - self.start_time, 3)
 
 main_timer = Timer()
