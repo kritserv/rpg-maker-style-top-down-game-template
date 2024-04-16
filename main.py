@@ -6,9 +6,8 @@ from sys import exit
 import asyncio
 from time import time
 from variable import clock_tick, curr_fps,\
-	default_screen_width, \
-	default_screen_height, default_screen_size, \
-	black, green, red, blue
+	default_screen_width, default_screen_height, \
+	default_screen_size, black
 from func import check_event, print_debug, \
 	load_screen_from_json, toggle_full_screen, \
 	update_size, load_scene_from_json
@@ -33,19 +32,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	scene_data = load_scene_from_json()
-
-	scene = {
-		"openworld": scene_data["house1"] + 
-			scene_data["house2"] + 
-			scene_data["house3"] + 
-			scene_data["openworld_border"],
-		"inner_house1": scene_data["inner_house_border"],
-		"inner_house2": scene_data["inner_house_border"],
-		"inner_house3": scene_data["inner_house_border"],
-	}
-
-	start_scene_name = "openworld"
+	scene, start_scene_name = load_scene_from_json()
 
 	player = Player(screen)
 	top_down_map = TopDownMap(screen)
@@ -55,7 +42,6 @@ async def main():
 		scene, player, top_down_map, camera, start_scene_name)
 	scene_manager.change_scene(-64, 0, start_scene_name)
 	scene_manager.change_camera_stop_position(-144, 144, -160, 160)
-
 
 	debug_timer = Timer()
 	debug_timer.start()

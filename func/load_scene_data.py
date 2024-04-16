@@ -13,24 +13,36 @@ def create_house(x, y):
 def load_scene_from_json():
 	with open("data/scene.json") as f:
 		json_load = json.load(f)
-		scene_data = json_load["scene_data"]
+		loaded_scene_data = json_load["scene_data"]
+		loaded_scene_dict = json_load["scene_dict"]
+		start_scene_name = json_load["start_scene_name"]
 		f.close()
 
-	loaded_scene_data = {}
+	scene_data = {}
 
-	if scene_data["create_house"]:
-		for house in scene_data["create_house"]:
+	if loaded_scene_data["create_house"]:
+		for house in loaded_scene_data["create_house"]:
 			for house_name, value in house.items():
-				loaded_scene_data[house_name] = create_house(value[0], value[1])
+				scene_data[house_name] = create_house(value[0], value[1])
 
 
-	if scene_data["pg_rect"]:
-		for rect_group in scene_data["pg_rect"]:
+	if loaded_scene_data["pg_rect"]:
+		for rect_group in loaded_scene_data["pg_rect"]:
 			for rect_group_name, rect_group_list in rect_group.items():
 				for rect in rect_group_list:
 					try:
-						loaded_scene_data[rect_group_name].append([pg.Rect(rect), white])
+						scene_data[rect_group_name].append([pg.Rect(rect), white])
 					except KeyError:
-						loaded_scene_data[rect_group_name] = [[pg.Rect(rect), white]]
+						scene_data[rect_group_name] = [[pg.Rect(rect), white]]
 
-	return loaded_scene_data
+	scene_dict = {}
+
+	if loaded_scene_dict:
+		for scene_group_name, scene_group_list in loaded_scene_dict.items():
+			total_scene_group = []
+			for scene_group in scene_group_list:
+				total_scene_group += scene_data[scene_group]
+
+			scene_dict[scene_group_name] = total_scene_group
+
+	return scene_dict, start_scene_name
