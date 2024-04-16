@@ -47,10 +47,6 @@ async def main():
 	start_scene_name = "openworld"
 
 	player = Player(screen)
-	player.rects = [
-		(pg.Rect(0, 0, 16, 16), red), 
-		(pg.Rect(0, -8, 16, 8), red)
-	]
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
 

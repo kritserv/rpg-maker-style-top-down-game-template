@@ -1,6 +1,6 @@
 import pygame as pg
 import json
-from variable import blue, black
+from variable import blue, white
 
 def create_house(x, y):
 	house = [
@@ -29,8 +29,8 @@ def load_scene_from_json_data():
 			for rect_group_name, rect_group_list in rect_group.items():
 				for rect in rect_group_list:
 					try:
-						loaded_scene_data[rect_group_name].append([pg.Rect(rect), black])
+						loaded_scene_data[rect_group_name].append([pg.Rect(rect), white])
 					except KeyError:
-						loaded_scene_data[rect_group_name] = [[pg.Rect(rect), black]]
+						loaded_scene_data[rect_group_name] = [[pg.Rect(rect), white]]
 
 	return loaded_scene_data

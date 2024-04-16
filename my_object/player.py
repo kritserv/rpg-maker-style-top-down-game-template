@@ -1,5 +1,6 @@
 import pygame as pg
 from .func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
+from variable import red
 
 class Player(pg.sprite.Sprite):
 	def __init__(self, screen):
@@ -10,7 +11,10 @@ class Player(pg.sprite.Sprite):
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0
-		self.rects = []
+		self.rects = [
+			(pg.Rect(0, 0, 16, 16), red), 
+			(pg.Rect(0, -8, 16, 8), red)
+		]
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
 		self.finished_x_move, self.finished_y_move = True, True
