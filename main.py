@@ -2,15 +2,16 @@ import pygame as pg
 pg.mixer.init()
 pg.mixer.pre_init(44100, -16, 2, 512)
 pg.init()
-import sys
+from sys import exit
 import asyncio
-import time
+from time import time
 from variable import clock_tick, curr_fps,\
-	load_settings, default_screen_width, \
+	default_screen_width, \
 	default_screen_height, default_screen_size, \
-	update_size, black, green, red, blue, \
-	toggle_full_screen, load_scene_from_json_data
-from func import check_event, print_debug
+	black, green, red, blue
+from func import check_event, print_debug, \
+	load_screen_from_json, toggle_full_screen, \
+	update_size, load_scene_from_json
 from my_object import Player, TopDownMap, Camera, \
 	BlackBar, Timer, SceneManager
 
@@ -24,7 +25,7 @@ async def main():
 	debug_list = [""]
 	full_screen_toggle = False
 
-	screen, black_bar_is_set = load_settings()
+	screen, black_bar_is_set = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[screen.get_width(), 
@@ -32,7 +33,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	scene_data = load_scene_from_json_data()
+	scene_data = load_scene_from_json()
 
 	scene = {
 		"openworld": scene_data["house1"] + 
@@ -59,12 +60,12 @@ async def main():
 	debug_timer = Timer()
 	debug_timer.start()
 
-	prev_time = time.time()
+	prev_time = time()
 	while run:
 		# =================== [ DELTA TIME ] ===================
 
-		dt = time.time() - prev_time
-		prev_time = time.time()
+		dt = time() - prev_time
+		prev_time = time()
 
 		# ====================== [ LOGIC ] ======================
 
@@ -141,7 +142,7 @@ async def main():
 		await asyncio.sleep(0)
 
 	pg.quit()
-	sys.exit()
+	exit()
 
 if __name__ == "__main__":
 	asyncio.run(main())

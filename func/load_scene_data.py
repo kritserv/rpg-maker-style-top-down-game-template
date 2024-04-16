@@ -10,7 +10,7 @@ def create_house(x, y):
 	]
 	return house
 
-def load_scene_from_json_data():
+def load_scene_from_json():
 	with open("data/scene.json") as f:
 		json_load = json.load(f)
 		scene_data = json_load["scene_data"]
