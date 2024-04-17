@@ -5,14 +5,16 @@ pg.init()
 from sys import exit
 import asyncio
 from time import time
-from variable import clock_tick, curr_fps,\
-	default_screen_width, default_screen_height, \
-	default_screen_size, black
-from func import check_event, print_debug, \
-	load_screen_from_json, toggle_full_screen, \
-	update_size, load_scene_from_json
-from my_object import Player, TopDownMap, Camera, \
-	BlackBar, Timer, SceneManager
+from src import clock_tick, curr_fps,\
+	default_screen_width, \
+	default_screen_height, \
+	default_screen_size, \
+	black, check_event, \
+	print_debug, load_screen_from_json, \
+	toggle_full_screen, update_size, \
+	load_scene_from_json, Player, \
+	TopDownMap, Camera, BlackBar, Timer, \
+	SceneManager
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))

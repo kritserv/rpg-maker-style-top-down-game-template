@@ -1,6 +1,6 @@
 import pygame as pg
 import json
-from variable import blue, white
+from src.variable import blue, white
 
 def create_house(x, y):
 	house = [
@@ -11,11 +11,11 @@ def create_house(x, y):
 	return house
 
 def load_scene_from_json():
-	with open("data/scene/data.json") as f:
+	with open("game_data/scene/data.json") as f:
 		json_load = json.load(f)
 		loaded_scene_data = json_load["scene_data"]
 		f.close()
-	with open("data/scene/config.json") as f:
+	with open("game_data/scene/config.json") as f:
 		json_load = json.load(f)
 		loaded_scene_dict = json_load["scene_dict"]
 		start_scene_name = json_load["start_scene_name"]

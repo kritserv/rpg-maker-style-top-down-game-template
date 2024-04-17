@@ -1,5 +1,5 @@
 import pygame as pg
-from variable import default_screen_size, native_screen_multiplier, default_screen_width
+from src.variable import default_screen_size, native_screen_multiplier, default_screen_width
 
 def toggle_full_screen(new_size, default_screen_size):
 	if not pg.display.is_fullscreen():

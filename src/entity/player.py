@@ -1,6 +1,6 @@
 import pygame as pg
 from .func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
-from variable import red
+from src.variable import red
 
 class Player(pg.sprite.Sprite):
 	def __init__(self, screen):

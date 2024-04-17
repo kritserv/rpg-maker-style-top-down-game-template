@@ -1,5 +1,5 @@
 import pygame as pg
-from variable import black
+from src.variable import black
 
 class BlackBar:
 	def __init__(self, screen, is_exist):
