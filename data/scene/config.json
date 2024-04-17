@@ -1,0 +1,17 @@
+{
+	"scene_dict": {
+		"openworld": [
+			"house1", "house2", "house3", "openworld_border"
+		],
+		"inner_house1": [
+			"inner_house_border"
+		],
+		"inner_house2": [
+			"inner_house_border"
+		],
+		"inner_house3": [
+			"inner_house_border"
+		]
+	},
+	"start_scene_name": "openworld"
+}
