@@ -4,5 +4,6 @@ from .player import Player
 from .camera import Camera
 from .timer import Timer
 from .scene_manager import SceneManager
+from .event import Event
 
-__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager)
+__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager, Event)

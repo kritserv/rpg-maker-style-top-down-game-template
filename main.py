@@ -12,9 +12,9 @@ from src import clock_tick, curr_fps,\
 	black, check_event, \
 	print_debug, load_screen_from_json, \
 	toggle_full_screen, update_size, \
-	load_scene_from_json, Player, \
-	TopDownMap, Camera, BlackBar, Timer, \
-	SceneManager
+	load_scene_from_json, load_event_from_json, \
+	Player, TopDownMap, Camera, BlackBar, \
+	Timer, SceneManager, Event
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -22,33 +22,44 @@ pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 async def main():
 	run = True
 	cap_fps = False
+	web_export = False
 	debug = True
 	debug_list = [""]
 	full_screen_toggle = False
+	low_fps_mode = False
 
+	if cap_fps or web_export:
+		low_fps_mode = True
 	screen, black_bar_is_set = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[screen.get_width(), 
-		screen.get_height()])
+		screen.get_height()]
+		)
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
 	scene, start_scene_name = load_scene_from_json()
 
-	player = Player(screen)
+	player = Player(screen, low_fps_mode)
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
 
 	scene_manager = SceneManager(
-		scene, player, top_down_map, camera, start_scene_name)
+		scene, player, top_down_map, camera, start_scene_name
+		)
 	scene_manager.change_scene(-64, 0, start_scene_name)
 	scene_manager.change_camera_stop_position(-144, 144, -160, 160)
+
+	event = Event(
+		load_event_from_json(), player, scene_manager
+		)
 
 	debug_timer = Timer()
 	debug_timer.start()
 
 	prev_time = time()
+
 	while run:
 		# =================== [ DELTA TIME ] ===================
 
@@ -59,30 +70,7 @@ async def main():
 
 		player.update(dt)
 		camera.update(pixel_size)
-
-		if scene_manager.current_scene == "openworld" and player.pos == [-80, -48]:
-			scene_manager.change_scene(0, 48, "inner_house1")
-			scene_manager.change_camera_stop_position(-48, 48, -64, 16)
-
-		if scene_manager.current_scene == "inner_house1" and player.pos == [0, 64]:
-			scene_manager.change_scene(-80, -16, "openworld")
-			scene_manager.change_camera_stop_position(-144, 144, -160, 160)
-
-		if scene_manager.current_scene == "openworld" and player.pos == [80, -48]:
-			scene_manager.change_scene(0, 48, "inner_house2")
-			scene_manager.change_camera_stop_position(-48, 48, -64, 16)
-
-		if scene_manager.current_scene == "inner_house2" and player.pos == [0, 64]:
-			scene_manager.change_scene(80, -16, "openworld")
-			scene_manager.change_camera_stop_position(-144, 144, -160, 160)
-
-		if scene_manager.current_scene == "openworld" and player.pos == [-80, 96]:
-			scene_manager.change_scene(0, 48, "inner_house3")
-			scene_manager.change_camera_stop_position(-48, 48, -64, 16)
-
-		if scene_manager.current_scene == "inner_house3" and player.pos == [0, 64]:
-			scene_manager.change_scene(-80, 128, "openworld")
-			scene_manager.change_camera_stop_position(-144, 144, -160, 160)
+		event.update()
 
 		# ====================== [ GRAPHIC ] =====================
 
@@ -93,7 +81,8 @@ async def main():
 			)
 
 		curr_width, curr_height, pixel_size = update_size(
-			new_size)
+			new_size
+			)
 		player.resize(pixel_size)
 		top_down_map.resize(pixel_size, player)
 
@@ -106,10 +95,9 @@ async def main():
 		if debug:
 			if debug_timer.time_now()>0.1:
 				debug_list = [
-					curr_fps(), 
+					f"fps: {curr_fps()}", 
 					f"resolution: {(curr_width, curr_height)}", 
 					f"scene: {scene_manager.current_scene}", 
-					f"len(rect): {len(top_down_map.rects)}", 
 					f"x: {player.pos[0]}",
 					f"y: {player.pos[1]}",
 					f"px_size: {pixel_size}"
@@ -117,14 +105,11 @@ async def main():
 				debug_timer.restart()
 			print_debug(debug_list)
 
-		# ====================== [ EVENT ] ======================
+		# =================== [ PYGAME STUFF ] ===================
 
 		run, new_size, debug, full_screen_toggle = check_event(
 			pg.event.get(), new_size, debug
 			)
-
-		# =================== [ PYGAME STUFF ] ===================
-
 		pg.display.update()
 		clock_tick(cap_fps)
 		await asyncio.sleep(0)
