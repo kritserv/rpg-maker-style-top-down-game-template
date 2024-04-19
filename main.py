@@ -9,7 +9,7 @@ from src import clock_tick, curr_fps,\
 	default_screen_width, \
 	default_screen_height, \
 	default_screen_size, \
-	black, check_event, \
+	black, check_pygame_event, \
 	print_debug, load_screen_from_json, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
@@ -93,7 +93,7 @@ async def main():
 		# ====================== [ TEST ] ======================
 
 		if debug:
-			if debug_timer.time_now()>0.1:
+			if debug_timer.time_now() > 0.1:
 				debug_list = [
 					f"fps: {curr_fps()}", 
 					f"resolution: {(curr_width, curr_height)}", 
@@ -107,7 +107,7 @@ async def main():
 
 		# =================== [ PYGAME STUFF ] ===================
 
-		run, new_size, debug, full_screen_toggle = check_event(
+		run, new_size, debug, full_screen_toggle = check_pygame_event(
 			pg.event.get(), new_size, debug
 			)
 		pg.display.update()

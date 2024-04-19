@@ -35,7 +35,7 @@ def check_full_screen_toggle(event):
 	return full_screen_toggle
 
 full_screen_size = pg.display.get_desktop_sizes()[0]
-def check_event(all_event, new_size, debug):
+def check_pygame_event(all_event, new_size, debug):
 	run = True
 	full_screen_toggle = False
 	for event in all_event:

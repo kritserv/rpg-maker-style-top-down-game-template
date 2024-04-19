@@ -136,3 +136,34 @@ def get_distance_between(current_pos, expected_pos):
 def move(pos, dx, dy, dt, speed):
 	pos[0] += dx * speed * dt
 	pos[1] += dy * speed * dt
+
+def draw_player(transformed_rects, pixel_size, camera, screen):
+	for rect, color in transformed_rects:
+		if not camera.follow_player_x_left:
+			if camera.stop_follow_player_left_at_pos_x:
+				if camera.player.pos[0] < camera.stop_follow_player_left_at_pos_x:
+					offset_x = (camera.player.pos[0] - camera.stop_follow_player_left_at_pos_x) * pixel_size
+					rect[0] += offset_x
+					rect[0] += pixel_size
+
+		elif not camera.follow_player_x_right:
+			if camera.stop_follow_player_right_at_pos_x:
+				if camera.player.pos[0] > camera.stop_follow_player_right_at_pos_x:
+					offset_x = (camera.player.pos[0] - camera.stop_follow_player_right_at_pos_x) * pixel_size
+					rect[0] += offset_x
+					rect[0] += pixel_size
+
+		if not camera.follow_player_y_up:
+			if camera.stop_follow_player_up_at_pos_y:
+				if camera.player.pos[1] < camera.stop_follow_player_up_at_pos_y:
+					offset_y = (camera.player.pos[1] - camera.stop_follow_player_up_at_pos_y) * pixel_size
+					rect[1] += offset_y
+					rect[1] -= pixel_size
+
+		elif not camera.follow_player_y_down:
+			if camera.stop_follow_player_down_at_pos_y:
+				if camera.player.pos[1] > camera.stop_follow_player_down_at_pos_y:
+					offset_y = (camera.player.pos[1] - camera.stop_follow_player_down_at_pos_y) * pixel_size
+					rect[1] += offset_y
+					rect[1] -= pixel_size
+		pg.draw.rect(screen, color, rect)

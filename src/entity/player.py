@@ -1,5 +1,5 @@
 import pygame as pg
-from .func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
+from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel, draw_player
 from src.variable import red
 
 class Player(pg.sprite.Sprite):
@@ -28,36 +28,7 @@ class Player(pg.sprite.Sprite):
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
 	def draw(self, pixel_size, camera):
-		for rect, color in self.transformed_rects:
-			if not camera.follow_player_x_left:
-				if camera.stop_follow_player_left_at_pos_x:
-					if camera.player.pos[0] < camera.stop_follow_player_left_at_pos_x:
-						offset_x = (camera.player.pos[0] - camera.stop_follow_player_left_at_pos_x) * pixel_size
-						rect[0] += offset_x
-						rect[0] += pixel_size
-
-			elif not camera.follow_player_x_right:
-				if camera.stop_follow_player_right_at_pos_x:
-					if camera.player.pos[0] > camera.stop_follow_player_right_at_pos_x:
-						offset_x = (camera.player.pos[0] - camera.stop_follow_player_right_at_pos_x) * pixel_size
-						rect[0] += offset_x
-						rect[0] += pixel_size
-
-			if not camera.follow_player_y_up:
-				if camera.stop_follow_player_up_at_pos_y:
-					if camera.player.pos[1] < camera.stop_follow_player_up_at_pos_y:
-						offset_y = (camera.player.pos[1] - camera.stop_follow_player_up_at_pos_y) * pixel_size
-						rect[1] += offset_y
-						rect[1] -= pixel_size
-
-			elif not camera.follow_player_y_down:
-				if camera.stop_follow_player_down_at_pos_y:
-					if camera.player.pos[1] > camera.stop_follow_player_down_at_pos_y:
-						offset_y = (camera.player.pos[1] - camera.stop_follow_player_down_at_pos_y) * pixel_size
-						rect[1] += offset_y
-						rect[1] -= pixel_size
-
-			pg.draw.rect(self.screen, color, rect)
+		draw_player(self.transformed_rects, pixel_size, camera, self.screen)
 
 	def update(self, dt):
 		key = pg.key.get_pressed()

@@ -1,5 +1,5 @@
 import pygame as pg
-from .func import correct_all_map_rect
+from .ent_func import correct_all_map_rect
 
 class TopDownMap(pg.sprite.Sprite):
 	def __init__(self, screen):
