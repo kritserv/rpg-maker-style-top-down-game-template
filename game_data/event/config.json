@@ -12,5 +12,6 @@
 		"inner_house3": [
 			"exit_inner_house3"
 		]
-	}
+	},
+	"start_event":  "start_in_openworld"
 }

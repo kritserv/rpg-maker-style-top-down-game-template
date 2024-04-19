@@ -18,7 +18,6 @@ def load_scene_from_json():
 	with open("game_data/scene/config.json") as f:
 		json_load = json.load(f)
 		loaded_scene_dict = json_load["scene_dict"]
-		start_scene_name = json_load["start_scene_name"]
 		f.close()
 
 	scene_data = {}
@@ -48,4 +47,4 @@ def load_scene_from_json():
 
 			scene_dict[scene_group_name] = total_scene_group
 
-	return scene_dict, start_scene_name
+	return scene_dict

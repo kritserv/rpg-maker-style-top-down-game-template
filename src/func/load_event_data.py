@@ -4,6 +4,7 @@ def load_event_from_json():
 	with open("game_data/event/config.json") as f:
 		json_load = json.load(f)
 		event_dict = json_load["event_dict"]
+		loaded_start_event = json_load["start_event"]
 		f.close()
 	with open("game_data/event/data.json") as f:
 		json_load = json.load(f)
@@ -19,4 +20,6 @@ def load_event_from_json():
 		for val in event_dict[key]:
 			combined_data[key].append(event_data[val])
 
-	return combined_data
+	start_event = event_data[loaded_start_event]
+
+	return combined_data, start_event

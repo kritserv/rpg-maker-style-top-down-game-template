@@ -39,21 +39,20 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	scene, start_scene_name = load_scene_from_json()
-
 	player = Player(screen, low_fps_mode)
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
 
 	scene_manager = SceneManager(
-		scene, player, top_down_map, camera, start_scene_name
+		load_scene_from_json(), player, top_down_map, camera
 		)
-	scene_manager.change_scene(-64, 0, start_scene_name)
-	scene_manager.change_camera_stop_position(-144, 144, -160, 160)
 
+	event_dict, start_event = load_event_from_json()
 	event = Event(
-		load_event_from_json(), player, scene_manager
+		event_dict, player, scene_manager
 		)
+
+	event.trigger(start_event["effect"])
 
 	debug_timer = Timer()
 	debug_timer.start()

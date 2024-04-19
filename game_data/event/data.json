@@ -1,5 +1,14 @@
 {
 	"event_data": {
+		"start_in_openworld": {
+			"pos": [0, 0],
+			"trigger_by": "nothing",
+			"effect": {
+				"func": ["change_scene", "change_camera_stop_position"],
+				"new_scene": [-64, 0, "openworld"],
+				"new_camera_stop_position": [-144, 144, -160, 160]
+			}
+		},
 		"move_to_inner_house1": {
 			"pos": [-80, -48],
 			"trigger_by": "player_on_top",

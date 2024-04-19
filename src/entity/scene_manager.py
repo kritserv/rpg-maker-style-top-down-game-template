@@ -1,10 +1,9 @@
 class SceneManager:
-	def __init__(self, scene_dict, player, tdmap, camera, current_scene):
+	def __init__(self, scene_dict, player, tdmap, camera):
 		self.scene_dict = scene_dict
 		self.player = player
 		self.tdmap = tdmap
 		self.camera = camera
-		self.current_scene = current_scene
 			
 	def change_scene(self, x, y, new_scene_name):
 		self.player.obs = [ob for ob, color in self.scene_dict[new_scene_name]]
