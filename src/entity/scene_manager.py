@@ -6,11 +6,13 @@ class SceneManager:
 		self.camera = camera
 			
 	def change_scene(self, x, y, new_scene_name):
-		self.player.obs = [ob for ob, color in self.scene_dict[new_scene_name]]
+		self.player.obs, self.tdmap.rects = [], []
+		for ob, color in self.scene_dict[new_scene_name]:
+			self.player.obs.append(ob)
+			self.tdmap.rects.append((ob, color))
 		self.player.calculate_obs_pos()
 		self.player.pos = [x, y]
 		self.player.finish_pos = [x, y]
-		self.tdmap.rects = [ob for ob in self.scene_dict[new_scene_name]]
 		self.current_scene = new_scene_name
 
 	def change_camera_stop_position(self, stop_left, stop_right, stop_up, stop_down):
