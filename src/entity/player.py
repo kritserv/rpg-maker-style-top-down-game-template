@@ -3,11 +3,10 @@ from .ent_func import correct_all_rect, calculate_movement, calculate_obs_positi
 from src.variable import red
 
 class Player(pg.sprite.Sprite):
-	def __init__(self, screen, low_fps_mode):
+	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.speed = 150
-		self.low_fps_mode = low_fps_mode
 		self.original_width, self.original_height, self.width, self.height = 16, 16, 16, 16
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
@@ -33,9 +32,6 @@ class Player(pg.sprite.Sprite):
 	def update(self, dt):
 		key = pg.key.get_pressed()
 		dx, dy = calculate_movement(self, key)
-
-		if self.low_fps_mode:
-			dt = 0.015
 
 		if self.key_presed:
 			move(self.pos, dx, dy, dt, self.speed)

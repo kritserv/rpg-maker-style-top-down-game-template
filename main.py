@@ -26,10 +26,11 @@ async def main():
 	debug = True
 	debug_list = [""]
 	full_screen_toggle = False
-	low_fps_mode = False
 
+	low_fps_mode, high_fps_mode = 0, 1
 	if cap_fps or web_export:
-		low_fps_mode = True
+		low_fps_mode, high_fps_mode = 0.015, 0
+
 	screen, black_bar_is_set = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
@@ -39,7 +40,7 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	player = Player(screen, low_fps_mode)
+	player = Player(screen)
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
 
@@ -60,18 +61,20 @@ async def main():
 	prev_time = time()
 
 	while run:
-		# =================== [ DELTA TIME ] ===================
+		# ================== [ DELTA TIME ] ==================
 
 		dt = time() - prev_time
+		dt *= high_fps_mode
+		dt += low_fps_mode
 		prev_time = time()
 
-		# ====================== [ LOGIC ] ======================
+		# ==================== [ LOGIC ] ====================
 
 		player.update(dt)
 		camera.update(pixel_size)
 		event.update()
 
-		# ====================== [ GRAPHIC ] =====================
+		# ==================== [ GRAPHIC ] ===================
 
 		if full_screen_toggle:
 			full_screen_toggle = False
@@ -89,7 +92,7 @@ async def main():
 		camera.draw(pixel_size, player, top_down_map)
 		black_bar.draw_if_set(curr_width, curr_height, ratio)
 
-		# ====================== [ TEST ] ======================
+		# =================== [ TEST ] ===================
 
 		if debug:
 			if debug_timer.time_now() > 0.1:
@@ -104,7 +107,7 @@ async def main():
 				debug_timer.restart()
 			print_debug(debug_list)
 
-		# =================== [ PYGAME STUFF ] ===================
+		# ================= [ PYGAME STUFF ] =================
 
 		run, new_size, debug, full_screen_toggle = check_pygame_event(
 			pg.event.get(), new_size, debug

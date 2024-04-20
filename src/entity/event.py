@@ -14,13 +14,11 @@ class Event:
 				self.scene_manager.change_camera_stop_position(stop_left, stop_right, stop_up, stop_down)
 
 	def check_condition(self):
-		effect = None
-		for ev in self.event_dict[self.scene_manager.current_scene]:
-			if ev["trigger_by"] == "player_on_top":
-				if self.player.pos == ev["pos"]:
-					self.trigger(ev["effect"])
+		for scene_event in self.event_dict[self.scene_manager.current_scene]:
+			if scene_event["trigger_by"] == "player_on_top":
+				if self.player.pos == scene_event["pos"]:
+					self.trigger(scene_event["effect"])
 					break
-		return effect
 
 	def update(self):
 		self.check_condition()
