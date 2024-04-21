@@ -1,2 +1,5 @@
-{"fullscreen": "False",
-"blackbar": "False"}
+{
+	"fullscreen": "False",
+	"blackbar": "False",
+	"capfps": "False"
+}

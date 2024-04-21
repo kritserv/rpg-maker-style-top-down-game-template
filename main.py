@@ -21,17 +21,12 @@ pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
 async def main():
 	run = True
-	cap_fps = False
 	web_export = False
 	debug = True
 	debug_list = [""]
 	full_screen_toggle = False
 
-	low_fps_mode, high_fps_mode = 0, 1
-	if cap_fps or web_export:
-		low_fps_mode, high_fps_mode = 0.015, 0
-
-	screen, black_bar_is_set = load_screen_from_json()
+	screen, black_bar_is_set, cap_fps = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[screen.get_width(), 
@@ -39,6 +34,10 @@ async def main():
 		)
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
+
+	low_fps_mode, high_fps_mode = 0, 1
+	if cap_fps or web_export:
+		low_fps_mode, high_fps_mode = 0.015, 0
 
 	player = Player(screen)
 	top_down_map = TopDownMap(screen)
