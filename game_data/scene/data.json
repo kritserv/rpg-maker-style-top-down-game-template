@@ -1,9 +1,9 @@
 {
     "scene_data": {
-        "create_house": [
-            {"house1": [-144, -112]}, 
-            {"house2": [16, -112]}, 
-            {"house3": [-144, 32]}
+        "get_pg_rect_by_method": [
+            {"house1": ["house_rects", -144, -112]}, 
+            {"house2": ["house_rects", 16, -112]}, 
+            {"house3": ["house_rects", -144, 32]}
         ], 
         "pg_rect": [
             {
