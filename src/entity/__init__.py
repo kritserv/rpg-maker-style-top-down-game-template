@@ -5,5 +5,6 @@ from .camera import Camera
 from .timer import Timer
 from .scene_manager import SceneManager
 from .event import Event
+from .cursor import Cursor
 
-__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager, Event)
+__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager, Event, Cursor)

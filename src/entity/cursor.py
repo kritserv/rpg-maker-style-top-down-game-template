@@ -1,19 +1,18 @@
 import pygame as pg
-from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel, draw_player
-from src.variable import red
+from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
+from src.variable import white
 
-class Player(pg.sprite.Sprite):
+class Cursor(pg.sprite.Sprite):
 	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.speed = 150
-		self.original_width, self.original_height, self.width, self.height = 16, 16, 16, 16
+		self.original_width, self.original_height, self.width, self.height = 160, 16, 160, 16
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0
 		self.rects = [
-			(pg.Rect(0, 0, 16, 16), red), 
-			(pg.Rect(0, -8, 16, 8), red)
+			(pg.Rect(0, 0, 160, 16), white), 
 		]
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
@@ -26,14 +25,14 @@ class Player(pg.sprite.Sprite):
 		resize_pixel(self, pixel_size)
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
-	def draw(self, pixel_size, camera):
-		draw_player(self.transformed_rects, pixel_size, camera, self.screen)
+	def draw(self, pixel_size):
+		pg.draw.rect(self.screen, white, pg.Rect(self.pos[0]+self.x-self.width/2, self.pos[1]+self.y*1.2, self.original_width*pixel_size, self.original_height*pixel_size))
 
 	def update(self, dt, key):
 		dx, dy = calculate_movement(self, key)
 
 		if self.key_presed:
-			move(self.pos, dx, dy, dt, self.speed)
+			move(self.pos, 0, dy, dt, self.speed)
 
 		if not self.key_presed:
 			self.finish_pos = expect_finish_pos(self)
