@@ -88,6 +88,10 @@ async def main():
 					pass
 				elif cursor.pos[1] == 48:
 					break
+			if key[pg.K_UP] and cursor.pos[1] == 0:
+					cursor.pos[1] = 56
+			elif key[pg.K_DOWN] and cursor.pos[1] == 48:
+					cursor.pos[1] = -8
 
 			# ================= [ TITLE GRAPHIC ] ================
 
