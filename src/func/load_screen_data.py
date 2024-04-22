@@ -1,5 +1,5 @@
 import pygame as pg
-import json
+from json import load
 from src.variable import default_screen_size
 
 def load_screen_from_json():
@@ -7,7 +7,7 @@ def load_screen_from_json():
 	black_bar = False
 	cap_fps = False
 	with open("user_data/settings.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		full_screen = json_load["fullscreen"]
 		blackbar = json_load["blackbar"]
 		capfps = json_load["capfps"]

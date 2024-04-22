@@ -1,13 +1,13 @@
-import json
+from json import load
 
 def load_event_from_json():
 	with open("game_data/event/config.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		event_dict = json_load["event_dict"]
 		loaded_start_event = json_load["start_event"]
 		f.close()
 	with open("game_data/event/data.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		event_data = json_load["event_data"]
 		f.close()
 

@@ -1,4 +1,4 @@
-import json
+from json import load
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -17,7 +17,7 @@ def convert_char(char, val_dict):
 def build_multiple_pg_rect(method, x, y):
 	rects = []
 	with open("game_data/scene/method.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		loaded_method = json_load["build_multiple_pg_rect"]
 		f.close()
 	build_calculation = loaded_method[method]
@@ -45,11 +45,11 @@ def build_multiple_pg_rect(method, x, y):
 
 def load_scene_from_json():
 	with open("game_data/scene/data.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		loaded_scene_data = json_load["scene_data"]
 		f.close()
 	with open("game_data/scene/config.json") as f:
-		json_load = json.load(f)
+		json_load = load(f)
 		loaded_scene_dict = json_load["scene_dict"]
 		f.close()
 
