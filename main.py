@@ -64,7 +64,8 @@ async def main():
 	game_state = "title_menu"
 
 	prev_time = time()
-
+	
+	plus_value = 10
 	while run:
 		# ================== [ DELTA TIME ] ==================
 
@@ -89,9 +90,9 @@ async def main():
 				elif cursor.pos[1] == 48:
 					break
 			if key[pg.K_UP] and cursor.pos[1] == 0:
-					cursor.pos[1] = 56
+					cursor.pos[1] = 48 + plus_value
 			elif key[pg.K_DOWN] and cursor.pos[1] == 48:
-					cursor.pos[1] = -8
+					cursor.pos[1] = 0 - plus_value
 
 			# ================= [ TITLE GRAPHIC ] ================
 
