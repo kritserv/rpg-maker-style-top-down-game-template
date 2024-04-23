@@ -14,7 +14,7 @@ from src import clock_tick, curr_fps,\
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
 	Player, TopDownMap, Camera, BlackBar, \
-	Timer, SceneManager, Event, Cursor
+	Timer, SceneManager, Event, Cursor, Menu
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -54,18 +54,16 @@ async def main():
 
 	event.trigger(start_event["effect"])
 
-	cursor = Cursor(screen)
-	cursor.obs = [[-16, -32, 16, 16], [-16, 48, 16, 16]]
-	cursor.calculate_obs_pos()
+	title_screen_memu = Menu(Cursor(screen))
+	title_screen_memu.buttons = ["Start Game", "Load Game", "Options", "Quit Game"]
+	title_screen_memu.setup_buttons()
+
+	game_state = "title_screen_memu"
 
 	debug_timer = Timer()
 	debug_timer.start()
 
-	game_state = "title_menu"
-
 	prev_time = time()
-	
-	plus_value = 10
 	while run:
 		# ================== [ DELTA TIME ] ==================
 
@@ -74,25 +72,24 @@ async def main():
 		dt += low_fps_mode
 		prev_time = time()
 
+		# =================== [ GET INPUT ] ===================
+
 		key = pg.key.get_pressed()
-		if game_state == "title_menu":
+
+		if game_state == "title_screen_memu":
 
 			# ================== [ TITLE LOGIC ] ================
 
-			cursor.update(dt, key)
-			if key[pg.K_RETURN]:
-				if cursor.pos[1] == 0:
-					game_state = "main_game"
-				elif cursor.pos[1] == 16:
-					game_state = "main_game"
-				elif cursor.pos[1] == 32:
-					pass
-				elif cursor.pos[1] == 48:
-					break
-			if key[pg.K_UP] and cursor.pos[1] == 0:
-					cursor.pos[1] = 48 + plus_value
-			elif key[pg.K_DOWN] and cursor.pos[1] == 48:
-					cursor.pos[1] = 0 - plus_value
+			selected = title_screen_memu.update(dt, key)
+			if selected == "Start Game":
+				game_state = "main_game"
+			elif selected == "Load Game":
+				game_state = "main_game"
+			elif selected == "Options":
+				# game_state = "Options"
+				pass
+			elif selected == "Quit Game":
+				break
 
 			# ================= [ TITLE GRAPHIC ] ================
 
@@ -105,10 +102,10 @@ async def main():
 			curr_width, curr_height, pixel_size = update_size(
 				new_size
 				)
-			cursor.resize(pixel_size)
+			title_screen_memu.resize(pixel_size)
 
 			screen.fill(black)
-			cursor.draw(pixel_size)
+			title_screen_memu.draw(pixel_size)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 
 			# ================= [ TEST ] ===================
@@ -118,8 +115,8 @@ async def main():
 					debug_list = [
 						f"fps: {curr_fps()}", 
 						f"resolution: {(curr_width, curr_height)}", 
-						f"x: {cursor.pos[0]}",
-						f"y: {cursor.pos[1]}",
+						f"x: {title_screen_memu.cursor.pos[0]}",
+						f"y: {title_screen_memu.cursor.pos[1]}",
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
