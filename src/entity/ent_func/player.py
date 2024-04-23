@@ -76,9 +76,6 @@ def calculate_movement(player, key):
 
 	return dx, dy
 
-def cannot_divide_by_16(num):
-	return num % 16 != 0
-
 def make_divisible_by_16(num):
 	if num > 0:
 		while num % 16 != 0:
@@ -97,8 +94,7 @@ def expect_finish_pos(player):
 	else:
 		checker = 0
 
-	if cannot_divide_by_16(checker):
-		expected_x = make_divisible_by_16(checker)
+	expected_x = make_divisible_by_16(checker)
 	if checker == 0:
 		expected_x = 0
 
@@ -108,9 +104,8 @@ def expect_finish_pos(player):
 		checker = ceil(player.pos[1])
 	else:
 		checker = 0
-
-	if cannot_divide_by_16(checker):
-		expected_y = make_divisible_by_16(checker)
+	
+	expected_y = make_divisible_by_16(checker)
 	if checker == 0:
 		expected_y = 0
 	
