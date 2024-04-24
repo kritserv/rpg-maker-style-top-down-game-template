@@ -7,7 +7,6 @@ class Menu:
 		self.cursor = cursor
 		self.buttons = []
 		self.button_dicts = {}
-		self.selected = ""
 		self.plus_value = 10
 
 	def calculate_menu_obs_pos(self):
@@ -45,13 +44,14 @@ class Menu:
 			y += (range_y * pixel_size)
 			blit_text(button, menu_font, green, [16, y])
 
-	def update(self, dt, key):
+	def update(self, dt, key, interact):
 		self.cursor.update(dt, key)
+		selected = ""
 
-		if key[pg.K_RETURN]:
+		if interact:
 			for button_pos in self.button_dicts:
 				if self.cursor.pos[1] == button_pos:
-					self.selected = self.button_dicts[button_pos]
+					selected = self.button_dicts[button_pos]
 
 		if key[pg.K_UP] and self.cursor.pos[1] == 0:
 				self.cursor.pos[1] = self.bottom + self.plus_value
@@ -59,7 +59,7 @@ class Menu:
 		elif key[pg.K_DOWN] and self.cursor.pos[1] == self.bottom:
 				self.cursor.pos[1] = 0 - self.plus_value
 
-		if self.selected:
-			return self.selected
+		if selected:
+			return selected
 		else:
 			return None

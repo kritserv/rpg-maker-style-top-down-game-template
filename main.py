@@ -25,6 +25,8 @@ async def main():
 	debug = True
 	debug_list = [""]
 	full_screen_toggle = False
+	pause = False
+	pause_toggle = False
 
 	screen, black_bar_is_set, cap_fps = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
@@ -62,6 +64,12 @@ async def main():
 		]
 	title_screen_memu.setup_buttons()
 
+	pause_memu = Menu(Cursor(screen))
+	pause_memu.buttons = [
+		"Save", "Load", "Back To Title", "Cancel"
+		]
+	pause_memu.setup_buttons()
+
 	game_state = "title_screen_memu"
 
 	debug_timer = Timer()
@@ -69,6 +77,19 @@ async def main():
 
 	prev_time = time()
 	while run:
+
+		# =================== [ GET INPUT ] ===================
+
+		run, \
+		new_size, \
+		debug, \
+		full_screen_toggle, \
+		pause_toggle, \
+		interact = check_pygame_event(
+			pg.event.get(), new_size, debug
+			)
+		key = pg.key.get_pressed()
+
 		# ================== [ DELTA TIME ] ==================
 
 		dt = time() - prev_time
@@ -76,17 +97,18 @@ async def main():
 		dt += low_fps_mode
 		prev_time = time()
 
-		# =================== [ GET INPUT ] ===================
-
-		key = pg.key.get_pressed()
-
 		# ================= [ GET GAME STATE ] =================
 
+		if pause_toggle:
+			pause_toggle = False
+			pause = not pause
+
 		if game_state == "title_screen_memu":
+			pause = False
 
 			# ================== [ TITLE LOGIC ] ================
 
-			selected = title_screen_memu.update(dt, key)
+			selected = title_screen_memu.update(dt, key, interact)
 			if selected == "Start Game":
 				game_state = "main_game"
 			elif selected == "Load Game":
@@ -97,6 +119,8 @@ async def main():
 				pass
 			elif selected == "Quit Game":
 				break
+			else:
+				pass
 
 			# ================= [ TITLE GRAPHIC ] ================
 
@@ -112,8 +136,8 @@ async def main():
 			title_screen_memu.resize(pixel_size)
 
 			screen.fill(black)
-			title_screen_memu.draw(pixel_size)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			title_screen_memu.draw(pixel_size)
 
 			# ================= [ TEST ] ===================
 
@@ -133,9 +157,25 @@ async def main():
 
 			# ================= [ MAIN LOGIC ] =================
 
-			player.update(dt, key)
-			camera.update(pixel_size)
-			event.update()
+			if not pause:
+				player.update(dt, key)
+				camera.update(pixel_size)
+				event.update()
+			else:
+				selected = pause_memu.update(dt, key, interact)
+				if selected == "Save":
+					# game_state = "save_game_menu"
+					pass
+				elif selected == "Load":
+					# game_state = "load_game_menu"
+					pass
+				elif selected == "Back To Title":
+					game_state = "title_screen_memu"
+				elif selected == "Cancel":
+					if pause == True:
+						pause = False
+				else:
+					pass
 
 			# ================= [ MAIN GRAPHIC ] ===============
 
@@ -154,6 +194,9 @@ async def main():
 			screen.fill(black)
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			if pause:
+				pause_memu.resize(pixel_size)
+				pause_memu.draw(pixel_size)
 
 			# ================= [ TEST ] ===================
 
@@ -169,12 +212,11 @@ async def main():
 					]
 					debug_timer.restart()
 				print_debug(debug_list)
+		else:
+			pass
 
 		# ================= [ PYGAME STUFF ] ================
 
-		run, new_size, debug, full_screen_toggle = check_pygame_event(
-			pg.event.get(), new_size, debug
-			)
 		pg.display.update()
 		clock_tick(cap_fps)
 		await asyncio.sleep(0)
