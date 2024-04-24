@@ -56,8 +56,6 @@ async def main():
 		event_dict, player, scene_manager
 		)
 
-	event.trigger(start_event["effect"])
-
 	title_screen_menu = Menu(Cursor(screen))
 	title_screen_menu.buttons = [
 		"Start Game", "Load Game", "Options", "Quit Game"
@@ -121,6 +119,7 @@ async def main():
 
 			selected = title_screen_menu.update(dt, key, interact)
 			if selected == "Start Game":
+				event.trigger(start_event["effect"])
 				game_state = "main_game"
 			elif selected == "Load Game":
 				# game_state = "load_game_menu"

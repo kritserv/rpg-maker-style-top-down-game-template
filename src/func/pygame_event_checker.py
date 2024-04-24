@@ -1,37 +1,33 @@
 import pygame as pg
 
-def check_quit_game(event):
+def check_quit_game(event, quit, keydown):
 	run = True
-	if event.type == pg.QUIT:
+	if quit:
 		run = False
-	elif event.type == pg.KEYDOWN:
-		if event.key == pg.K_q and pg.key.get_mods() & pg.KMOD_CTRL:
+	if keydown:
+		if event.key == pg.K_q and pg.key.get_mods() & pg.KMOD_CTRL: # Ctrl + Q
 			run = False
 		elif event.key == pg.K_F4 and pg.key.get_mods() & pg.KMOD_ALT:  # Alt + F4
 			run = False
-	else:
-		pass
 
 	return run
 
 def check_debug_mode(event, debug):
-	if event.type == pg.KEYDOWN:
-		if event.key == pg.K_F3:
-			debug = not debug
+	if event.key == pg.K_F3:
+		debug = not debug
 
 	return debug
 
-def check_window_resize(event, new_size):
-	if event.type == pg.VIDEORESIZE:
-		new_size = event.dict['size']
+def check_window_resize(event, new_size, resize):
+	if resize:
+		new_size = event.dict["size"]
 
 	return new_size
 
 def check_full_screen_toggle(event):
 	full_screen_toggle = False
-	if event.type == pg.KEYDOWN:
-		if event.key == pg.K_F11:
-			full_screen_toggle = True
+	if event.key == pg.K_F11:
+		full_screen_toggle = True
 
 	return full_screen_toggle
 
@@ -39,22 +35,33 @@ full_screen_size = pg.display.get_desktop_sizes()[0]
 
 def check_pause_toggle(event):
 	pause_toggle = False
-	if event.type == pg.KEYDOWN:
-		if event.key == pg.K_ESCAPE:
-			pause_toggle = True
+	if event.key == pg.K_ESCAPE:
+		pause_toggle = True
 
 	return pause_toggle
 
-def check_interact(event):
+def check_interact(event, keydown, keyup):
 	interact = False
-	if event.type == pg.KEYDOWN:
+	if keydown:
 		if event.key == pg.K_RETURN:
 			interact = True
-	elif event.type == pg.KEYUP:
+	elif keyup:
 		if event.key == pg.K_z:
 			interact = True
 
 	return interact
+
+def check_type(event):
+	keydown, keyup, quit, resize = False, False, False, False
+	if event.type == pg.KEYDOWN:
+		keydown = True
+	elif event.type == pg.KEYUP:
+		keyup = True
+	elif event.type == pg.QUIT:
+		quit = True
+	elif event.type == pg.VIDEORESIZE:
+		resize = True
+	return keydown, keyup, quit, resize
 
 def check_pygame_event(all_event, new_size, debug):
 	run = True
@@ -62,12 +69,18 @@ def check_pygame_event(all_event, new_size, debug):
 	pause_toggle = False
 	interact = False
 	for event in all_event:
-		run = check_quit_game(event)
-		new_size = check_window_resize(event, new_size)
-		debug = check_debug_mode(event, debug)
-		pause_toggle = check_pause_toggle(event)
-		full_screen_toggle = check_full_screen_toggle(event)
-		interact = check_interact(event)
+
+		keydown, keyup, quit, resize = check_type(event)
+
+		new_size = check_window_resize(event, new_size, resize)
+		run = check_quit_game(event, quit, keydown)
+		interact = check_interact(event, keydown, keyup)
+
+		if keydown:
+			debug = check_debug_mode(event, debug)
+			pause_toggle = check_pause_toggle(event)
+			full_screen_toggle = check_full_screen_toggle(event)
+
 		if full_screen_toggle:
 			new_size = full_screen_size
 
