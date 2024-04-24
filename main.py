@@ -78,6 +78,13 @@ async def main():
 	prev_time = time()
 	while run:
 
+		# ================== [ DELTA TIME ] ==================
+
+		dt = time() - prev_time
+		dt *= high_fps_mode
+		dt += low_fps_mode
+		prev_time = time()
+
 		# =================== [ GET INPUT ] ===================
 
 		run, \
@@ -88,20 +95,24 @@ async def main():
 		interact = check_pygame_event(
 			pg.event.get(), new_size, debug
 			)
+		curr_width, curr_height, pixel_size = update_size(
+			new_size
+			)
 		key = pg.key.get_pressed()
 
-		# ================== [ DELTA TIME ] ==================
-
-		dt = time() - prev_time
-		dt *= high_fps_mode
-		dt += low_fps_mode
-		prev_time = time()
-
-		# ================= [ GET GAME STATE ] =================
+		# =============== [ TOGGLE THE TOGGLEABLE ] ===============
 
 		if pause_toggle:
 			pause_toggle = False
 			pause = not pause
+
+		if full_screen_toggle:
+			full_screen_toggle = False
+			screen = toggle_full_screen(
+				new_size, default_screen_size
+			)
+
+		# ================= [ GET GAME STATE ] =================
 
 		if game_state == "title_screen_menu":
 			pause = False
@@ -118,21 +129,13 @@ async def main():
 				# game_state = "options_menu"
 				pass
 			elif selected == "Quit Game":
-				break
+				run = False
 			else:
 				pass
 
 			# ================= [ TITLE GRAPHIC ] ================
 
-			if full_screen_toggle:
-				full_screen_toggle = False
-				screen = toggle_full_screen(
-					new_size, default_screen_size
-				)
 
-			curr_width, curr_height, pixel_size = update_size(
-				new_size
-				)
 			title_screen_menu.resize(pixel_size)
 
 			screen.fill(black)
@@ -179,15 +182,6 @@ async def main():
 
 			# ================= [ MAIN GRAPHIC ] ===============
 
-			if full_screen_toggle:
-				full_screen_toggle = False
-				screen = toggle_full_screen(
-					new_size, default_screen_size
-				)
-
-			curr_width, curr_height, pixel_size = update_size(
-				new_size
-				)
 			player.resize(pixel_size)
 			top_down_map.resize(pixel_size, player)
 
