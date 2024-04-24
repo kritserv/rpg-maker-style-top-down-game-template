@@ -41,7 +41,7 @@ async def main():
 
 	low_fps_mode, high_fps_mode = 0, 1
 	if cap_fps or web_export:
-		low_fps_mode, high_fps_mode = 0.015, 0
+		low_fps_mode, high_fps_mode = 0.016, 0
 
 	player = Player(screen)
 	top_down_map = TopDownMap(screen)

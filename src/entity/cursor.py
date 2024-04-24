@@ -12,7 +12,7 @@ class Cursor:
 		self.finish_pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0
 		self.rects = [
-			(pg.Rect(0, 0, 160, 16), white), 
+			(pg.Rect(0, 0, 16, 16), white), 
 		]
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
