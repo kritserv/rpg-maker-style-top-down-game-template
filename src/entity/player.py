@@ -2,7 +2,7 @@ import pygame as pg
 from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel, draw_player
 from src.variable import red
 
-class Player(pg.sprite.Sprite):
+class Player:
 	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen

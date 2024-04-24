@@ -13,3 +13,7 @@ def curr_fps():
 	return get_fps
 
 debug_font = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 14)
+
+font_x1 = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 6)
+font_x2 = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 12)
+font_x3 = pg.font.Font("asset/font/PixeloidSans-mLxMm.ttf", 18)

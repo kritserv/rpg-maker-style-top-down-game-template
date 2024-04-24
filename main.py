@@ -29,8 +29,10 @@ async def main():
 	screen, black_bar_is_set, cap_fps = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
-		[screen.get_width(), 
-		screen.get_height()]
+		[
+			screen.get_width(), 
+			screen.get_height()
+			]
 		)
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
@@ -55,7 +57,9 @@ async def main():
 	event.trigger(start_event["effect"])
 
 	title_screen_memu = Menu(Cursor(screen))
-	title_screen_memu.buttons = ["Start Game", "Load Game", "Options", "Quit Game"]
+	title_screen_memu.buttons = [
+		"Start Game", "Load Game", "Options", "Quit Game"
+		]
 	title_screen_memu.setup_buttons()
 
 	game_state = "title_screen_memu"
@@ -76,6 +80,8 @@ async def main():
 
 		key = pg.key.get_pressed()
 
+		# ================= [ GET GAME STATE ] =================
+
 		if game_state == "title_screen_memu":
 
 			# ================== [ TITLE LOGIC ] ================
@@ -84,9 +90,10 @@ async def main():
 			if selected == "Start Game":
 				game_state = "main_game"
 			elif selected == "Load Game":
-				game_state = "main_game"
+				# game_state = "load_game_menu"
+				pass
 			elif selected == "Options":
-				# game_state = "Options"
+				# game_state = "options_menu"
 				pass
 			elif selected == "Quit Game":
 				break

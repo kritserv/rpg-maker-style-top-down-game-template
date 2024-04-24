@@ -2,11 +2,11 @@ import pygame as pg
 from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
 from src.variable import white
 
-class Cursor(pg.sprite.Sprite):
+class Cursor:
 	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
-		self.speed = 150
+		self.speed = 120
 		self.original_width, self.original_height, self.width, self.height = 160, 16, 160, 16
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
@@ -26,7 +26,7 @@ class Cursor(pg.sprite.Sprite):
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
 	def draw(self, pixel_size):
-		pg.draw.rect(self.screen, white, pg.Rect(self.pos[0]+self.x-self.width/2, self.pos[1]+self.y, self.original_width*pixel_size, self.original_height*pixel_size))
+		pg.draw.rect(self.screen, white, pg.Rect(8, (self.pos[1]*pixel_size)+self.y, self.original_width*pixel_size, self.original_height*pixel_size))
 
 	def update(self, dt, key):
 		dx, dy = calculate_movement(self, key)
