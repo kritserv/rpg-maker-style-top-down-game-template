@@ -58,19 +58,19 @@ async def main():
 
 	event.trigger(start_event["effect"])
 
-	title_screen_memu = Menu(Cursor(screen))
-	title_screen_memu.buttons = [
+	title_screen_menu = Menu(Cursor(screen))
+	title_screen_menu.buttons = [
 		"Start Game", "Load Game", "Options", "Quit Game"
 		]
-	title_screen_memu.setup_buttons()
+	title_screen_menu.setup_buttons()
 
-	pause_memu = Menu(Cursor(screen))
-	pause_memu.buttons = [
+	pause_menu = Menu(Cursor(screen))
+	pause_menu.buttons = [
 		"Save", "Load", "Back To Title", "Cancel"
 		]
-	pause_memu.setup_buttons()
+	pause_menu.setup_buttons()
 
-	game_state = "title_screen_memu"
+	game_state = "title_screen_menu"
 
 	debug_timer = Timer()
 	debug_timer.start()
@@ -103,12 +103,12 @@ async def main():
 			pause_toggle = False
 			pause = not pause
 
-		if game_state == "title_screen_memu":
+		if game_state == "title_screen_menu":
 			pause = False
 
 			# ================== [ TITLE LOGIC ] ================
 
-			selected = title_screen_memu.update(dt, key, interact)
+			selected = title_screen_menu.update(dt, key, interact)
 			if selected == "Start Game":
 				game_state = "main_game"
 			elif selected == "Load Game":
@@ -133,11 +133,11 @@ async def main():
 			curr_width, curr_height, pixel_size = update_size(
 				new_size
 				)
-			title_screen_memu.resize(pixel_size)
+			title_screen_menu.resize(pixel_size)
 
 			screen.fill(black)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
-			title_screen_memu.draw(pixel_size)
+			title_screen_menu.draw(pixel_size)
 
 			# ================= [ TEST ] ===================
 
@@ -146,8 +146,8 @@ async def main():
 					debug_list = [
 						f"fps: {curr_fps()}", 
 						f"resolution: {(curr_width, curr_height)}", 
-						f"x: {title_screen_memu.cursor.pos[0]}",
-						f"y: {title_screen_memu.cursor.pos[1]}",
+						f"x: {title_screen_menu.cursor.pos[0]}",
+						f"y: {title_screen_menu.cursor.pos[1]}",
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
@@ -162,7 +162,7 @@ async def main():
 				camera.update(pixel_size)
 				event.update()
 			else:
-				selected = pause_memu.update(dt, key, interact)
+				selected = pause_menu.update(dt, key, interact)
 				if selected == "Save":
 					# game_state = "save_game_menu"
 					pass
@@ -170,7 +170,7 @@ async def main():
 					# game_state = "load_game_menu"
 					pass
 				elif selected == "Back To Title":
-					game_state = "title_screen_memu"
+					game_state = "title_screen_menu"
 				elif selected == "Cancel":
 					if pause == True:
 						pause = False
@@ -195,8 +195,8 @@ async def main():
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if pause:
-				pause_memu.resize(pixel_size)
-				pause_memu.draw(pixel_size)
+				pause_menu.resize(pixel_size)
+				pause_menu.draw(pixel_size)
 
 			# ================= [ TEST ] ===================
 
