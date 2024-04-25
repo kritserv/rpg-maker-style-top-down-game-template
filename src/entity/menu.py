@@ -62,7 +62,4 @@ class Menu:
 			if self.cursor.pos[1] <= -16:
 				self.cursor.pos[1] = self.bottom + self.plus_value
 
-		if selected:
-			return selected
-		else:
-			return None
+		return selected
