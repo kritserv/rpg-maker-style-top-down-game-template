@@ -29,6 +29,7 @@ async def main():
 	pause_toggle = False
 
 	screen, black_bar_is_set, cap_fps = load_screen_from_json()
+	cap_fps = True
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[
@@ -39,9 +40,8 @@ async def main():
 	ratio = default_screen_width/default_screen_height
 	new_size = (curr_width, curr_height)
 
-	low_fps_mode, high_fps_mode = 0, 1
-	if cap_fps or web_export:
-		low_fps_mode, high_fps_mode = 0.016, 0
+	if web_export:
+		cap_fps = True
 
 	player = Player(screen)
 	top_down_map = TopDownMap(screen)
@@ -79,8 +79,6 @@ async def main():
 		# ================== [ DELTA TIME ] ==================
 
 		dt = time() - prev_time
-		dt *= high_fps_mode
-		dt += low_fps_mode
 		prev_time = time()
 
 		# =================== [ GET INPUT ] ===================
@@ -205,6 +203,7 @@ async def main():
 					]
 					debug_timer.restart()
 				print_debug(debug_list)
+
 		else:
 			pass
 

@@ -85,8 +85,7 @@ def make_divisible_by_16(num):
 			num -= 1
 	return num
 
-def expect_finish_pos(player):
-	expected_x, expected_y = player.finish_pos
+def expect_finish_pos(player, continue_move_value):
 	if player.last_dx < 0:
 		checker = floor(player.pos[0])
 	elif player.last_dx > 0:
@@ -94,9 +93,10 @@ def expect_finish_pos(player):
 	else:
 		checker = 0
 
-	expected_x = make_divisible_by_16(checker)
-	if checker == 0:
+	if -continue_move_value <= checker <= continue_move_value:
 		expected_x = 0
+	else:
+		expected_x = make_divisible_by_16(checker)
 
 	if player.last_dy < 0:
 		checker = floor(player.pos[1])
@@ -105,9 +105,10 @@ def expect_finish_pos(player):
 	else:
 		checker = 0
 	
-	expected_y = make_divisible_by_16(checker)
-	if checker == 0:
+	if -continue_move_value <= checker <= continue_move_value:
 		expected_y = 0
+	else:
+		expected_y = make_divisible_by_16(checker)
 	
 	return (expected_x, expected_y)
 

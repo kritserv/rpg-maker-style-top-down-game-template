@@ -2,6 +2,8 @@ import pygame as pg
 from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
 from src.variable import white
 
+continue_move_value = 3
+
 class Cursor:
 	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
@@ -35,10 +37,9 @@ class Cursor:
 			move(self.pos, 0, dy, dt, self.speed)
 
 		if not self.key_presed:
-			self.finish_pos = expect_finish_pos(self)
+
+			self.finish_pos = expect_finish_pos(self, continue_move_value)
 			self.diff_x, self.diff_y = get_distance_between(self.pos, self.finish_pos)
-			
-			continue_move_value = 3
 
 			if self.diff_x > continue_move_value:
 				move(self.pos, self.last_dx, 0, dt, self.speed)

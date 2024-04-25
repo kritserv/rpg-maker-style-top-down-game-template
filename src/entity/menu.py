@@ -58,8 +58,5 @@ class Menu:
 
 		elif key[pg.K_DOWN] and self.cursor.pos[1] == self.bottom:
 				self.cursor.pos[1] = 0 - self.plus_value
-		else:
-			if self.cursor.pos[1] <= -16:
-				self.cursor.pos[1] = self.bottom + self.plus_value
 
 		return selected
