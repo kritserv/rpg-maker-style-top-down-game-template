@@ -29,7 +29,6 @@ async def main():
 	pause_toggle = False
 
 	screen, black_bar_is_set, cap_fps = load_screen_from_json()
-	cap_fps = True
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[

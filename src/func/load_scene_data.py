@@ -1,6 +1,6 @@
 import pygame as pg
-from json import load
 from src.variable import blue, white
+from .load_json_file import json_loader
 
 def convert_char(char, val_dict):
 	try:
@@ -13,10 +13,8 @@ def convert_char(char, val_dict):
 
 def build_multiple_pg_rect(method, x, y):
 	rects = []
-	with open("game_data/scene/method.json") as f:
-		json_load = load(f)
-		loaded_method = json_load["build_multiple_pg_rect"]
-		f.close()
+	json_load = json_loader("game_data/scene/method.json")
+	loaded_method = json_load["build_multiple_pg_rect"]
 	build_calculation = loaded_method[method]
 	for calculation in build_calculation:
 		rect = []
@@ -42,14 +40,11 @@ def build_multiple_pg_rect(method, x, y):
 
 
 def load_scene_from_json():
-	with open("game_data/scene/data.json") as f:
-		json_load = load(f)
-		loaded_scene_data = json_load["scene_data"]
-		f.close()
-	with open("game_data/scene/config.json") as f:
-		json_load = load(f)
-		loaded_scene_dict = json_load["scene_dict"]
-		f.close()
+	json_load = json_loader("game_data/scene/data.json")
+	loaded_scene_data = json_load["scene_data"]
+
+	json_load = json_loader("game_data/scene/config.json")
+	loaded_scene_dict = json_load["scene_dict"]
 
 	scene_data = {}
 
