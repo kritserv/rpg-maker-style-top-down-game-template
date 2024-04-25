@@ -131,7 +131,6 @@ async def main():
 
 			# ================= [ TITLE GRAPHIC ] ================
 
-
 			title_screen_menu.resize(pixel_size)
 
 			screen.fill(black)

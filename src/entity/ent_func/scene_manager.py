@@ -1,15 +1,4 @@
-def scene_is_in_cache(cache_dict, scene_name):
-	try:
-		test = cache_dict[scene_name]
-		return True
-	except KeyError:
-		return False
-
-def add_scene_to_cache(cache_dict, scene_name, data):
-	cache_dict[scene_name] = data
-
-def load_scene_from_cache(cache_dict, scene_name):
-	return cache_dict[scene_name]
+from .optimizer import data_is_in_cache, add_data_to_cache, load_data_from_cache
 
 def calculate_new_scene_data(scene_man, new_scene_name):
 	scene_man.player.obs, scene_man.tdmap.rects = [], []
@@ -19,13 +8,13 @@ def calculate_new_scene_data(scene_man, new_scene_name):
 	scene_man.player.calculate_obs_pos()
 
 def changing_scene(scene_man, x, y, new_scene_name):
-	if scene_is_in_cache(scene_man.cache_dict, new_scene_name):
-		loaded = load_scene_from_cache(scene_man.cache_dict, new_scene_name)
+	if data_is_in_cache(scene_man.cache_dict, new_scene_name):
+		loaded = load_data_from_cache(scene_man.cache_dict, new_scene_name)
 		scene_man.player.obs = loaded["obs_for_player"]
 		scene_man.tdmap.rects = loaded["rects_for_tdmap"]
 	else:
 		calculate_new_scene_data(scene_man, new_scene_name)
-		add_scene_to_cache(scene_man.cache_dict, new_scene_name, {"obs_for_player": scene_man.player.obs, "rects_for_tdmap": scene_man.tdmap.rects})
+		add_data_to_cache(scene_man.cache_dict, new_scene_name, {"obs_for_player": scene_man.player.obs, "rects_for_tdmap": scene_man.tdmap.rects})
 
 	scene_man.player.pos = [x, y]
 	scene_man.player.finish_pos = [x, y]
