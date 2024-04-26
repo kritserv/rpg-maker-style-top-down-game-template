@@ -4,63 +4,56 @@
 			"pos": [0, 0],
 			"trigger_by": "nothing",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [-64, 0, "openworld"],
-				"new_camera_stop_position": [-144, 144, -160, 160]
+				"func": "change_scene",
+				"new_scene": [-64, 0, "openworld"]
 			}
 		},
 		"move_to_inner_house1": {
 			"pos": [-80, -48],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [0, 48, "inner_house1"],
-				"new_camera_stop_position": [-48, 48, -64, 16]
+				"func": "change_scene",
+				"new_scene": [0, 48, "inner_house1"]
 			}
 		},
 		"move_to_inner_house2": {
 			"pos": [80, -48],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [0, 48, "inner_house2"],
-				"new_camera_stop_position": [-48, 48, -64, 16]
+				"func": "change_scene",
+				"new_scene": [0, 48, "inner_house2"]
 			}
 		},
 		"move_to_inner_house3": {
 			"pos": [-80, 96],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [0, 48, "inner_house3"],
-				"new_camera_stop_position": [-48, 48, -64, 16]
+				"func": "change_scene",
+				"new_scene": [0, 48, "inner_house3"]
 			}
 		},
 		"exit_inner_house1": {
 			"pos": [0, 64],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [-80, -16, "openworld"],
-				"new_camera_stop_position": [-144, 144, -160, 160]
+				"func": "change_scene",
+				"new_scene": [-80, -16, "openworld"]
 			}
 		},
 		"exit_inner_house2": {
 			"pos": [0, 64],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [80, -16, "openworld"],
-				"new_camera_stop_position": [-144, 144, -160, 160]
+				"func": "change_scene",
+				"new_scene": [80, -16, "openworld"]
 			}
 		},
 		"exit_inner_house3": {
 			"pos": [0, 64],
 			"trigger_by": "player_on_top",
 			"effect": {
-				"func": ["change_scene", "change_camera_stop_position"],
-				"new_scene": [-80, 128, "openworld"],
-				"new_camera_stop_position": [-144, 144, -160, 160]
+				"func": "change_scene",
+				"new_scene": [-80, 128, "openworld"]
 			}
 		}
 	}

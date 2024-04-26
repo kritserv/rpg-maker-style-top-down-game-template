@@ -4,14 +4,19 @@ class Event:
 		self.player = player
 		self.scene_manager = scene_manager
 
+	def trigger_change_scene_event(self, new_scene):
+		x, y, new_scene_name = new_scene
+		self.scene_manager.change_scene(x, y, new_scene_name)
+
+	def trigger_change_cam_event(self, new_camera_stop_position):
+		stop_left, stop_right, stop_up, stop_down = new_camera_stop_position
+		self.scene_manager.change_camera_stop_position(stop_left, stop_right, stop_up, stop_down)
+
 	def trigger(self, effect):
-		for func in effect["func"]:
-			if func == "change_scene":
-				x, y, new_scene_name = effect["new_scene"]
-				self.scene_manager.change_scene(x, y, new_scene_name)
-			elif func == "change_camera_stop_position":
-				stop_left, stop_right, stop_up, stop_down = effect["new_camera_stop_position"]
-				self.scene_manager.change_camera_stop_position(stop_left, stop_right, stop_up, stop_down)
+		func = effect["func"]
+		if func == "change_scene":
+			self.trigger_change_scene_event(effect["new_scene"])
+			self.trigger_change_cam_event(effect["new_camera_stop_position"])
 
 	def check_condition(self):
 		for scene_event in self.event_dict[self.scene_manager.current_scene]:
