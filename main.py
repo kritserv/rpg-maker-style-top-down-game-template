@@ -23,7 +23,7 @@ pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 async def main():
 	run = True
 	web_export = False
-	debug = True
+	debug = False
 	debug_list = [""]
 	full_screen_toggle = False
 	pause = False
@@ -59,9 +59,7 @@ async def main():
 	save_manager = SaveManager(load_save_from_json())
 	save_manager.save_menu, save_manager.load_menu = Menu(Cursor(screen)), Menu(Cursor(screen))
 	save_manager.create_buttons()
-	print(save_manager.save_dict)
-	print(save_manager.save_menu.buttons)
-	print(save_manager.load_menu.buttons)
+	loadable_slot = [f"Load From Slot {i}" for i in range(8)]
 
 	title_screen_menu = Menu(Cursor(screen))
 	title_screen_menu.buttons = [
@@ -215,13 +213,12 @@ async def main():
 			# ================ [ LOAD GAME LOGIC ] ==============
 
 			selected = save_manager.load_menu.update(dt, key, interact)
-			if selected == "Load From Slot 0":
-				event.trigger(save_manager.save_dict["0"]["event"])
-				game_state = "main_game"
-			elif selected == "Cancel":
+			for i, slot in enumerate(loadable_slot):
+				if selected == slot:
+					event.trigger(save_manager.save_dict[str(i)]["event"])
+					game_state = "main_game"
+			if selected == "Cancel":
 				game_state = "title_screen_menu"
-			else:
-				pass
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
 

@@ -5,7 +5,11 @@ class SaveManager:
 	def create_buttons(self):
 		for i in range(len(self.save_dict)):
 			self.save_menu.buttons.append(f"Save To Slot {i}")
-			self.load_menu.buttons.append(f"Load From Slot {i}")
+
+			if self.save_dict[str(i)]:
+				self.load_menu.buttons.append(f"Load From Slot {i}")
+			else:
+				self.load_menu.buttons.append(f"Slot {i} Empty")
 
 		self.save_menu.buttons.append("Cancel")
 		self.load_menu.buttons.append("Cancel")
