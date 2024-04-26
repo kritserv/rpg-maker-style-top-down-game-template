@@ -13,8 +13,9 @@ from src import clock_tick, curr_fps,\
 	print_debug, load_screen_from_json, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
+	load_save_from_json, \
 	Player, TopDownMap, Camera, BlackBar, \
-	Timer, SceneManager, Event, Cursor, Menu
+	Timer, SceneManager, SaveManager, Event, Cursor, Menu
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -54,6 +55,13 @@ async def main():
 	event = Event(
 		event_dict, player, scene_manager
 		)
+
+	save_manager = SaveManager(load_save_from_json())
+	save_manager.save_menu, save_manager.load_menu = Menu(Cursor(screen)), Menu(Cursor(screen))
+	save_manager.create_buttons()
+	print(save_manager.save_dict)
+	print(save_manager.save_menu.buttons)
+	print(save_manager.load_menu.buttons)
 
 	title_screen_menu = Menu(Cursor(screen))
 	title_screen_menu.buttons = [
@@ -119,7 +127,7 @@ async def main():
 				event.trigger(start_event["effect"])
 				game_state = "main_game"
 			elif selected == "Load Game":
-				# game_state = "load_game_menu"
+				game_state = "load_game_menu"
 				pass
 			elif selected == "Options":
 				# game_state = "options_menu"
@@ -202,8 +210,40 @@ async def main():
 					debug_timer.restart()
 				print_debug(debug_list)
 
-		else:
-			pass
+		elif game_state == "load_game_menu":
+
+			# ================ [ LOAD GAME LOGIC ] ==============
+
+			selected = save_manager.load_menu.update(dt, key, interact)
+			if selected == "Load From Slot 0":
+				event.trigger(save_manager.save_dict["0"])
+				game_state = "main_game"
+			elif selected == "Cancel":
+				game_state = "title_screen_menu"
+			else:
+				pass
+
+			# =============== [ LOAD GAME GRAPHIC ] ==============
+
+			save_manager.load_menu.resize(pixel_size)
+
+			screen.fill(black)
+			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			save_manager.load_menu.draw(pixel_size)
+
+			# ================= [ TEST ] ===================
+
+			if debug:
+				if debug_timer.time_now() > 0.1:
+					debug_list = [
+						f"fps: {curr_fps()}", 
+						f"resolution: {(curr_width, curr_height)}", 
+						f"x: {save_manager.load_menu.cursor.pos[0]}",
+						f"y: {save_manager.load_menu.cursor.pos[1]}",
+						f"px_size: {pixel_size}"
+					]
+					debug_timer.restart()
+				print_debug(debug_list)
 
 		# ================= [ PYGAME STUFF ] ================
 

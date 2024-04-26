@@ -16,7 +16,6 @@ class Cursor:
 		self.rects = [
 			(pg.Rect(0, 0, 16, 16), white), 
 		]
-		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
 		self.finished_x_move, self.finished_y_move = True, True
 		self.resize_cache_dict = {}
@@ -28,8 +27,17 @@ class Cursor:
 		resize_pixel(self, pixel_size)
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
-	def draw(self, pixel_size):
-		pg.draw.rect(self.screen, white, pg.Rect(8+(self.pos[0]*pixel_size), (self.pos[1]*pixel_size)+self.y, self.original_width*pixel_size, self.original_height*pixel_size))
+	def draw(self, pixel_size, menu_top_left_x, menu_top_left_y):
+		pg.draw.rect(
+			self.screen, 
+			white, 
+			pg.Rect(
+				menu_top_left_x+(self.pos[0]*pixel_size), 
+				menu_top_left_y+(self.pos[1]*pixel_size), 
+				self.original_width*pixel_size, 
+				self.original_height*pixel_size
+			)
+		)
 
 	def update(self, dt, key):
 		dx, dy = calculate_movement(self, key)

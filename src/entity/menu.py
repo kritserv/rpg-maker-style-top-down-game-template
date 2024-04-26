@@ -9,6 +9,7 @@ class Menu:
 		self.button_dicts = {}
 		self.plus_value = 10
 		self.columns = 1
+		self.top_left_x, self.top_left_y = 8, 8
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32
@@ -33,7 +34,7 @@ class Menu:
 		self.cursor.resize(pixel_size)
 
 	def draw(self, pixel_size):
-		self.cursor.draw(pixel_size)
+		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
 		if pixel_size == 1:
 			menu_font = font_x1
 		elif pixel_size == 2:
@@ -41,7 +42,8 @@ class Menu:
 		else:
 			menu_font = font_x3
 
-		y = self.cursor.y - (12 * pixel_size)
+		y = self.top_left_y - (12 * pixel_size)
+
 		range_y = 16
 		for button in self.buttons:
 			y += (range_y * pixel_size)
