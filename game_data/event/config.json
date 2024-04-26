@@ -13,5 +13,5 @@
 			"exit_inner_house3"
 		]
 	},
-	"start_event":  "start_in_openworld"
+	"start_event":  "move_to_openworld"
 }

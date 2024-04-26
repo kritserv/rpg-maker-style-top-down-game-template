@@ -1,0 +1,9 @@
+{
+	"0": {
+		"func": ["change_scene", "change_camera_stop_position"],
+		"new_scene": [0, 16, "inner_house2"],
+		"new_camera_stop_position": [-144, 144, -160, 160]
+	}, 
+	"1": {}, 
+	"2": {}
+}

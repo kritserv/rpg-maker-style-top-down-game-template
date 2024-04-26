@@ -1,6 +1,6 @@
 {
 	"event_data": {
-		"start_in_openworld": {
+		"move_to_openworld": {
 			"pos": [0, 0],
 			"trigger_by": "nothing",
 			"effect": {

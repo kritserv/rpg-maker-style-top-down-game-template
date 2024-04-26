@@ -216,7 +216,7 @@ async def main():
 
 			selected = save_manager.load_menu.update(dt, key, interact)
 			if selected == "Load From Slot 0":
-				event.trigger(save_manager.save_dict["0"])
+				event.trigger(save_manager.save_dict["0"]["event"])
 				game_state = "main_game"
 			elif selected == "Cancel":
 				game_state = "title_screen_menu"
