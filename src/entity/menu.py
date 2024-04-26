@@ -8,13 +8,16 @@ class Menu:
 		self.buttons = []
 		self.button_dicts = {}
 		self.plus_value = 10
+		self.columns = 2
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32
-		top = [-16, self.top, 16, 16]
+		top = [-16, self.top, 16*self.columns, 16]
 		self.bottom = (len(self.buttons) - 1) * 16
-		bottom = [-16, self.bottom, 16, 16]
-		self.cursor.obs = [top, bottom]
+		bottom = [-16, self.bottom, 16*self.columns, 16]
+		left = [-32, self.top, 16, self.bottom + 48]
+		right = [16*(self.columns-1), self.top, 16, self.bottom + 48]
+		self.cursor.obs = [top, bottom, left, right]
 		self.cursor.calculate_obs_pos()
 
 	def calculate_button_pos(self):
@@ -54,9 +57,9 @@ class Menu:
 					selected = self.button_dicts[button_pos]
 
 		if key[pg.K_UP] and self.cursor.pos[1] == 0:
-				self.cursor.pos[1] = self.bottom + self.plus_value
+			self.cursor.pos[1] = self.bottom + self.plus_value
 
 		elif key[pg.K_DOWN] and self.cursor.pos[1] == self.bottom:
-				self.cursor.pos[1] = 0 - self.plus_value
+			self.cursor.pos[1] = 0 - self.plus_value
 
 		return selected

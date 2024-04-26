@@ -28,13 +28,13 @@ class Cursor:
 		self.transformed_rects = correct_all_rect(self, pixel_size)
 
 	def draw(self, pixel_size):
-		pg.draw.rect(self.screen, white, pg.Rect(8, (self.pos[1]*pixel_size)+self.y, self.original_width*pixel_size, self.original_height*pixel_size))
+		pg.draw.rect(self.screen, white, pg.Rect(8+(self.pos[0]*pixel_size), (self.pos[1]*pixel_size)+self.y, self.original_width*pixel_size, self.original_height*pixel_size))
 
 	def update(self, dt, key):
 		dx, dy = calculate_movement(self, key)
 
 		if self.key_presed:
-			move(self.pos, 0, dy, dt, self.speed)
+			move(self.pos, dx, dy, dt, self.speed)
 
 		if not self.key_presed:
 
