@@ -1,5 +1,6 @@
 import pygame as pg
 from math import floor, ceil
+from .optimizer import data_is_in_cache, add_data_to_cache, load_data_from_cache
 
 def correct_all_rect(player, pixel_size):
 	transformed_rects = [(pg.Rect(rect.x * pixel_size + player.top_left_x,
@@ -9,10 +10,24 @@ def correct_all_rect(player, pixel_size):
 	return transformed_rects
 
 def resize_pixel(player, pixel_size):
-	screen_width, screen_height = player.screen.get_width(), player.screen.get_height()
-	player.x, player.y = screen_width/2, screen_height/2
-	player.width, player.height = player.original_width * pixel_size, player.original_height * pixel_size
-	player.top_left_x, player.top_left_y = player.x - player.width/2, player.y - player.height/2
+	key = str(player.screen.get_width())+str(player.screen.get_height())
+	if data_is_in_cache(player.resize_cache_dict, key):
+		player.x, \
+		player.y, \
+		player.width, \
+		player.height, \
+		player.top_left_x, \
+		player.top_left_y = load_data_from_cache(player.resize_cache_dict, key)
+	else:
+		screen_width, screen_height = player.screen.get_width(), player.screen.get_height()
+		player.x, player.y = screen_width/2, screen_height/2
+		player.width, player.height = player.original_width * pixel_size, player.original_height * pixel_size
+		player.top_left_x, player.top_left_y = player.x - player.width/2, player.y - player.height/2
+		add_data_to_cache(
+			player.resize_cache_dict, 
+			key, 
+			[player.x, player.y, player.width, player.height, player.top_left_x, player.top_left_y]
+		)
 	
 def calculate_obs_position(ob_list):
 	plus_value = 10

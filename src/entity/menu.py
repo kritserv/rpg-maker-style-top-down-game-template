@@ -8,7 +8,7 @@ class Menu:
 		self.buttons = []
 		self.button_dicts = {}
 		self.plus_value = 10
-		self.columns = 2
+		self.columns = 1
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32

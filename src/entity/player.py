@@ -20,6 +20,7 @@ class Player:
 		self.x, self.y = screen.get_width()/2, screen.get_height()/2
 		self.obs = []
 		self.finished_x_move, self.finished_y_move = True, True
+		self.resize_cache_dict = {}
 										  
 	def calculate_obs_pos(self):
 		self.obs = calculate_obs_position(self.obs)
