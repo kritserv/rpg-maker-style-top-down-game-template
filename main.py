@@ -95,7 +95,8 @@ async def main():
 		debug, \
 		full_screen_toggle, \
 		pause_toggle, \
-		interact = check_pygame_event(
+		interact, \
+		cancel = check_pygame_event(
 			pg.event.get(), new_size, debug
 			)
 		curr_width, curr_height, pixel_size = update_size(
@@ -215,7 +216,7 @@ async def main():
 				if selected == slot:
 					event.trigger(save_manager.save_dict[str(i)]["event"])
 					game_state = "main_game"
-			if selected == "Cancel":
+			if selected == "Cancel" or cancel:
 				game_state = "title_screen_menu"
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
