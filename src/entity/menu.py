@@ -1,5 +1,5 @@
 import pygame as pg
-from src import font_x1, font_x2, font_x3, blit_text
+from src import font_x1, font_x2, font_x3, font_x4, blit_text
 from src.variable import green
 
 class Menu:
@@ -10,6 +10,7 @@ class Menu:
 		self.plus_value = 10
 		self.columns = 1
 		self.top_left_x, self.top_left_y = 8, 8
+		self.font_size_plus_1 = False
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32
@@ -30,17 +31,18 @@ class Menu:
 		self.calculate_menu_obs_pos()
 		self.calculate_button_pos()
 
-	def resize(self, pixel_size):
-		self.cursor.resize(pixel_size)
-
 	def draw(self, pixel_size):
+		if self.font_size_plus_1:
+			pixel_size += 1
 		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
 		if pixel_size == 1:
 			menu_font = font_x1
 		elif pixel_size == 2:
 			menu_font = font_x2
-		else:
+		elif pixel_size == 3:
 			menu_font = font_x3
+		else:
+			menu_font = font_x4
 
 		y = self.top_left_y - (12 * pixel_size)
 

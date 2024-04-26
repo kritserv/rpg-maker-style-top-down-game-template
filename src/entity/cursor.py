@@ -1,5 +1,5 @@
 import pygame as pg
-from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move, resize_pixel
+from .ent_func import correct_all_rect, calculate_movement, calculate_obs_position, expect_finish_pos, get_distance_between, move
 from src.variable import white
 
 continue_move_value = 3
@@ -9,7 +9,7 @@ class Cursor:
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.speed = 120
-		self.original_width, self.original_height, self.width, self.height = 160, 16, 160, 16
+		self.original_width, self.original_height, self.width, self.height = 112, 16, 112, 16
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0
@@ -18,14 +18,9 @@ class Cursor:
 		]
 		self.obs = []
 		self.finished_x_move, self.finished_y_move = True, True
-		self.resize_cache_dict = {}
 										  
 	def calculate_obs_pos(self):
 		self.obs = calculate_obs_position(self.obs)
-
-	def resize(self, pixel_size):
-		resize_pixel(self, pixel_size)
-		self.transformed_rects = correct_all_rect(self, pixel_size)
 
 	def draw(self, pixel_size, menu_top_left_x, menu_top_left_y):
 		pg.draw.rect(

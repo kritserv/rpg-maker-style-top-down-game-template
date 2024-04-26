@@ -66,12 +66,14 @@ async def main():
 		"Start Game", "Load Game", "Options", "Quit Game"
 		]
 	title_screen_menu.setup_buttons()
+	title_screen_menu.font_size_plus_1 = True
 
 	pause_menu = Menu(Cursor(screen))
 	pause_menu.buttons = [
 		"Save", "Load", "Back To Title", "Cancel"
 		]
 	pause_menu.setup_buttons()
+	pause_menu.font_size_plus_1 = True
 
 	game_state = "title_screen_menu"
 
@@ -137,8 +139,6 @@ async def main():
 
 			# ================= [ TITLE GRAPHIC ] ================
 
-			title_screen_menu.resize(pixel_size)
-
 			screen.fill(black)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			title_screen_menu.draw(pixel_size)
@@ -161,9 +161,9 @@ async def main():
 
 			# ================= [ MAIN LOGIC ] =================
 
+			camera.update(pixel_size)
 			if not pause:
 				player.update(dt, key)
-				camera.update(pixel_size)
 				event.update()
 			else:
 				selected = pause_menu.update(dt, key, interact)
@@ -176,8 +176,7 @@ async def main():
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
 				elif selected == "Cancel":
-					if pause == True:
-						pause = False
+					pause = False
 				else:
 					pass
 
@@ -190,7 +189,6 @@ async def main():
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if pause:
-				pause_menu.resize(pixel_size)
 				pause_menu.draw(pixel_size)
 
 			# ================= [ TEST ] ===================
@@ -221,8 +219,6 @@ async def main():
 				game_state = "title_screen_menu"
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
-
-			save_manager.load_menu.resize(pixel_size)
 
 			screen.fill(black)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
