@@ -3,7 +3,7 @@ pg.mixer.init()
 pg.mixer.pre_init(44100, -16, 2, 512)
 pg.init()
 from sys import exit
-import asyncio
+from asyncio import run, sleep
 from time import time
 from src import clock_tick, curr_fps,\
 	default_screen_width, \
@@ -21,7 +21,7 @@ pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
 async def main():
-	run = True
+	running = True
 	web_export = False
 	debug = False
 	debug_list = [""]
@@ -81,7 +81,7 @@ async def main():
 	debug_timer.start()
 
 	prev_time = time()
-	while run:
+	while running:
 
 		# ================== [ DELTA TIME ] ==================
 
@@ -90,7 +90,7 @@ async def main():
 
 		# =================== [ GET INPUT ] ===================
 
-		run, \
+		running, \
 		new_size, \
 		debug, \
 		full_screen_toggle, \
@@ -134,7 +134,7 @@ async def main():
 				# game_state = "options_menu"
 				pass
 			elif selected == "Quit Game":
-				run = False
+				running = False
 			else:
 				pass
 
@@ -243,10 +243,10 @@ async def main():
 
 		pg.display.update()
 		clock_tick(cap_fps)
-		await asyncio.sleep(0)
+		await sleep(0)
 
 	pg.quit()
 	exit()
 
 if __name__ == "__main__":
-	asyncio.run(main())
+	run(main())
