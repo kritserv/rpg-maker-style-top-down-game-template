@@ -3,7 +3,7 @@ pg.mixer.init()
 pg.mixer.pre_init(44100, -16, 2, 512)
 pg.init()
 from sys import exit
-from asyncio import run, sleep
+import asyncio
 from time import time
 from src import clock_tick, curr_fps,\
 	default_screen_width, \
@@ -23,7 +23,7 @@ pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
 async def main():
 	running = True
-	web_export = False
+	web_export = True
 	debug = False
 	debug_list = [""]
 	full_screen_toggle = False
@@ -253,10 +253,10 @@ async def main():
 
 		pg.display.update()
 		clock_tick(cap_fps, target_fps)
-		await sleep(0)
+		await asyncio.sleep(0)
 
 	pg.quit()
 	exit()
 
 if __name__ == "__main__":
-	run(main())
+	asyncio.run(main())
