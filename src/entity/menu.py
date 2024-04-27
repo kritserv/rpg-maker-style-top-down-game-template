@@ -38,6 +38,9 @@ class Menu:
 		self.calculate_menu_obs_pos()
 		self.calculate_button_pos()
 
+	def reset_cursor(self):
+		self.cursor.pos[1] = 0
+
 	def draw_background_with_black_bar(self, pixel_size, black_bar_width):
 		screen = self.cursor.screen
 		key = str(self.cursor.original_width)+str(black_bar_width)+str(pixel_size)

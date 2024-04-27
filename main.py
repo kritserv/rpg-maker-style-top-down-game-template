@@ -132,8 +132,10 @@ async def main():
 			if selected == "Start Game":
 				event.trigger(start_event["effect"])
 				game_state = "main_game"
+				title_screen_menu.reset_cursor()
 			elif selected == "Load Game":
 				game_state = "load_game_menu"
+				title_screen_menu.reset_cursor()
 				pass
 			elif selected == "Options":
 				# game_state = "options_menu"
@@ -180,11 +182,13 @@ async def main():
 					pass
 				elif selected == "Load":
 					game_state = "load_game_menu"
-					pass
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
+					pause_menu.reset_cursor()
+					title_screen_menu.reset_cursor()
 				elif selected == "Cancel":
 					pause = False
+					pause_menu.reset_cursor()
 
 			# ================= [ MAIN GRAPHIC ] ===============
 
@@ -222,12 +226,14 @@ async def main():
 					event.trigger(save_manager.save_dict[str(i)])
 					game_state = "main_game"
 					pause = False
+					save_manager.load_menu.reset_cursor()
 			if selected == "Cancel" or cancel:
 				if old_game_state == "pause_menu":
 					game_state = "main_game"
 					pause = True
 				else:
 					game_state = old_game_state
+				save_manager.load_menu.reset_cursor()
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
 
