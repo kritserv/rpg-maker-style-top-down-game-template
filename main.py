@@ -77,6 +77,7 @@ async def main():
 	pause_menu.font_size_plus_1 = True
 
 	game_state = "title_screen_menu"
+	old_game_state = "title_screen_menu"
 
 	debugger = Debugger()
 
@@ -122,6 +123,7 @@ async def main():
 		# ================= [ GET GAME STATE ] =================
 
 		if game_state == "title_screen_menu":
+			old_game_state = "title_screen_menu"
 			pause = False
 
 			# ================== [ TITLE LOGIC ] ================
@@ -162,6 +164,7 @@ async def main():
 				debugger.print_debug(debug_list)
 
 		elif game_state == "main_game":
+			old_game_state = "main_game"
 
 			# ================= [ MAIN LOGIC ] =================
 
@@ -170,12 +173,13 @@ async def main():
 				player.update(dt, key)
 				event.update()
 			else:
+				old_game_state = "pause_menu"
 				selected = pause_menu.update(dt, key, interact)
 				if selected == "Save":
 					# game_state = "save_game_menu"
 					pass
 				elif selected == "Load":
-					# game_state = "load_game_menu"
+					game_state = "load_game_menu"
 					pass
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
@@ -217,8 +221,13 @@ async def main():
 				if selected == slot:
 					event.trigger(save_manager.save_dict[str(i)])
 					game_state = "main_game"
+					pause = False
 			if selected == "Cancel" or cancel:
-				game_state = "title_screen_menu"
+				if old_game_state == "pause_menu":
+					game_state = "main_game"
+					pause = True
+				else:
+					game_state = old_game_state
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
 
