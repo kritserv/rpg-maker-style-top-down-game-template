@@ -10,12 +10,13 @@ from src import clock_tick, curr_fps,\
 	default_screen_height, \
 	default_screen_size, \
 	black, darkblue, check_pygame_event, \
-	print_debug, load_screen_from_json, \
+	load_screen_from_json, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
 	load_save_from_json, \
 	Player, TopDownMap, Camera, BlackBar, \
-	Timer, SceneManager, SaveManager, Event, Cursor, Menu
+	Timer, SceneManager, SaveManager, Event, \
+	Cursor, Menu, Debugger
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -76,6 +77,8 @@ async def main():
 	pause_menu.font_size_plus_1 = True
 
 	game_state = "title_screen_menu"
+
+	debugger = Debugger()
 
 	debug_timer = Timer()
 	debug_timer.start()
@@ -156,7 +159,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				print_debug(debug_list)
+				debugger.print_debug(debug_list)
 
 		elif game_state == "main_game":
 
@@ -203,7 +206,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				print_debug(debug_list)
+				debugger.print_debug(debug_list)
 
 		elif game_state == "load_game_menu":
 
@@ -235,7 +238,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				print_debug(debug_list)
+				debugger.print_debug(debug_list)
 
 		# ================= [ PYGAME STUFF ] ================
 

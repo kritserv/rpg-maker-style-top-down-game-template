@@ -8,5 +8,6 @@ from .event import Event
 from .cursor import Cursor
 from .menu import Menu
 from .game_save_manager import SaveManager
+from .debug import Debugger
 
-__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager, Event, Cursor, Menu, SaveManager)
+__all__ = (BlackBar, TopDownMap, Player, Camera, Timer, SceneManager, Event, Cursor, Menu, SaveManager, Debugger)
