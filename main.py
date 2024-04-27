@@ -176,7 +176,7 @@ async def main():
 					pass
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
-				elif selected == "Cancel" or cancel:
+				elif selected == "Cancel":
 					pause = False
 
 			# ================= [ MAIN GRAPHIC ] ===============
