@@ -38,9 +38,22 @@ class Menu:
 		self.calculate_menu_obs_pos()
 		self.calculate_button_pos()
 
-	def draw_background(self, pixel_size, black_bar_width):
+	def draw_background_with_black_bar(self, pixel_size, black_bar_width):
 		screen = self.cursor.screen
-		key = str(self.cursor.original_width)+str(black_bar_width)
+		key = str(self.cursor.original_width)+str(black_bar_width)+str(pixel_size)
+		if data_is_in_cache(self.background_cache_dict, key):
+			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
+		else:
+			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size * self.columns, 16 * pixel_size * len(self.buttons)))
+			self.menu_background.set_alpha(200)
+			self.menu_background.fill(black)
+			self.menu_background = self.menu_background.convert_alpha()
+			add_data_to_cache(self.background_cache_dict, key, self.menu_background)
+		screen.blit(self.menu_background, (self.top_left_x, self.top_left_y))
+
+	def draw_background(self, pixel_size):
+		screen = self.cursor.screen
+		key = str(self.cursor.original_width)+str(pixel_size)
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
@@ -68,7 +81,10 @@ class Menu:
 				add_data_to_cache(self.black_bar_cache_dict, key, self.top_left_x)
 
 		if self.need_background:
-			self.draw_background(pixel_size, black_bar.black_bar_width)
+			if black_bar.is_exist:
+				self.draw_background_with_black_bar(pixel_size, black_bar.black_bar_width)
+			else:
+				self.draw_background(pixel_size)
 
 		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
 		if pixel_size == 1:

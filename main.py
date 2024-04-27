@@ -161,7 +161,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				debugger.print_debug(debug_list)
+				debugger.print_debug(debug_list, black_bar)
 
 		elif game_state == "main_game":
 			old_game_state = "main_game"
@@ -210,7 +210,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				debugger.print_debug(debug_list)
+				debugger.print_debug(debug_list, black_bar)
 
 		elif game_state == "load_game_menu":
 
@@ -247,7 +247,7 @@ async def main():
 						f"px_size: {pixel_size}"
 					]
 					debug_timer.restart()
-				debugger.print_debug(debug_list)
+				debugger.print_debug(debug_list, black_bar)
 
 		# ================= [ PYGAME STUFF ] ================
 
