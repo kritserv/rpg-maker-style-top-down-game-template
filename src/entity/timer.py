@@ -41,5 +41,3 @@ class Timer:
 			return round(self.elapsed_time, 3)
 		else:
 			return round(self.elapsed_time + time() - self.start_time, 3)
-
-main_timer = Timer()
