@@ -1,5 +1,5 @@
 {
 	"fullscreen": "False",
-	"blackbar": "False",
+	"blackbar": "True",
 	"capfps": "False"
 }

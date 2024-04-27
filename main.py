@@ -142,7 +142,7 @@ async def main():
 
 			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
-			title_screen_menu.draw(pixel_size)
+			title_screen_menu.draw(pixel_size, black_bar)
 
 			# ================= [ TEST ] ===================
 
@@ -188,7 +188,7 @@ async def main():
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if pause:
-				pause_menu.draw(pixel_size)
+				pause_menu.draw(pixel_size, black_bar)
 
 			# ================= [ TEST ] ===================
 
@@ -221,7 +221,7 @@ async def main():
 
 			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
-			save_manager.load_menu.draw(pixel_size)
+			save_manager.load_menu.draw(pixel_size, black_bar)
 
 			# ================= [ TEST ] ===================
 
