@@ -2,9 +2,9 @@ import pygame as pg
 
 clock = pg.time.Clock()
 
-def clock_tick(cap_fps):
+def clock_tick(cap_fps, target_fps):
 	if cap_fps:
-		clock.tick(60)
+		clock.tick(target_fps)
 	else:
 		clock.tick()
 

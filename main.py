@@ -30,7 +30,7 @@ async def main():
 	pause = False
 	pause_toggle = False
 
-	screen, black_bar_is_set, cap_fps = load_screen_from_json()
+	screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[
@@ -243,7 +243,7 @@ async def main():
 		# ================= [ PYGAME STUFF ] ================
 
 		pg.display.update()
-		clock_tick(cap_fps)
+		clock_tick(cap_fps, target_fps)
 		await sleep(0)
 
 	pg.quit()

@@ -11,6 +11,7 @@ def load_screen_from_json():
 	full_screen = json_load["fullscreen"]
 	blackbar = json_load["blackbar"]
 	capfps = json_load["capfps"]
+	target_fps = json_load["capfps_at"]
 	
 	if full_screen == "True":
 		screen = pg.display.set_mode(full_screen_size, pg.FULLSCREEN)
@@ -20,5 +21,5 @@ def load_screen_from_json():
 		black_bar = True
 	if capfps == "True":
 		cap_fps = True
-	return screen, black_bar, cap_fps
+	return screen, black_bar, cap_fps, target_fps
 
