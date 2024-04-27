@@ -47,6 +47,7 @@ class Menu:
 			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size * self.columns, 16 * pixel_size * len(self.buttons)))
 			self.menu_background.set_alpha(200)
 			self.menu_background.fill(black)
+			self.menu_background = self.menu_background.convert_alpha()
 			add_data_to_cache(self.background_cache_dict, key, self.menu_background)
 		screen.blit(self.menu_background, (self.top_left_x, self.top_left_y))
 
