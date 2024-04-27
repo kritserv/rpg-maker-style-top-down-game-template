@@ -1,6 +1,6 @@
 import pygame as pg
 from src import font_x1, font_x2, font_x3, font_x4, blit_text
-from src.variable import green
+from src.variable import green, black
 
 class Menu:
 	def __init__(self, cursor):
@@ -11,6 +11,9 @@ class Menu:
 		self.columns = 1
 		self.top_left_x, self.top_left_y = 8, 8
 		self.font_size_plus_1 = False
+
+		self.need_background = True
+		self.menu_background = None
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32
@@ -31,9 +34,19 @@ class Menu:
 		self.calculate_menu_obs_pos()
 		self.calculate_button_pos()
 
+	def draw_background(self, pixel_size):
+		screen = self.cursor.screen
+		if not self.menu_background:
+			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size * self.columns, 16 * pixel_size * len(self.buttons)))
+			self.menu_background.set_alpha(200)
+			self.menu_background.fill(black)
+		screen.blit(self.menu_background, (self.top_left_x, self.top_left_y))
+
 	def draw(self, pixel_size):
 		if self.font_size_plus_1:
 			pixel_size += 1
+		if self.need_background:
+			self.draw_background(pixel_size)
 		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
 		if pixel_size == 1:
 			menu_font = font_x1

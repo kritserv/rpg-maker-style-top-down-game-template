@@ -9,7 +9,7 @@ from src import clock_tick, curr_fps,\
 	default_screen_width, \
 	default_screen_height, \
 	default_screen_size, \
-	black, check_pygame_event, \
+	black, darkblue, check_pygame_event, \
 	print_debug, load_screen_from_json, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
@@ -140,7 +140,7 @@ async def main():
 
 			# ================= [ TITLE GRAPHIC ] ================
 
-			screen.fill(black)
+			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			title_screen_menu.draw(pixel_size)
 
@@ -184,7 +184,7 @@ async def main():
 			player.resize(pixel_size)
 			top_down_map.resize(pixel_size, player)
 
-			screen.fill(black)
+			screen.fill(darkblue)
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if pause:
@@ -219,7 +219,7 @@ async def main():
 
 			# =============== [ LOAD GAME GRAPHIC ] ==============
 
-			screen.fill(black)
+			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.load_menu.draw(pixel_size)
 
