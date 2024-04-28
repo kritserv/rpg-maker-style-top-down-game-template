@@ -7,7 +7,7 @@ class Cursor:
 		pg.sprite.Sprite.__init__(self)
 		self.screen = screen
 		self.speed = 120
-		self.original_width, self.original_height, self.width, self.height = 112, 16, 112, 16
+		self.original_width, self.original_height, self.width, self.height = 64, 16, 64, 16
 		self.pos = [0, 0]
 		self.finish_pos = [0, 0]
 		self.last_dx, self.last_dy = 0, 0

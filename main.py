@@ -69,6 +69,12 @@ async def main():
 	title_screen_menu.setup_buttons()
 	title_screen_menu.font_size_plus_05 = True
 
+	options_menu = Menu(Cursor(screen))
+	options_menu.buttons = [
+		"Full Screen", "Fps", "Black Bar", "Apply", "Cancel"
+	]
+	options_menu.setup_buttons()
+
 	pause_menu = Menu(Cursor(screen))
 	pause_menu.buttons = [
 		"Save", "Load", "Back To Title", "Cancel"
@@ -135,14 +141,10 @@ async def main():
 				title_screen_menu.reset_cursor()
 			elif selected == "Load Game":
 				game_state = "load_game_menu"
-				pass
 			elif selected == "Options":
-				# game_state = "options_menu"
-				pass
+				game_state = "options_menu"
 			elif selected == "Quit Game":
 				running = False
-			else:
-				pass
 
 			# ================= [ TITLE GRAPHIC ] ================
 
@@ -238,6 +240,27 @@ async def main():
 			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.load_menu.draw(pixel_size, black_bar)
+
+		elif game_state == "options_menu":
+
+			# ================ [ OPTIONS LOGIC ] ==============
+
+			selected = options_menu.update(dt, key, interact)
+			if selected == "Cancel" or cancel:
+				if old_game_state == "pause_menu":
+					game_state = "main_game"
+					pause = True
+				else:
+					game_state = old_game_state
+					options_menu.reset_cursor()
+			else:
+				pass
+
+			# =============== [ OPTIONS GRAPHIC ] ==============
+
+			screen.fill(darkblue)
+			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			options_menu.draw(pixel_size, black_bar)
 
 		# ================= [ PYGAME STUFF ] ================
 
