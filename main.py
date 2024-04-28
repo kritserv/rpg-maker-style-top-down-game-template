@@ -349,11 +349,11 @@ async def main():
 					pause_menu, 
 					save_manager.save_menu, 
 					save_manager.load_menu, 
-					title_screen_menu
+					title_screen_menu,
+					debugger
 					]:
 					menu.reset_cache()
 
-				debugger.reset_cache()
 				old_options = options_menu.buttons.copy()
 
 			elif selected == "Back" or cancel:
@@ -385,7 +385,7 @@ async def main():
 				]
 				debug_timer.restart()
 			debugger.print_debug(debug_list, black_bar)
-				
+
 		# ================= [ PYGAME STUFF ] ================
 
 		pg.display.update()
