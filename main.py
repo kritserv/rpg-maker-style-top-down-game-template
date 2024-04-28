@@ -306,7 +306,17 @@ async def main():
 					
 				black_bar.is_exist = black_bar_is_set
 				options_menu.top_left_x = 8
+				save_manager.save_menu.top_left_x = 8
+				save_manager.load_menu.top_left_x = 8
+				title_screen_menu.top_left_x = 8
 				options_menu.background_cache_dict = {}
+				options_menu.black_bar_cache_dict = {}
+				save_manager.save_menu.background_cache_dict = {}
+				save_manager.load_menu.background_cache_dict = {}
+				save_manager.save_menu.black_bar_cache_dict = {}
+				save_manager.load_menu.black_bar_cache_dict = {}
+				title_screen_menu.background_cache_dict = {}
+				title_screen_menu.black_bar_cache_dict = {}
 				options_menu.black_bar_cache_dict = {}
 				debugger.background_cache_dict = {}
 				debugger.black_bar_cache_dict = {}
