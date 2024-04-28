@@ -1,5 +1,5 @@
 import pygame as pg
-from src import font_x1, font_x2, font_x3, font_x4, blit_text
+from src import font_x1, font_x1_5, font_x2, font_x2_5, font_x3, font_x3_5, font_x4, blit_text
 from src.variable import green, black
 from .ent_func import data_is_in_cache, add_data_to_cache, load_data_from_cache
 
@@ -12,7 +12,7 @@ class Menu:
 		self.columns = 1
 		self.top_left_x, self.top_left_y = 8, 8
 		self.original_top_left_x = 8
-		self.font_size_plus_1 = False
+		self.font_size_plus_05 = False
 
 		self.background_cache_dict = {}
 		self.black_bar_cache_dict = {}
@@ -69,8 +69,8 @@ class Menu:
 
 	def draw(self, pixel_size, black_bar):
 
-		if self.font_size_plus_1:
-			pixel_size += 1
+		if self.font_size_plus_05:
+			pixel_size += 0.5
 
 		if black_bar.is_exist:
 			key = str(black_bar.black_bar_width)
@@ -92,10 +92,16 @@ class Menu:
 		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
 		if pixel_size == 1:
 			menu_font = font_x1
+		elif pixel_size == 1.5:
+			menu_font = font_x1_5
 		elif pixel_size == 2:
 			menu_font = font_x2
+		elif pixel_size == 2.5:
+			menu_font = font_x2_5
 		elif pixel_size == 3:
 			menu_font = font_x3
+		elif pixel_size == 3.5:
+			menu_font = font_x3_5
 		else:
 			menu_font = font_x4
 

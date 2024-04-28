@@ -13,7 +13,7 @@ class Debugger:
 		if data_is_in_cache(self.background_cache_dict, key):
 			debug_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			debug_background = pg.Surface((300, len(print_list) * 22))
+			debug_background = pg.Surface((220, len(print_list) * 22))
 			debug_background.set_alpha(150)
 			debug_background.fill(black)
 			debug_background = debug_background.convert_alpha()

@@ -23,7 +23,7 @@ pg.display.set_icon(pg.image.load("asset/img/icon.png"))
 
 async def main():
 	running = True
-	web_export = True
+	web_export = False
 	debug = False
 	debug_list = [""]
 	full_screen_toggle = False
@@ -67,14 +67,14 @@ async def main():
 		"Start Game", "Load Game", "Options", "Quit Game"
 		]
 	title_screen_menu.setup_buttons()
-	title_screen_menu.font_size_plus_1 = True
+	title_screen_menu.font_size_plus_05 = True
 
 	pause_menu = Menu(Cursor(screen))
 	pause_menu.buttons = [
 		"Save", "Load", "Back To Title", "Cancel"
 		]
 	pause_menu.setup_buttons()
-	pause_menu.font_size_plus_1 = True
+	pause_menu.font_size_plus_05 = True
 
 	game_state = "title_screen_menu"
 	old_game_state = "title_screen_menu"
@@ -238,20 +238,6 @@ async def main():
 			screen.fill(darkblue)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.load_menu.draw(pixel_size, black_bar)
-
-			# ================= [ TEST ] ===================
-
-			if debug:
-				if debug_timer.time_now() > 0.1:
-					debug_list = [
-						f"fps: {curr_fps()}", 
-						f"resolution: {(curr_width, curr_height)}", 
-						f"x: {save_manager.load_menu.cursor.pos[0]}",
-						f"y: {save_manager.load_menu.cursor.pos[1]}",
-						f"px_size: {pixel_size}"
-					]
-					debug_timer.restart()
-				debugger.print_debug(debug_list, black_bar)
 
 		# ================= [ PYGAME STUFF ] ================
 
