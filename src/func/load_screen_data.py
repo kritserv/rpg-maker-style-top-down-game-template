@@ -15,11 +15,13 @@ def load_screen_from_json():
 	
 	if full_screen == "True":
 		screen = pg.display.set_mode(full_screen_size, pg.FULLSCREEN)
+		full_screen = True
 	else:
 		screen = pg.display.set_mode(default_screen_size, pg.RESIZABLE)
+		full_screen = False
 	if blackbar == "True":
 		black_bar = True
 	if capfps == "True":
 		cap_fps = True
-	return screen, black_bar, cap_fps, target_fps
+	return screen, full_screen, black_bar, cap_fps, target_fps
 

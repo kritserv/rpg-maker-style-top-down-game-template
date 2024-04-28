@@ -10,7 +10,7 @@ from src import clock_tick, curr_fps,\
 	default_screen_height, \
 	default_screen_size, \
 	black, darkblue, check_pygame_event, \
-	load_screen_from_json, \
+	load_screen_from_json, save_screen_setting, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
 	load_save_from_json, \
@@ -30,7 +30,8 @@ async def main():
 	pause = False
 	pause_toggle = False
 
-	screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
+	screen, full_screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
+	print(full_screen)
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[
@@ -70,9 +71,20 @@ async def main():
 	title_screen_menu.font_size_plus_05 = True
 
 	options_menu = Menu(Cursor(screen))
-	options_menu.buttons = [
-		"Full Screen", "Fps", "Black Bar", "Apply", "Cancel"
-	]
+	if full_screen:
+		initual_screen = "Full Screen"
+	else:
+		initual_screen = "Window"
+	if not cap_fps:
+		initual_fps = "No Limit Fps"
+	else:
+		initual_fps = f"Cap Fps At {target_fps}"
+	if black_bar_is_set:
+		initual_blackbar = "Black Bar: On"
+	else:
+		initual_blackbar = "Black Bar: Off"
+	options_menu.buttons = [initual_screen, initual_fps, initual_blackbar, "Apply", "Back"]
+	old_options = options_menu.buttons.copy()
 	options_menu.setup_buttons()
 
 	pause_menu = Menu(Cursor(screen))
@@ -121,6 +133,7 @@ async def main():
 			pause = not pause
 
 		if full_screen_toggle:
+			full_screen = not full_screen
 			full_screen_toggle = False
 			screen = toggle_full_screen(
 				new_size, default_screen_size
@@ -246,7 +259,54 @@ async def main():
 			# ================ [ OPTIONS LOGIC ] ==============
 
 			selected = options_menu.update(dt, key, interact)
-			if selected == "Cancel" or cancel:
+			if selected == "Window":
+				options_menu.buttons[0] = "Full Screen"
+				options_menu.calculate_button_pos()
+			elif selected == "Full Screen":
+				options_menu.buttons[0] = "Window"
+				options_menu.calculate_button_pos()
+			elif selected == "No Limit Fps":
+				options_menu.buttons[1] = "Cap Fps At 60"
+				options_menu.calculate_button_pos()
+			elif selected == "Cap Fps At 60":
+				options_menu.buttons[1] = "Cap Fps At 90"
+				options_menu.calculate_button_pos()
+			elif selected == "Cap Fps At 90":
+				options_menu.buttons[1] = "Cap Fps At 144"
+				options_menu.calculate_button_pos()
+			elif selected == "Cap Fps At 144":
+				options_menu.buttons[1] = "No Limit Fps"
+				options_menu.calculate_button_pos()
+			elif selected == "Black Bar: Off":
+				options_menu.buttons[2] = "Black Bar: On"
+				options_menu.calculate_button_pos()
+			elif selected == "Black Bar: On":
+				options_menu.buttons[2] = "Black Bar: Off"
+				options_menu.calculate_button_pos()
+			elif selected == "Apply":
+				full_screen_setting = options_menu.buttons[0] == "Full Screen"
+				cap_fps_setting = options_menu.buttons[1] != "No Limit Fps"
+				target_fps_setting = 60
+				if cap_fps_setting:
+					target_fps_setting = int(options_menu.buttons[1].split(" ")[3])
+				black_bar_setting = options_menu.buttons[2] == "Black Bar: On"
+				save_screen_setting(full_screen_setting, black_bar_setting, cap_fps_setting, target_fps_setting)
+				screen, full_screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
+				black_bar = BlackBar(screen, black_bar_is_set)
+				options_menu.top_left_x = 8
+				options_menu.background_cache_dict = {}
+				options_menu.black_bar_cache_dict = {}
+				curr_width, curr_height, pixel_size = update_size(
+					[
+						screen.get_width(), 
+						screen.get_height()
+						]
+					)
+				ratio = default_screen_width/default_screen_height
+				new_size = (curr_width, curr_height)
+				old_options = options_menu.buttons.copy()
+			elif selected == "Back" or cancel:
+				options_menu.buttons = old_options.copy()
 				if old_game_state == "pause_menu":
 					game_state = "main_game"
 					pause = True
