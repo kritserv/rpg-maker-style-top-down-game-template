@@ -1,7 +1,6 @@
 from .load_json_file import json_loader
 
 def load_save_from_json():
-	save_dict = {}
 	save_dict = json_loader("user_data/save.json")
 	map_cam_stop_pos = json_loader("game_data/scene/camera_stop_pos.json")["camera_stop_position_dict"]
 

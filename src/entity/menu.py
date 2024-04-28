@@ -9,7 +9,6 @@ class Menu:
 		self.buttons = []
 		self.button_dicts = {}
 		self.plus_value = 10
-		self.columns = 1
 		self.top_left_x, self.top_left_y = 8, 8
 		self.original_top_left_x = 8
 		self.font_size_plus_05 = False
@@ -26,11 +25,11 @@ class Menu:
 
 	def calculate_menu_obs_pos(self):
 		self.top = -32
-		top = [-16, self.top, 16*self.columns, 16]
+		top = [-16, self.top, 16, 16]
 		self.bottom = (len(self.buttons) - 1) * 16
-		bottom = [-16, self.bottom, 16*self.columns, 16]
+		bottom = [-16, self.bottom, 16, 16]
 		left = [-32, self.top, 16, self.bottom + 48]
-		right = [16*(self.columns-1), self.top, 16, self.bottom + 48]
+		right = [0, self.top, 16, self.bottom + 48]
 		self.cursor.obs = [top, bottom, left, right]
 		self.cursor.calculate_obs_pos()
 
@@ -38,6 +37,9 @@ class Menu:
 		for i in range(len(self.buttons)):
 			button_pos = i*16
 			self.button_dicts[button_pos] = self.buttons[i]
+
+	def refresh_text(self):
+		self.calculate_button_pos()
 
 	def setup_buttons(self):
 		self.calculate_menu_obs_pos()
@@ -52,7 +54,7 @@ class Menu:
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size * self.columns, 16 * pixel_size * len(self.buttons)))
+			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size, 16 * pixel_size * len(self.buttons)))
 			self.menu_background.set_alpha(200)
 			self.menu_background.fill(black)
 			self.menu_background = self.menu_background.convert_alpha()
@@ -65,7 +67,7 @@ class Menu:
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size * self.columns, 16 * pixel_size * len(self.buttons)))
+			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size, 16 * pixel_size * len(self.buttons)))
 			self.menu_background.set_alpha(200)
 			self.menu_background.fill(black)
 			self.menu_background = self.menu_background.convert_alpha()
@@ -95,6 +97,7 @@ class Menu:
 				self.draw_background(pixel_size)
 
 		self.cursor.draw(pixel_size, self.top_left_x, self.top_left_y)
+
 		if pixel_size == 1:
 			menu_font = font_x1
 		elif pixel_size == 1.5:
@@ -115,7 +118,7 @@ class Menu:
 		range_y = 16
 		for button in self.buttons:
 			y += (range_y * pixel_size)
-			blit_text(button, menu_font, green, [self.top_left_x + 8 * pixel_size, y])
+			blit_text(button, menu_font, green, [self.top_left_x + 4 * pixel_size, y])
 
 	def update(self, dt, key, interact):
 		self.cursor.update(dt, key)

@@ -13,7 +13,7 @@ from src import clock_tick, curr_fps,\
 	load_screen_from_json, save_screen_setting, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
-	load_save_from_json, \
+	load_save_from_json, save_player_data, \
 	Player, TopDownMap, Camera, BlackBar, \
 	Timer, SceneManager, SaveManager, Event, \
 	Cursor, Menu, Debugger
@@ -66,7 +66,14 @@ async def main():
 		Cursor(screen)), Menu(Cursor(screen)
 		)
 	save_manager.create_buttons()
-	loadable_slot = [f"Load Slot {i}" for i in range(8)]
+	loadable_slot = []
+	savable_slot = []
+	overwritable_slot = []
+
+	for i in range(8):
+		loadable_slot.append(f"Load Slot {i}")
+		savable_slot.append(f"Slot {i} Empty")
+		overwritable_slot.append(f"Overwrite Slot {i}")
 
 	title_screen_menu = Menu(Cursor(screen))
 	title_screen_menu.buttons = [
@@ -182,20 +189,6 @@ async def main():
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			title_screen_menu.draw(pixel_size, black_bar)
 
-			# ================= [ TEST ] ===================
-
-			if debug:
-				if debug_timer.time_now() > 0.1:
-					debug_list = [
-						f"fps: {curr_fps()}", 
-						f"resolution: {(curr_width, curr_height)}", 
-						f"x: {title_screen_menu.cursor.pos[0]}",
-						f"y: {title_screen_menu.cursor.pos[1]}",
-						f"px_size: {pixel_size}"
-					]
-					debug_timer.restart()
-				debugger.print_debug(debug_list, black_bar)
-
 		elif game_state == "main_game":
 			old_game_state = "main_game"
 
@@ -206,11 +199,13 @@ async def main():
 				player.update(dt, key)
 				event.update()
 			else:
+
+				# ============= [ PAUSE MENU LOGIC ] ==============
+
 				old_game_state = "pause_menu"
 				selected = pause_menu.update(dt, key, interact)
 				if selected == "Save":
-					# game_state = "save_game_menu"
-					pass
+					game_state = "save_game_menu"
 				elif selected == "Load":
 					game_state = "load_game_menu"
 				elif selected == "Options":
@@ -232,21 +227,6 @@ async def main():
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if pause:
 				pause_menu.draw(pixel_size, black_bar)
-
-			# ================= [ TEST ] ===================
-
-			if debug:
-				if debug_timer.time_now() > 0.1:
-					debug_list = [
-						f"fps: {curr_fps()}", 
-						f"resolution: {(curr_width, curr_height)}", 
-						f"scene: {scene_manager.current_scene}", 
-						f"x: {player.pos[0]}",
-						f"y: {player.pos[1]}",
-						f"px_size: {pixel_size}"
-					]
-					debug_timer.restart()
-				debugger.print_debug(debug_list, black_bar)
 
 		elif game_state == "load_game_menu":
 
@@ -273,6 +253,37 @@ async def main():
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.load_menu.draw(pixel_size, black_bar)
 
+		elif game_state == "save_game_menu":
+
+			# ================ [ SAVE GAME LOGIC ] ==============
+
+			selected = save_manager.save_menu.update(dt, key, interact)
+			for i, slot in enumerate(savable_slot):
+				if selected == slot:
+					save_player_data(player, scene_manager.current_scene, i)
+					save_manager.save_dict = load_save_from_json()
+					save_manager.refresh_save_slot()
+
+			for i, slot in enumerate(overwritable_slot):
+				if selected == slot:
+					save_player_data(player, scene_manager.current_scene, i)
+					save_manager.save_dict = load_save_from_json()
+					save_manager.refresh_save_slot()
+
+			if selected == "Cancel" or cancel:
+				if old_game_state == "pause_menu":
+					game_state = "main_game"
+					pause = True
+				else:
+					game_state = old_game_state
+				save_manager.save_menu.reset_cursor()
+
+			# =============== [ SAVE GAME GRAPHIC ] ==============
+
+			screen.fill(darkblue)
+			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			save_manager.save_menu.draw(pixel_size, black_bar)
+
 		elif game_state == "options_menu":
 
 			# ================ [ OPTIONS LOGIC ] ==============
@@ -280,28 +291,28 @@ async def main():
 			selected = options_menu.update(dt, key, interact)
 			if selected == "Window":
 				options_menu.buttons[0] = "Full Screen"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Full Screen":
 				options_menu.buttons[0] = "Window"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "No Limit Fps":
 				options_menu.buttons[1] = "Cap Fps At 60"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Cap Fps At 60":
 				options_menu.buttons[1] = "Cap Fps At 90"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Cap Fps At 90":
 				options_menu.buttons[1] = "Cap Fps At 144"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Cap Fps At 144":
 				options_menu.buttons[1] = "No Limit Fps"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Black Bar: Off":
 				options_menu.buttons[2] = "Black Bar: On"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Black Bar: On":
 				options_menu.buttons[2] = "Black Bar: Off"
-				options_menu.calculate_button_pos()
+				options_menu.refresh_text()
 			elif selected == "Apply":
 				full_screen_setting = options_menu.buttons[0] == "Full Screen"
 				cap_fps_setting = options_menu.buttons[1] != "No Limit Fps"
@@ -353,8 +364,6 @@ async def main():
 				else:
 					game_state = old_game_state
 					options_menu.reset_cursor()
-			else:
-				pass
 
 			# =============== [ OPTIONS GRAPHIC ] ==============
 
@@ -362,6 +371,21 @@ async def main():
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			options_menu.draw(pixel_size, black_bar)
 
+		# ================= [ TEST ] ===================
+
+		if debug:
+			if debug_timer.time_now() > 0.1:
+				debug_list = [
+					f"fps: {curr_fps()}", 
+					f"resolution: {(curr_width, curr_height)}", 
+					f"scene: {scene_manager.current_scene}", 
+					f"x: {player.pos[0]}",
+					f"y: {player.pos[1]}",
+					f"px_size: {pixel_size}"
+				]
+				debug_timer.restart()
+			debugger.print_debug(debug_list, black_bar)
+				
 		# ================= [ PYGAME STUFF ] ================
 
 		pg.display.update()

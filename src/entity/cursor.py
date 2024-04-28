@@ -36,7 +36,7 @@ class Cursor:
 		dx, dy = calculate_movement(self, key)
 
 		if self.key_presed:
-			move(self.pos, dx, dy, dt, self.speed)
+			move(self.pos, 0, dy, dt, self.speed)
 		
 		continue_move_value = 3
 
@@ -44,12 +44,6 @@ class Cursor:
 
 			self.finish_pos = expect_finish_pos(self, continue_move_value)
 			self.diff_x, self.diff_y = get_distance_between(self.pos, self.finish_pos)
-
-			if self.diff_x > continue_move_value:
-				move(self.pos, self.last_dx, 0, dt, self.speed)
-			elif self.diff_x <= continue_move_value:
-				self.pos[0] = self.finish_pos[0]
-				self.finished_x_move = True
 
 			if self.diff_y > continue_move_value:
 				move(self.pos, 0, self.last_dy, dt, self.speed)

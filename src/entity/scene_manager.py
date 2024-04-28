@@ -7,6 +7,7 @@ class SceneManager:
 		self.tdmap = tdmap
 		self.camera = camera
 		self.cache_dict = {}
+		self.current_scene = ""
 
 	def change_scene(self, x, y, new_scene_name):
 		changing_scene(self, x, y, new_scene_name)
