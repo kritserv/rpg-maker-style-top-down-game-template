@@ -19,6 +19,11 @@ class Menu:
 
 		self.need_background = True
 
+	def reset_cache(self):
+		self.top_left_x = 8
+		self.background_cache_dict = {}
+		self.black_bar_cache_dict = {}
+
 	def calculate_menu_obs_pos(self):
 		self.top = -32
 		top = [-16, self.top, 16*self.columns, 16]

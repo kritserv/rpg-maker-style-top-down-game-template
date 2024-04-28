@@ -8,6 +8,10 @@ class Debugger:
 		self.background_cache_dict = {}
 		self.black_bar_cache_dict = {}
 
+	def reset_cache(self):
+		self.background_cache_dict = {}
+		self.black_bar_cache_dict = {}
+
 	def print_debug(self, print_list, black_bar):
 		key = str(len(print_list))
 		if data_is_in_cache(self.background_cache_dict, key):
