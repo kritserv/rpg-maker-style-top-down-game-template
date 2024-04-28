@@ -315,11 +315,11 @@ async def main():
 					cap_fps_setting, 
 					target_fps_setting
 					)
-
 				if full_screen_setting:
 					screen = pg.display.set_mode(full_screen_size, pg.FULLSCREEN)
 				else:
 					screen = pg.display.set_mode(default_screen_size, pg.RESIZABLE)
+				black_bar.screen = screen
 
 				if black_bar_setting:
 					black_bar.is_exist = True
