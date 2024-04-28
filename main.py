@@ -135,7 +135,6 @@ async def main():
 				title_screen_menu.reset_cursor()
 			elif selected == "Load Game":
 				game_state = "load_game_menu"
-				title_screen_menu.reset_cursor()
 				pass
 			elif selected == "Options":
 				# game_state = "options_menu"
@@ -185,7 +184,6 @@ async def main():
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
 					pause_menu.reset_cursor()
-					title_screen_menu.reset_cursor()
 				elif selected == "Cancel":
 					pause = False
 					pause_menu.reset_cursor()
