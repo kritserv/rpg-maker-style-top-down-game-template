@@ -7,7 +7,7 @@ class SaveManager:
 			self.save_menu.buttons.append(f"Save To Slot {i}")
 
 			if self.save_dict[str(i)]:
-				self.load_menu.buttons.append(f"Load From Slot {i}")
+				self.load_menu.buttons.append(f"Load Slot {i}")
 			else:
 				self.load_menu.buttons.append(f"Slot {i} Empty")
 

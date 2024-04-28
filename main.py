@@ -29,9 +29,9 @@ async def main():
 	full_screen_toggle = False
 	pause = False
 	pause_toggle = False
-
+	full_screen_size = pg.display.get_desktop_sizes()[0]
+	print(full_screen_size)
 	screen, full_screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
-	print(full_screen)
 	black_bar = BlackBar(screen, black_bar_is_set)
 	curr_width, curr_height, pixel_size = update_size(
 		[
@@ -61,7 +61,7 @@ async def main():
 	save_manager = SaveManager(load_save_from_json())
 	save_manager.save_menu, save_manager.load_menu = Menu(Cursor(screen)), Menu(Cursor(screen))
 	save_manager.create_buttons()
-	loadable_slot = [f"Load From Slot {i}" for i in range(8)]
+	loadable_slot = [f"Load Slot {i}" for i in range(8)]
 
 	title_screen_menu = Menu(Cursor(screen))
 	title_screen_menu.buttons = [
@@ -86,10 +86,11 @@ async def main():
 	options_menu.buttons = [initual_screen, initual_fps, initual_blackbar, "Apply", "Back"]
 	old_options = options_menu.buttons.copy()
 	options_menu.setup_buttons()
+	options_menu.font_size_plus_05 = True
 
 	pause_menu = Menu(Cursor(screen))
 	pause_menu.buttons = [
-		"Save", "Load", "Back To Title", "Cancel"
+		"Save", "Load", "Options", "Back To Title", "Cancel"
 		]
 	pause_menu.setup_buttons()
 	pause_menu.font_size_plus_05 = True
@@ -134,10 +135,15 @@ async def main():
 
 		if full_screen_toggle:
 			full_screen = not full_screen
+			if full_screen:
+				screen = toggle_full_screen(
+					full_screen_size, default_screen_size
+				)
+			else:
+				screen = toggle_full_screen(
+					new_size, default_screen_size
+				)
 			full_screen_toggle = False
-			screen = toggle_full_screen(
-				new_size, default_screen_size
-			)
 
 		# ================= [ GET GAME STATE ] =================
 
@@ -196,6 +202,8 @@ async def main():
 					pass
 				elif selected == "Load":
 					game_state = "load_game_menu"
+				elif selected == "Options":
+					game_state = "options_menu"
 				elif selected == "Back To Title":
 					game_state = "title_screen_menu"
 					pause_menu.reset_cursor()
@@ -292,18 +300,16 @@ async def main():
 				black_bar_setting = options_menu.buttons[2] == "Black Bar: On"
 				save_screen_setting(full_screen_setting, black_bar_setting, cap_fps_setting, target_fps_setting)
 				screen, full_screen, black_bar_is_set, cap_fps, target_fps = load_screen_from_json()
-				black_bar = BlackBar(screen, black_bar_is_set)
+
+				if full_screen_setting == True:
+					full_screen_toggle = True
+					
+				black_bar.is_exist = black_bar_is_set
 				options_menu.top_left_x = 8
 				options_menu.background_cache_dict = {}
 				options_menu.black_bar_cache_dict = {}
-				curr_width, curr_height, pixel_size = update_size(
-					[
-						screen.get_width(), 
-						screen.get_height()
-						]
-					)
-				ratio = default_screen_width/default_screen_height
-				new_size = (curr_width, curr_height)
+				debugger.background_cache_dict = {}
+				debugger.black_bar_cache_dict = {}
 				old_options = options_menu.buttons.copy()
 			elif selected == "Back" or cancel:
 				options_menu.buttons = old_options.copy()

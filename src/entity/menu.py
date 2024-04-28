@@ -110,7 +110,7 @@ class Menu:
 		range_y = 16
 		for button in self.buttons:
 			y += (range_y * pixel_size)
-			blit_text(button, menu_font, green, [self.top_left_x + 16, y])
+			blit_text(button, menu_font, green, [self.top_left_x + 8 * pixel_size, y])
 
 	def update(self, dt, key, interact):
 		self.cursor.update(dt, key)
