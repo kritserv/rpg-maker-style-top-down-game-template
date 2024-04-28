@@ -315,16 +315,24 @@ async def main():
 					cap_fps_setting, 
 					target_fps_setting
 					)
-				screen, \
-				full_screen, \
-				black_bar_is_set, \
-				cap_fps, \
-				target_fps = load_screen_from_json()
 
-				if full_screen_setting == True:
-					full_screen_toggle = True
-					
-				black_bar.is_exist = black_bar_is_set
+				if full_screen_setting:
+					screen = pg.display.set_mode(full_screen_size, pg.FULLSCREEN)
+				else:
+					screen = pg.display.set_mode(default_screen_size, pg.RESIZABLE)
+
+				if black_bar_setting:
+					black_bar.is_exist = True
+				else:
+					black_bar.is_exist = False
+
+				if cap_fps_setting:
+					cap_fps = True
+				else:
+					cap_fps = False
+
+				target_fps = target_fps_setting
+				
 				for menu in [
 					options_menu, 
 					pause_menu, 
@@ -336,6 +344,7 @@ async def main():
 
 				debugger.reset_cache()
 				old_options = options_menu.buttons.copy()
+
 			elif selected == "Back" or cancel:
 				options_menu.buttons = old_options.copy()
 				if old_game_state == "pause_menu":
