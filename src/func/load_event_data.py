@@ -1,5 +1,12 @@
 from .load_json_file import json_loader
 
+def is_changing_scene_event(event_data_val):
+	try:
+		test = event_data_val["effect"]["new_scene"]
+		return True
+	except KeyError:
+		return False
+
 def load_event_from_json():
 	json_load = json_loader("game_data/event/config.json")
 	event_dict = json_load["event_dict"]
@@ -18,10 +25,13 @@ def load_event_from_json():
 
 	for key in event_dict:
 		for val in event_dict[key]:
-			map_name = event_data[val]["effect"]["new_scene"][2]
-			map_cam_stop_pos = camera_stop_pos_data[map_name]
-			event_data[val]["effect"]["new_camera_stop_position"] = map_cam_stop_pos
-			combined_data[key].append(event_data[val])
+			if is_changing_scene_event(event_data[val]):
+				map_name = event_data[val]["effect"]["new_scene"][2]
+				map_cam_stop_pos = camera_stop_pos_data[map_name]
+				event_data[val]["effect"]["new_camera_stop_position"] = map_cam_stop_pos
+				combined_data[key].append(event_data[val])
+			else:
+				combined_data[key].append(event_data[val])
 
 	start_event = event_data[loaded_start_event]
 	map_name = start_event["effect"]["new_scene"][2]

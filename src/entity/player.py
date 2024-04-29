@@ -19,6 +19,8 @@ class Player:
 		self.obs = []
 		self.finished_x_move, self.finished_y_move = True, True
 		self.resize_cache_dict = {}
+
+		self.disable_move = False
 										  
 	def calculate_obs_pos(self):
 		self.obs = calculate_obs_position(self.obs)
@@ -31,26 +33,27 @@ class Player:
 		draw_player(self.transformed_rects, pixel_size, camera, self.screen)
 
 	def update(self, dt, key):
-		dx, dy = calculate_movement(self, key)
+		if not self.disable_move:
+			dx, dy = calculate_movement(self, key)
 
-		if self.key_presed:
-			move(self.pos, dx, dy, dt, self.speed)
+			if self.key_presed:
+				move(self.pos, dx, dy, dt, self.speed)
 
-		continue_move_value = 3
+			continue_move_value = 3
 
-		if not self.key_presed:
+			if not self.key_presed:
 
-			self.finish_pos = expect_finish_pos(self, continue_move_value)
-			self.diff_x, self.diff_y = get_distance_between(self.pos, self.finish_pos)
-			
-			if self.diff_x > continue_move_value:
-				move(self.pos, self.last_dx, 0, dt, self.speed)
-			elif self.diff_x <= continue_move_value:
-				self.pos[0] = self.finish_pos[0]
-				self.finished_x_move = True
+				self.finish_pos = expect_finish_pos(self, continue_move_value)
+				self.diff_x, self.diff_y = get_distance_between(self.pos, self.finish_pos)
+				
+				if self.diff_x > continue_move_value:
+					move(self.pos, self.last_dx, 0, dt, self.speed)
+				elif self.diff_x <= continue_move_value:
+					self.pos[0] = self.finish_pos[0]
+					self.finished_x_move = True
 
-			if self.diff_y > continue_move_value:
-				move(self.pos, 0, self.last_dy, dt, self.speed)
-			elif self.diff_y <= continue_move_value:
-				self.pos[1] = self.finish_pos[1]
-				self.finished_y_move = True
+				if self.diff_y > continue_move_value:
+					move(self.pos, 0, self.last_dy, dt, self.speed)
+				elif self.diff_y <= continue_move_value:
+					self.pos[1] = self.finish_pos[1]
+					self.finished_y_move = True

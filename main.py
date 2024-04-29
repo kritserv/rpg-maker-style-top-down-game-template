@@ -16,7 +16,7 @@ from src import clock_tick, curr_fps,\
 	load_save_from_json, save_player_data, \
 	Player, TopDownMap, Camera, BlackBar, \
 	Timer, SceneManager, SaveManager, Event, \
-	Cursor, Menu, Debugger
+	Cursor, Menu, Debugger, TextBox
 
 pg.display.set_caption("game_title")
 pg.display.set_icon(pg.image.load("asset/img/icon.png"))
@@ -51,6 +51,7 @@ async def main():
 	player = Player(screen)
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
+	text_box = TextBox(screen)
 
 	scene_manager = SceneManager(
 		load_scene_from_json(), player, top_down_map, camera
@@ -149,7 +150,8 @@ async def main():
 
 		if pause_toggle:
 			pause_toggle = False
-			pause = not pause
+			if not event.draw_text_box:
+				pause = not pause
 
 		if full_screen_toggle:
 			full_screen = not full_screen
@@ -197,7 +199,9 @@ async def main():
 			camera.update(pixel_size)
 			if not pause:
 				player.update(dt, key)
-				event.update()
+				event.update(interact)
+				if event.draw_text_box:
+					text_in_text_box = event.current_text_list[event.current_text_index]
 			else:
 
 				# ============= [ PAUSE MENU LOGIC ] ==============
@@ -225,6 +229,8 @@ async def main():
 			screen.fill(darkblue)
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
+			if event.draw_text_box:
+				text_box.draw(pixel_size, black_bar, text_in_text_box)
 			if pause:
 				pause_menu.draw(pixel_size, black_bar)
 
@@ -331,6 +337,7 @@ async def main():
 				else:
 					screen = pg.display.set_mode(default_screen_size, pg.RESIZABLE)
 				black_bar.screen = screen
+				text_box.screen = screen
 
 				if black_bar_setting:
 					black_bar.is_exist = True
@@ -350,7 +357,8 @@ async def main():
 					save_manager.save_menu, 
 					save_manager.load_menu, 
 					title_screen_menu,
-					debugger
+					debugger,
+					text_box
 					]:
 					menu.reset_cache()
 

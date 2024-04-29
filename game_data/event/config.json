@@ -4,7 +4,7 @@
 			"move_to_inner_house1", "move_to_inner_house2", "move_to_inner_house3"
 		],
 		"inner_house1": [
-			"exit_inner_house1"
+			"cat", "exit_inner_house1"
 		],
 		"inner_house2": [
 			"exit_inner_house2"

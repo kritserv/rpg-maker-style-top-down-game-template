@@ -55,6 +55,14 @@
 				"func": "change_scene",
 				"new_scene": [-80, 128, "openworld"]
 			}
+		},
+		"cat": {
+			"pos": [0, -32],
+			"trigger_by": "player_is_near_and_interact",
+			"effect": {
+				"func": "show_text",
+				"text_list": ["Cat:\n   meow ~", "Cat:\n   purr.."]
+			}
 		}
 	}
 }
