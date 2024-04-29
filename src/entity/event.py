@@ -45,15 +45,16 @@ class Event:
 			self.trigger_show_text_event(effect["text_list"])
 
 	def check_condition(self, interact):
+		player_pos = [int(self.player.pos[0]), int(self.player.pos[1])]
 		for scene_event in self.event_dict[self.scene_manager.current_scene]:
 			if scene_event["trigger_by"] == "player_on_top":
-				if self.player.pos == scene_event["pos"]:
+				if player_pos == scene_event["pos"]:
 					self.trigger(scene_event["effect"])
 			elif scene_event["trigger_by"] == "player_on_top_and_interact":
-				if self.player.pos == scene_event["pos"] and interact:
+				if player_pos == scene_event["pos"] and interact:
 					self.trigger(scene_event["effect"])
 			elif scene_event["trigger_by"] == "player_is_near_and_interact":
-				if self.is_near(self.player.pos, scene_event["pos"]) and interact:
+				if self.is_near(player_pos, scene_event["pos"]) and interact:
 					self.trigger(scene_event["effect"])
 
 	def update(self, interact):
