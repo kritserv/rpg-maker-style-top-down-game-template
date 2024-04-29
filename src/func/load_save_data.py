@@ -1,3 +1,4 @@
+import pygame as pg
 from .load_json_file import json_loader
 
 def load_save_from_json():
@@ -8,11 +9,22 @@ def load_save_from_json():
 		if save_dict[key]:
 			pos = save_dict[key]["pos"]
 			scene = save_dict[key]["scene"]
+			level = save_dict[key]["level"]
+			items = save_dict[key]["items"]
+			save_time = save_dict[key]["time"]
+			img = pg.image.load(f"user_data/save_img/save_{key}.png").convert()
 
 			effect = {
 				"func": "change_scene",
 				"new_scene": [pos[0], pos[1], scene], 
-				"new_camera_stop_position": map_cam_stop_pos[scene]
+				"new_camera_stop_position": map_cam_stop_pos[scene],
+				"img_x1": img,
+				"img_x2": pg.transform.scale(img, (480, 320)),
+				"img_x3": pg.transform.scale(img, (720, 480)),
+				"img_x4": pg.transform.scale(img, (960, 640)),
+				"level": level,
+				"items": items,
+				"time": save_time
 			}
 
 			save_dict[key] = effect

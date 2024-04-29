@@ -5,6 +5,8 @@ from src.variable import red
 class Player:
 	def __init__(self, screen):
 		pg.sprite.Sprite.__init__(self)
+		self.level = 1
+		self.items = []
 		self.screen = screen
 		self.speed = 150
 		self.original_width, self.original_height, self.width, self.height = 16, 16, 16, 16

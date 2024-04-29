@@ -9,7 +9,8 @@ from src import clock_tick, curr_fps,\
 	default_screen_width, \
 	default_screen_height, \
 	default_screen_size, \
-	black, darkblue, check_pygame_event, \
+	black, darkblue, \
+	check_pygame_event, \
 	load_screen_from_json, save_screen_setting, \
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
@@ -70,6 +71,7 @@ async def main():
 	loadable_slot = []
 	savable_slot = []
 	overwritable_slot = []
+	screenshot = False
 
 	for i in range(8):
 		loadable_slot.append(f"Load Slot {i}")
@@ -232,7 +234,12 @@ async def main():
 			if event.draw_text_box:
 				text_box.draw(pixel_size, black_bar, text_in_text_box)
 			if pause:
+				if not screenshot:
+					screenshot = screen.copy()
+					screenshot = pg.transform.scale(screenshot, (240, 160))
 				pause_menu.draw(pixel_size, black_bar)
+			else:
+				screenshot = False
 
 		elif game_state == "load_game_menu":
 
@@ -242,6 +249,8 @@ async def main():
 			for i, slot in enumerate(loadable_slot):
 				if selected == slot:
 					event.trigger(save_manager.save_dict[str(i)])
+					player.level = save_manager.save_dict[str(i)]["level"]
+					player.items = save_manager.save_dict[str(i)]["items"]
 					game_state = "main_game"
 					pause = False
 					save_manager.load_menu.reset_cursor()
@@ -256,6 +265,7 @@ async def main():
 			# =============== [ LOAD GAME GRAPHIC ] ==============
 
 			screen.fill(darkblue)
+			save_manager.draw_img_in_load_menu(screen, pixel_size, black_bar)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.load_menu.draw(pixel_size, black_bar)
 
@@ -266,13 +276,13 @@ async def main():
 			selected = save_manager.save_menu.update(dt, key, interact)
 			for i, slot in enumerate(savable_slot):
 				if selected == slot:
-					save_player_data(player, scene_manager.current_scene, i)
+					save_player_data(player, scene_manager.current_scene, i, screenshot)
 					save_manager.save_dict = load_save_from_json()
 					save_manager.refresh_save_slot()
 
 			for i, slot in enumerate(overwritable_slot):
 				if selected == slot:
-					save_player_data(player, scene_manager.current_scene, i)
+					save_player_data(player, scene_manager.current_scene, i, screenshot)
 					save_manager.save_dict = load_save_from_json()
 					save_manager.refresh_save_slot()
 
@@ -283,10 +293,12 @@ async def main():
 				else:
 					game_state = old_game_state
 				save_manager.save_menu.reset_cursor()
+				screenshot = False
 
 			# =============== [ SAVE GAME GRAPHIC ] ==============
 
 			screen.fill(darkblue)
+			save_manager.draw_img_in_save_menu(screen, pixel_size, black_bar)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			save_manager.save_menu.draw(pixel_size, black_bar)
 
