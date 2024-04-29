@@ -83,13 +83,13 @@ def load_scene_from_json():
 	return scene_dict
 
 
-def render_map(map_name):
+def render_scene(scene_name):
 
 	fig, ax = plt.subplots()
 
-	ax.set_title(map_name)
+	ax.set_title(scene_name)
 	ax.set_facecolor("black")
-	rects = scene_dict[map_name]
+	rects = scene_dict[scene_name]
 	for rect in rects:
 		xy = (rect[0][0], -rect[0][1])
 		width = rect[0][2]
@@ -103,28 +103,28 @@ def render_map(map_name):
 	ax.set_ylim([-320, 320])
 	plt.show()
 
-def render_all_map():
-	for map_name in scene_dict:
-		render_map(map_name)
+def render_all_scene():
+	for scene_name in scene_dict:
+		render_scene(scene_name)
 
 scene_dict = load_scene_from_json()
 
 if __name__ == "__main__":
-	print("\nAvailable maps:")
-	for map_name in scene_dict:
-		print(map_name)
+	print("\nAvailable scenes:")
+	for scene_name in scene_dict:
+		print(scene_name)
 
 	while True:
-		user_input = input("\nEnter a map name to render (or 'all' to render all maps, 'q' to quit)\n: ")
+		user_input = input("\nEnter a scene name to render (or 'all' to render all scene, 'q' to quit)\n: ")
 
 		if user_input == "q" or user_input == "quit":
 			break
 
 		elif user_input == "all":
-			render_all_map()
+			render_all_scene()
 
 		elif user_input in scene_dict:
-			render_map(user_input)
+			render_scene(user_input)
 
 		else:
-			print(f"Error: {user_input} is not a recognized command or map name.")
+			print(f"Error: {user_input} is not a recognized command or scene name.")

@@ -1,7 +1,11 @@
 {
 	"event_dict": {
 		"openworld": [
-			"move_to_inner_house1", "move_to_inner_house2", "move_to_inner_house3"
+			"move_to_town1_from_openworld"
+		],
+		"town1": [
+			"move_to_inner_house1", "move_to_inner_house2", "move_to_inner_house3", 
+			"exit_town1_1", "exit_town1_2", "exit_town1_3"
 		],
 		"inner_house1": [
 			"cat", "exit_inner_house1"
@@ -13,5 +17,5 @@
 			"exit_inner_house3"
 		]
 	},
-	"start_event":  "move_to_openworld"
+	"start_event":  "move_to_town1"
 }

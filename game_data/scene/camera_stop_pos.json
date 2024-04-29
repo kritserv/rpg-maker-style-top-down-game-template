@@ -1,6 +1,7 @@
 {
     "camera_stop_position_dict": {
-        "openworld": [-144, 144, -160, 160], 
+        "openworld": [-48, 48, -64, 16], 
+        "town1": [-144, 144, -96, 112], 
         "inner_house1": [-48, 48, -64, 16], 
         "inner_house2": [-48, 48, -64, 16], 
         "inner_house3": [-48, 48, -64, 16]

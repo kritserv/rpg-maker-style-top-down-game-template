@@ -5,7 +5,23 @@
 			"trigger_by": "nothing",
 			"effect": {
 				"func": "change_scene",
-				"new_scene": [-64, 0, "openworld"]
+				"new_scene": [0, 48, "openworld"]
+			}
+		},
+		"move_to_town1_from_openworld": {
+			"pos": [0, 64],
+			"trigger_by": "player_on_top",
+			"effect": {
+				"func": "change_scene",
+				"new_scene": [0, -128, "town1"]
+			}
+		},
+		"move_to_town1": {
+			"pos": [0, 0],
+			"trigger_by": "nothing",
+			"effect": {
+				"func": "change_scene",
+				"new_scene": [-64, 0, "town1"]
 			}
 		},
 		"move_to_inner_house1": {
@@ -37,7 +53,7 @@
 			"trigger_by": "player_on_top",
 			"effect": {
 				"func": "change_scene",
-				"new_scene": [-80, -16, "openworld"]
+				"new_scene": [-80, -16, "town1"]
 			}
 		},
 		"exit_inner_house2": {
@@ -45,7 +61,7 @@
 			"trigger_by": "player_on_top",
 			"effect": {
 				"func": "change_scene",
-				"new_scene": [80, -16, "openworld"]
+				"new_scene": [80, -16, "town1"]
 			}
 		},
 		"exit_inner_house3": {
@@ -53,7 +69,31 @@
 			"trigger_by": "player_on_top",
 			"effect": {
 				"func": "change_scene",
-				"new_scene": [-80, 128, "openworld"]
+				"new_scene": [-80, 128, "town1"]
+			}
+		},
+		"exit_town1_1": {
+			"pos": [-16, -160],
+			"trigger_by": "player_on_top",
+			"effect": {
+				"func": "change_scene",
+				"new_scene": [0, 48, "openworld"]
+			}
+		},
+		"exit_town1_2": {
+			"pos": [0, -160],
+			"trigger_by": "player_on_top",
+			"effect": {
+				"func": "change_scene",
+				"new_scene": [0, 48, "openworld"]
+			}
+		},
+		"exit_town1_3": {
+			"pos": [16, -160],
+			"trigger_by": "player_on_top",
+			"effect": {
+				"func": "change_scene",
+				"new_scene": [0, 48, "openworld"]
 			}
 		},
 		"cat": {

@@ -1,10 +1,13 @@
 {
     "scene_dict": {
         "openworld": [
+            "openworld_border"
+        ],
+        "town1": [
             "house1",
             "house2",
             "house3",
-            "openworld_border"
+            "town1_border"
         ],
         "inner_house1": [
             "cat",
