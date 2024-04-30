@@ -236,11 +236,11 @@ async def main():
 			screen.fill(darkblue)
 			if scene_manager.current_scene == "town1":
 				if pixel_size == 1:
-					screen.blit(town1_img_x1, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
+					screen.blit(town1_img_x1, (top_down_map.x + (town1_offset_x * pixel_size), top_down_map.y + (town1_offset_y * pixel_size)))
 				elif pixel_size == 2:
-					screen.blit(town1_img_x2, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
+					screen.blit(town1_img_x2, (top_down_map.x + (town1_offset_x * pixel_size), top_down_map.y + (town1_offset_y * pixel_size)))
 				elif pixel_size == 3:
-					screen.blit(town1_img_x3, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
+					screen.blit(town1_img_x3, (top_down_map.x + (town1_offset_x * pixel_size), top_down_map.y + (town1_offset_y * pixel_size)))
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if event.draw_text_box:

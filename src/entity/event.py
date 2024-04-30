@@ -50,12 +50,15 @@ class Event:
 			if scene_event["trigger_by"] == "player_on_top":
 				if player_pos == scene_event["pos"]:
 					self.trigger(scene_event["effect"])
+					break
 			elif scene_event["trigger_by"] == "player_on_top_and_interact":
 				if player_pos == scene_event["pos"] and interact:
 					self.trigger(scene_event["effect"])
+					break
 			elif scene_event["trigger_by"] == "player_is_near_and_interact":
 				if self.is_near(player_pos, scene_event["pos"]) and interact:
 					self.trigger(scene_event["effect"])
+					break
 
 	def update(self, interact):
 		if not self.draw_text_box:
