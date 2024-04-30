@@ -15,6 +15,7 @@ from src import clock_tick, curr_fps,\
 	toggle_full_screen, update_size, \
 	load_scene_from_json, load_event_from_json, \
 	load_save_from_json, save_player_data, \
+	load_asset, \
 	Player, TopDownMap, Camera, BlackBar, \
 	Timer, SceneManager, SaveManager, Event, \
 	Cursor, Menu, Debugger, TextBox
@@ -53,6 +54,10 @@ async def main():
 	top_down_map = TopDownMap(screen)
 	camera = Camera(player, top_down_map)
 	text_box = TextBox(screen)
+
+	town1_img_x1, town1_img_x2, town1_img_x3 = load_asset()
+	town1_offset_x = -208+8
+	town1_offset_y = -176-8
 
 	scene_manager = SceneManager(
 		load_scene_from_json(), player, top_down_map, camera
@@ -229,6 +234,13 @@ async def main():
 			top_down_map.resize(pixel_size, player)
 
 			screen.fill(darkblue)
+			if scene_manager.current_scene == "town1":
+				if pixel_size == 1:
+					screen.blit(town1_img_x1, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
+				elif pixel_size == 2:
+					screen.blit(town1_img_x2, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
+				elif pixel_size == 3:
+					screen.blit(town1_img_x3, (camera.tdmap.x + (town1_offset_x * pixel_size), camera.tdmap.y + (town1_offset_y * pixel_size)))
 			camera.draw(pixel_size, player, top_down_map)
 			black_bar.draw_if_set(curr_width, curr_height, ratio)
 			if event.draw_text_box:
