@@ -17,6 +17,12 @@ class TextBox:
 		self.background_cache_dict = {}
 		self.black_bar_cache_dict = {}
 
+	def add_background_to_cache(self, key):
+		self.text_box_background.set_alpha(200)
+		self.text_box_background.fill(black)
+		self.text_box_background = self.text_box_background.convert_alpha()
+		add_data_to_cache(self.background_cache_dict, key, self.text_box_background)
+
 	def draw_background_with_black_bar(self, pixel_size, black_bar_width):
 		key = str(self.screen.get_width())+str(self.screen.get_height())+str(black_bar_width)+str(pixel_size)
 		if data_is_in_cache(self.background_cache_dict, key):
@@ -26,10 +32,7 @@ class TextBox:
 				self.text_box_background = pg.Surface((self.screen.get_width() - (black_bar_width*2) - 16, self.screen.get_height()/3))
 			else:
 				self.text_box_background = pg.Surface((self.screen.get_width() - (black_bar_width*2) - 16, self.screen.get_height()/4))
-			self.text_box_background.set_alpha(200)
-			self.text_box_background.fill(black)
-			self.text_box_background = self.text_box_background.convert_alpha()
-			add_data_to_cache(self.background_cache_dict, key, self.text_box_background)
+			self.add_background_to_cache(key)
 		self.screen.blit(self.text_box_background, (self.top_left_x, self.top_left_y))
 
 	def draw_background(self, pixel_size):
@@ -41,10 +44,7 @@ class TextBox:
 				self.text_box_background = pg.Surface((self.screen.get_width()-16, self.screen.get_height()/3))
 			else:
 				self.text_box_background = pg.Surface((self.screen.get_width()-16, self.screen.get_height()/4))
-			self.text_box_background.set_alpha(200)
-			self.text_box_background.fill(black)
-			self.text_box_background = self.text_box_background.convert_alpha()
-			add_data_to_cache(self.background_cache_dict, key, self.text_box_background)
+			self.add_background_to_cache(key)
 		self.screen.blit(self.text_box_background, (self.top_left_x, self.top_left_y))
 
 	def draw(self, pixel_size, black_bar, text):

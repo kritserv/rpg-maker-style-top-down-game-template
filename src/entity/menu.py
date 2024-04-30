@@ -48,17 +48,20 @@ class Menu:
 	def reset_cursor(self):
 		self.cursor.pos[1] = 0
 
+	def add_background_to_cache(self, key, pixel_size):
+		self.menu_background = pg.Surface((self.cursor.original_width * pixel_size, 16 * pixel_size * len(self.buttons)))
+		self.menu_background.set_alpha(200)
+		self.menu_background.fill(black)
+		self.menu_background = self.menu_background.convert_alpha()
+		add_data_to_cache(self.background_cache_dict, key, self.menu_background)
+
 	def draw_background_with_black_bar(self, pixel_size, black_bar_width):
 		screen = self.cursor.screen
 		key = str(self.cursor.original_width)+str(black_bar_width)+str(pixel_size)
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size, 16 * pixel_size * len(self.buttons)))
-			self.menu_background.set_alpha(200)
-			self.menu_background.fill(black)
-			self.menu_background = self.menu_background.convert_alpha()
-			add_data_to_cache(self.background_cache_dict, key, self.menu_background)
+			self.add_background_to_cache(key, pixel_size)
 		screen.blit(self.menu_background, (self.top_left_x, self.top_left_y))
 
 	def draw_background(self, pixel_size):
@@ -67,11 +70,7 @@ class Menu:
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.menu_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.menu_background = pg.Surface((self.cursor.original_width * pixel_size, 16 * pixel_size * len(self.buttons)))
-			self.menu_background.set_alpha(200)
-			self.menu_background.fill(black)
-			self.menu_background = self.menu_background.convert_alpha()
-			add_data_to_cache(self.background_cache_dict, key, self.menu_background)
+			self.add_background_to_cache(key, pixel_size)
 		screen.blit(self.menu_background, (self.top_left_x, self.top_left_y))
 
 	def draw(self, pixel_size, black_bar):
