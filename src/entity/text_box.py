@@ -22,7 +22,10 @@ class TextBox:
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.text_box_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.text_box_background = pg.Surface((self.screen.get_width() - (black_bar_width*2) - 16, self.screen.get_height()/4))
+			if pixel_size == 1:
+				self.text_box_background = pg.Surface((self.screen.get_width() - (black_bar_width*2) - 16, self.screen.get_height()/3))
+			else:
+				self.text_box_background = pg.Surface((self.screen.get_width() - (black_bar_width*2) - 16, self.screen.get_height()/4))
 			self.text_box_background.set_alpha(200)
 			self.text_box_background.fill(black)
 			self.text_box_background = self.text_box_background.convert_alpha()
@@ -34,7 +37,10 @@ class TextBox:
 		if data_is_in_cache(self.background_cache_dict, key):
 			self.text_box_background = load_data_from_cache(self.background_cache_dict, key)
 		else:
-			self.text_box_background = pg.Surface((self.screen.get_width()-16, self.screen.get_height()/4))
+			if pixel_size == 1:
+				self.text_box_background = pg.Surface((self.screen.get_width()-16, self.screen.get_height()/3))
+			else:
+				self.text_box_background = pg.Surface((self.screen.get_width()-16, self.screen.get_height()/4))
 			self.text_box_background.set_alpha(200)
 			self.text_box_background.fill(black)
 			self.text_box_background = self.text_box_background.convert_alpha()
