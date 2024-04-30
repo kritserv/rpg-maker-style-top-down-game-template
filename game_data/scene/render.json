@@ -1,0 +1,29 @@
+{
+	"render_dict": {
+		"openworld": {
+			"behind_player": [],
+			"in_front_of_player": []
+		}, 
+		"town1": {
+			"behind_player": [
+				{
+					"img": "town1.png", 
+					"pos": [-200, -184]
+				}
+			],
+			"in_front_of_player": []
+		}, 
+		"inner_house1": {
+			"behind_player": [],
+			"in_front_of_player": []
+		}, 
+		"inner_house2": {
+			"behind_player": [],
+			"in_front_of_player": []
+		}, 
+		"inner_house3": {
+			"behind_player": [],
+			"in_front_of_player": []
+		}
+	}
+}
