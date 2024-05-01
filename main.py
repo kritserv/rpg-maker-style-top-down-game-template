@@ -237,7 +237,7 @@ async def main():
 			if pause:
 				if not screenshot:
 					screenshot = screen.copy()
-					screenshot = pg.transform.scale(screenshot, (240, 160))
+					screenshot = pg.transform.scale(screenshot, (120, 80))
 				pause_menu.draw(pixel_size, black_bar)
 			else:
 				screenshot = False

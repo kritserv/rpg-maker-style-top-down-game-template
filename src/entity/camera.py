@@ -9,7 +9,6 @@ class Camera:
 	def draw(self, screen, current_scene, pixel_size):
 		if self.renderer.rendering:
 			self.renderer.render_scene_behind_player(screen, self.tdmap, current_scene, pixel_size)
-			self.tdmap.draw()
 			self.player.draw(pixel_size, self)
 			self.renderer.render_scene_in_front_of_player(screen, self.tdmap, current_scene, pixel_size)
 		else:

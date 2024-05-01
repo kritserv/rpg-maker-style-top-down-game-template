@@ -5,11 +5,16 @@ def load_img_and_pos(img_and_pos):
 	img_name = img_and_pos["img"]
 
 	img_path = f"asset/img/scene/{img_name}"
-
-	img_x1 = pg.image.load(img_path).convert()
-	img_width, img_height = img_x1.get_size()
-	img_x2 = pg.transform.scale(img_x1, (img_width*2, img_height*2)).convert()
-	img_x3 = pg.transform.scale(img_x1, (img_width*3, img_height*3)).convert()
+	if "alpha" in img_name:
+		img_x1 = pg.image.load(img_path).convert_alpha()
+		img_width, img_height = img_x1.get_size()
+		img_x2 = pg.transform.scale(img_x1, (img_width*2, img_height*2)).convert_alpha()
+		img_x3 = pg.transform.scale(img_x1, (img_width*3, img_height*3)).convert_alpha()
+	else:
+		img_x1 = pg.image.load(img_path).convert()
+		img_width, img_height = img_x1.get_size()
+		img_x2 = pg.transform.scale(img_x1, (img_width*2, img_height*2)).convert()
+		img_x3 = pg.transform.scale(img_x1, (img_width*3, img_height*3)).convert()
 
 	pos = img_and_pos["pos"]
 

@@ -19,9 +19,9 @@ def load_save_from_json():
 				"new_scene": [pos[0], pos[1], scene], 
 				"new_camera_stop_position": map_cam_stop_pos[scene],
 				"img_x1": img,
-				"img_x2": pg.transform.scale(img, (480, 320)),
-				"img_x3": pg.transform.scale(img, (720, 480)),
-				"img_x4": pg.transform.scale(img, (960, 640)),
+				"img_x2": pg.transform.scale(img, (240, 160)),
+				"img_x3": pg.transform.scale(img, (480, 320)),
+				"img_x4": pg.transform.scale(img, (720, 480)),
 				"level": level,
 				"items": items,
 				"time": save_time
